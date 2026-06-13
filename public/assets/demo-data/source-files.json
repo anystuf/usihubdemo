@@ -1,0 +1,30 @@
+[
+  {
+    "file": "USI_HUb_dashboard.html",
+    "use": "Old dashboard prototype reference for visual style, metrics, Startup OS, project board, and mock AI concepts."
+  },
+  {
+    "file": "USI_Innovatiion_platformdemo_bookface_version.html",
+    "use": "Bookface-style demo reference for trusted founder Q&A, startup profiles, and product storytelling."
+  },
+  {
+    "file": "USI_Digital_tools.html",
+    "use": "Digital tools proposal dashboard reference for users, problems, modules, data input, roadmap, and metrics."
+  },
+  {
+    "file": "Innovation Platform Proposal.pdf",
+    "use": "Strategy, IP, and commercialization reference."
+  },
+  {
+    "file": "Cohort 1_2026 Incubatees.xlsx",
+    "use": "Future structured startup import source."
+  },
+  {
+    "file": "Cohort 1_2026 Incubatees - Document.csv",
+    "use": "Document availability matrix for roadmaps, OKRs, metrics, NDA, agreements, pitch decks, logos, coworking, and MVP testing plans."
+  },
+  {
+    "file": "Startup growth roadmaps and pitch decks",
+    "use": "Evidence references for Skyholic, NIION, Onto, Vizion, Ecombox, EmerGeniZ, Air Mattress, Study Cake, and Vocake demo profiles."
+  }
+]

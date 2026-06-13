@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>USI Hub / UEH Innovation Platform V2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./css/base.css" />
+  <link rel="stylesheet" href="./css/layout.css" />
+  <link rel="stylesheet" href="./css/components.css" />
+  <link rel="stylesheet" href="./css/pages.css" />
+  <link rel="stylesheet" href="./css/responsive.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Main navigation">
+      <a class="brand" href="#overview" aria-label="USI Hub overview">
+        <img src="./assets/logo.jpg" alt="UII Logo" class="brand-logo" />
+        <span>
+          <strong>USI Hub</strong>
+          <small>Innovation Platform V2</small>
+        </span>
+      </a>
+
+      <nav class="sidebar-nav">
+        <a class="nav-link active" href="#overview" data-route="overview">Overview</a>
+        <a class="nav-link" href="#startup-os" data-route="startup-os">Startup OS</a>
+        <a class="nav-link" href="#founder-qa" data-route="founder-qa">Founder Q&A</a>
+        <a class="nav-link" href="#usi-brain" data-route="usi-brain">USI Brain</a>
+        <a class="nav-link" href="#project-board" data-route="project-board">Project Board</a>
+        <a class="nav-link" href="#knowledge-base" data-route="knowledge-base">Knowledge Base</a>
+      </nav>
+
+    </aside>
+
+    <main class="main-panel">
+      <header class="topbar">
+        <button class="mobile-menu-button" type="button" id="mobile-menu-button" aria-label="Toggle navigation">Menu</button>
+        <div>
+          <p class="eyebrow">UEH Innovation Platform</p>
+          <h1 id="page-title">Overview Dashboard</h1>
+        </div>
+        <div class="topbar-actions">
+          <div class="role-selector" id="role-selector-container">
+            <label for="role-selector" style="font-size: 12px; color: var(--ink-500); margin-right: 6px;">View as:</label>
+            <select class="select" id="role-selector" style="min-width: 140px;">
+              <option value="sga" selected>SGA (Student Growth Advisor)</option>
+              <option value="leader">Leader</option>
+              <option value="mentor">Mentor</option>
+              <option value="founder">Founder</option>
+            </select>
+          </div>
+          <button class="topbar-control" type="button" id="notifications-button">
+            <span class="control-dot">3</span>
+            Notifications
+          </button>
+          <button class="topbar-control" type="button" id="approval-button">Approvals</button>
+          <button class="topbar-control primary" type="button" id="settings-button">Settings</button>
+        </div>
+      </header>
+
+      <section class="workspace" id="app-root" aria-live="polite"></section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="utility-modal" hidden>
+    <section class="utility-modal" role="dialog" aria-modal="true" aria-labelledby="utility-modal-title">
+      <div class="utility-modal-head">
+        <div>
+          <p class="eyebrow" id="utility-modal-kicker">Platform</p>
+          <h2 id="utility-modal-title">Settings</h2>
+        </div>
+        <button class="button secondary" type="button" id="utility-modal-close">Close</button>
+      </div>
+      <div id="utility-modal-body"></div>
+    </section>
+  </div>
+
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>

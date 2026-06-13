@@ -1,0 +1,148 @@
+@media (max-width: 1120px) {
+  .grid-4,
+  .grid-3,
+  .overview-split,
+  .brain-layout,
+  .kb-layout,
+  .qa-layout,
+  .quora-layout,
+  .reference-layout,
+  .board-columns {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .qa-left-rail,
+  .qa-right-rail {
+    position: static;
+  }
+
+  .qa-left-rail {
+    order: 2;
+  }
+
+  .qa-right-rail {
+    order: 3;
+  }
+
+  .toolbar {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 860px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 30;
+    width: min(86vw, var(--sidebar-width));
+    transform: translateX(-105%);
+    transition: transform 180ms ease;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .mobile-menu-button {
+    display: inline-flex;
+    min-height: 40px;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--white);
+    color: var(--navy-900);
+    font-weight: 800;
+  }
+
+  .topbar {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 16px;
+  }
+
+  .workspace {
+    padding: 14px;
+  }
+
+  .grid-4,
+  .grid-3,
+  .grid-2,
+  .overview-split,
+  .startup-layout,
+  .brain-layout,
+  .kb-layout,
+  .qa-layout,
+  .quora-layout,
+  .reference-layout,
+  .board-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-panel {
+    position: static;
+  }
+
+  .toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .chat-shell {
+    min-height: calc(100vh - 168px);
+  }
+}
+
+@media (max-width: 520px) {
+  .hero,
+  .card-pad {
+    padding: 16px;
+  }
+
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .chat-composer {
+    grid-template-columns: 1fr;
+  }
+
+  .qa-feed-tools,
+  .qa-thread-main {
+    grid-template-columns: 1fr;
+  }
+
+  .qa-vote-rail {
+    grid-template-columns: auto auto auto;
+    justify-content: start;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .message {
+    max-width: 100%;
+  }
+
+  .brain-response {
+    width: 100%;
+  }
+
+  .brain-response-head {
+    grid-template-columns: auto 1fr;
+  }
+
+  .confidence-pill {
+    grid-column: 1 / -1;
+  }
+
+  .support-chart div,
+  .legend-list div,
+  .mini-bar-row,
+  .chart-row {
+    grid-template-columns: 1fr;
+  }
+}

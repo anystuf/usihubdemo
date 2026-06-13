@@ -1,0 +1,11 @@
+{
+  "name": "usi-hub-platform-v2",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node server/localServer.js",
+    "check": "node --check server/localServer.js"
+  },
+  "dependencies": {}
+}
