@@ -29,7 +29,8 @@ const intentKeywords = {
   growth: ["grow", "growth", "scale", "customer", "khach hang", "gtm", "go-to-market"],
   brief: ["brief", "meeting", "summary", "tom tat", "niion brief", "generate"],
   missing: ["missing", "thieu", "data", "evidence", "gap"],
-  documents: ["document", "source", "file", "knowledge", "tai lieu"]
+  documents: ["document", "source", "file", "knowledge", "tai lieu"],
+  founderQa: ["founder q&a", "founder qa", "q&a", "qa draft", "question draft", "answer draft", "draft answer"]
 };
 
 export async function generateBrainResponse(prompt) {
@@ -38,12 +39,14 @@ export async function generateBrainResponse(prompt) {
   const startup = findStartup(normalized, data.startups);
   const intent = detectIntent(normalized);
 
+  if (isGreetingPrompt(normalized)) return buildGreetingAnswer(data);
   if (intent === "help") return buildUsageAnswer(data);
   if (intent === "risk" && !startup) return buildRiskAnswer(data);
   if (intent === "mentor" && !startup) return buildMentorPortfolioAnswer(data);
   if (intent === "missing" && !startup) return buildPortfolioMissingDataAnswer(data);
   if (intent === "mentor" && startup) return buildMentorAnswer(startup);
   if (intent === "growth" && startup) return buildGrowthAnswer(startup);
+  if (intent === "founderQa" && startup) return buildFounderQaAnswer(startup, prompt);
   if (intent === "brief" && startup) return buildBriefAnswer(startup);
   if (intent === "missing" && startup) return buildMissingDataAnswer(startup);
   if (intent === "documents" && startup) return buildDocumentAnswer(startup);
@@ -54,7 +57,7 @@ export async function generateBrainResponse(prompt) {
 
 export function buildAiProposalFromResponse(response, prompt) {
   return response.proposedUpdate || buildProposal({
-    type: "Knowledge follow-up",
+    type: "Knowledge note update",
     startupName: "Program",
     proposedChange: `Create a reviewed knowledge note from the prompt: "${prompt}".`,
     rationale: "USI Brain found a useful question but needs SGA review before updating official records."
@@ -100,24 +103,13 @@ function buildRiskAnswer(data) {
     };
   });
 
-  // Build rich answer with specific recommendations
-  const answerLines = [
-    `${atRisk.length} startup(s) show high-risk signals: ${atRisk.map((s) => `${s.name} (Health: ${s.health}/100)`).join(", ")}.`,
-    "",
-    "Key risk drivers:"
-  ];
-
   const allEvidence = [];
   const allMissingData = new Set();
 
   riskDetails.forEach(({ startup, riskAssessment, baseEvidence }) => {
-    // Add rubric-based evidence
-    answerLines.push(`• ${startup.name}: ${riskAssessment.signals.slice(0, 2).map((s) => s.signal).join("; ")}`);
-
-    // Collect evidence with source attribution
     allEvidence.push(`${startup.name} Risk Assessment: ${riskAssessment.level} (${riskAssessment.signals.length} risk signals identified)`);
     baseEvidence.signals?.forEach((signal) => {
-      allEvidence.push(`  — ${signal}`);
+      allEvidence.push(`${startup.name} signal: ${signal}`);
     });
 
     startup.missingData?.forEach((item) => allMissingData.add(item));
@@ -125,11 +117,21 @@ function buildRiskAnswer(data) {
 
   const confidence = assessDataConfidence(atRisk[0]);
 
+  const riskSummary = atRisk.map((startup) => {
+    const gaps = (startup.missingData || []).slice(0, 2).join(", ");
+    return `${startup.name}: health ${startup.health}/100, ${startup.stage}, gaps in ${gaps || "validation evidence"}`;
+  }).join("\n");
+
   return {
-    answer: answerLines.join("\n"),
+    answer: `Based on current demo data, ${atRisk.map((s) => s.name).join(", ")} show the highest risk signals.\n\n${riskSummary}\n\nThese are triage signals only. SGA/Leader review is required before any program decision.`,
     evidence: [
-      "Risk assessment based on: Product validation maturity, team capability, market competition, GTM clarity, Vietnam context fit, and data completeness",
-      ...allEvidence.slice(0, 8)
+      "Risk assessment uses health score, validation maturity, GTM clarity, Vietnam-context risk, and data completeness.",
+      ...atRisk.flatMap((startup) => [
+        `${startup.name} risk reason: ${startup.riskReason || "Validation evidence is incomplete."}`,
+        `${startup.name} source: ${(startup.sources || [])[0] || "Startup OS profile"}`,
+        `${startup.name} missing data: ${(startup.missingData || []).slice(0, 3).join(", ") || "No major missing fields listed"}`
+      ]),
+      ...allEvidence.slice(0, 4)
     ],
     sources: unique(
       atRisk.flatMap((s) => s.sources || []).concat("Startup Scoring Rubric - Risk Level Framework")
@@ -142,7 +144,7 @@ function buildRiskAnswer(data) {
       "Create focused mentoring sprint on validation and team building"
     ],
     proposedUpdate: buildProposal({
-      type: "High-risk cohort review",
+      type: "Risk signal update",
       startupName: atRisk.map((s) => s.name).join(", "),
       proposedChange: `Create focused SGA review tasks for ${atRisk.map((s) => s.name).join(", ")} and assign validation mentors`,
       rationale: `These startups show multiple risk signals per scoring rubric. Intensive mentor support and validation tracking needed before next milestone.`
@@ -176,7 +178,7 @@ function buildMentorAnswer(startup) {
       ...(secondaryNeeds.length ? [`4. Plan secondary mentoring path after ${primaryNeed} stabilizes`] : [])
     ],
     proposedUpdate: buildProposal({
-      type: "Mentor match",
+      type: "Mentor need update",
       startupName: startup.name,
       proposedChange: `Set primary mentor need to "${primaryNeed}" and queue for mentor matching based on: Health ${healthAssessment.score}/100, ${riskAssessment.level} risk, stage ${startup.stage}`,
       rationale: `${startup.name} shows clear need for ${primaryNeed} support. Rubric assessment indicates this will unlock growth and reduce risk signals.`
@@ -204,7 +206,7 @@ function buildMentorPortfolioAnswer(data) {
       "Review mentor fit again after missing data is collected."
     ],
     proposedUpdate: buildProposal({
-      type: "Mentor allocation",
+      type: "Mentor need update",
       startupName: "Cohort",
       proposedChange: "Prioritize mentor matching for NIION, Onto, and EmerGeniZ before lower-risk startups.",
       rationale: "They carry the strongest combination of high risk, missing data, and validation-stage uncertainty."
@@ -238,10 +240,46 @@ function buildGrowthAnswer(startup) {
       "MEASURE: Define success metrics before executing sprint"
     ].slice(0, 5),
     proposedUpdate: buildProposal({
-      type: "Growth support plan",
+      type: "Project board task update",
       startupName: startup.name,
       proposedChange: `Activate growth support sprint: Focus on ${primaryBlocker.toLowerCase()}. Health-based priority: ${healthAssessment.score < 50 ? "FUNDAMENTALS" : "SCALING"}.`,
       rationale: `${startup.name}'s scoring rubric shows ${primaryBlocker} is the highest-impact next step given health score ${healthAssessment.score}/100 and current risk level ${riskAssessment.level}.`
+    })
+  };
+}
+
+function buildFounderQaAnswer(startup, prompt) {
+  const data = getDemoData();
+  const growthEvidence = buildGrowthSupportEvidence(startup, data.documents);
+  const mentorEvidence = buildMentorMatchEvidence(startup, data.documents);
+  const draftQuestion = prompt.toLowerCase().includes("growth")
+    ? `How can ${startup.name} grow from its current stage?`
+    : `What should ${startup.name} do next?`;
+  const primaryMove = startup.nextAction || growthEvidence.blockers[0] || mentorEvidence.primaryNeed;
+  const draftAnswer = `${startup.name} should focus on ${primaryMove}. For the next sprint, keep the scope narrow: define one measurable founder action, collect the missing evidence, and ask an SGA or mentor to review progress before updating the official startup profile.`;
+
+  return {
+    answer: `I can draft a Founder Q&A answer for ${startup.name}, but it should remain a reviewed draft until an SGA/Leader approves it.\n\nQuestion: ${draftQuestion}\n\nDraft answer: ${draftAnswer}`,
+    evidence: [
+      generateStartupSummary(startup),
+      `Founder need: ${startup.founderNeed || "Not provided"}`,
+      `Traction: ${startup.traction || "Not provided"}`,
+      `Recommended next action: ${startup.nextAction || "Needs SGA review"}`,
+      ...growthEvidence.evidence.slice(0, 2)
+    ],
+    sources: unique([...(startup.sources || []), "Founder Q&A demo policy"]),
+    confidence: assessDataConfidence(startup).confidence,
+    missingData: startup.missingData || [],
+    nextActions: [
+      "Approve the draft only after SGA/mentor review.",
+      "Publish it as Founder Q&A guidance, not as a final decision.",
+      "Link the answer to the relevant roadmap or pitch source."
+    ],
+    proposedUpdate: buildProposal({
+      type: "Founder Q&A draft update",
+      startupName: startup.name,
+      proposedChange: draftAnswer,
+      rationale: `The draft uses ${startup.name}'s current Startup OS profile, source references, and next-action field. Human review is required before founders treat it as official guidance.`
     })
   };
 }
@@ -273,7 +311,7 @@ function buildBriefAnswer(startup) {
       "CLOSE: Agreement on next validation checkpoint"
     ],
     proposedUpdate: buildProposal({
-      type: "Meeting brief",
+      type: "Knowledge note update",
       startupName: startup.name,
       proposedChange: `Create and review meeting brief for ${startup.name}: Stage ${startup.stage}, Health ${healthAssessment.score}/100, Risk ${riskAssessment.level}, Focus ${mentorEvidence.primaryNeed}`,
       rationale: "The brief supports SGA/mentor preparation and ensures aligned focus. Scorecard-based assessment ensures consistent evaluation."
@@ -294,7 +332,7 @@ function buildMissingDataAnswer(startup) {
       missingData: [],
       nextActions: ["Continue to collect mentor notes and traction updates.", "Schedule next assessment in 2 weeks."],
       proposedUpdate: buildProposal({
-        type: "Data status",
+        type: "Startup profile update",
         startupName: startup.name,
         proposedChange: "Maintain data completeness status; no urgent data collection needed.",
         rationale: "Current profile is complete per scoring rubric. Continue monitoring for emerging gaps."
@@ -323,7 +361,7 @@ function buildMissingDataAnswer(startup) {
       "Then: Re-run USI Brain for updated risk/health assessment"
     ],
     proposedUpdate: buildProposal({
-      type: "Data collection sprint",
+      type: "Data gap update",
       startupName: startup.name,
       proposedChange: `Request missing data: ${startup.missingData.slice(0, 3).join(", ")}.`,
       rationale: `Per scoring rubric, these gaps limit confidence in mentor matching and risk assessment. Collecting data will improve decision quality.`
@@ -349,7 +387,7 @@ function buildPortfolioMissingDataAnswer(data) {
       "Re-run USI Brain after documents are indexed."
     ],
     proposedUpdate: buildProposal({
-      type: "Data completeness sprint",
+      type: "Data gap update",
       startupName: "Cohort",
       proposedChange: "Open a one-week data completeness sprint for the five startups with the most missing fields.",
       rationale: "Better evidence improves mentor matching, risk review, and Vietnam-context support planning."
@@ -378,7 +416,7 @@ function buildDocumentAnswer(startup) {
       "Link extracted evidence to future AI answers."
     ],
     proposedUpdate: buildProposal({
-      type: "Knowledge Base indexing",
+      type: "Knowledge note update",
       startupName: startup.name,
       proposedChange: `Queue ${startup.name} sources for full-text extraction and RAG evidence linking.`,
       rationale: "Current demo uses metadata and source names; full text extraction is needed before production RAG."
@@ -405,7 +443,7 @@ function buildStartupOverviewAnswer(startup) {
       `Suggested action: ${startup.nextAction || "Review roadmap and define next milestone"}`
     ],
     proposedUpdate: buildProposal({
-      type: "Startup OS note",
+      type: "Startup profile update",
       startupName: startup.name,
       proposedChange: `Add next support note: ${startup.nextAction || mentorEvidence.primaryNeed}.`,
       rationale: `${startup.name}'s profile has enough evidence for a proposed SGA follow-up, not an automatic dashboard update.`
@@ -432,12 +470,7 @@ function buildUsageAnswer(data) {
       "Try: How can Ecombox grow?",
       "Try: Generate NIION brief"
     ],
-    proposedUpdate: buildProposal({
-      type: "Demo workflow note",
-      startupName: "Program",
-      proposedChange: "Add USI Brain usage guidance to onboarding for SGAs and mentors.",
-      rationale: "Users need a clear workflow: ask, inspect evidence, review missing data, then approve or reject proposed updates."
-    })
+    proposedUpdate: null
   };
 }
 
@@ -459,17 +492,44 @@ function buildGeneralAnswer(data, prompt) {
       "Try one of the suggested prompts",
       "Share feedback on answer quality"
     ],
-    proposedUpdate: buildProposal({
-      type: "Knowledge follow-up",
-      startupName: "Program",
-      proposedChange: `Create a reviewed knowledge note from the prompt: "${prompt}".`,
-      rationale: "The prompt may be useful for the support playbook, but official knowledge updates require human review."
-    })
+    proposedUpdate: null
+  };
+}
+
+function buildGreetingAnswer(data) {
+  const stats = getStartupStats(data.startups);
+
+  return {
+    answer: `Hi. I am USI Brain, the incubation co-pilot for USI Hub. Ask me about startup risk, mentor needs, growth support, missing data, source lookup, or meeting briefs. Current demo data covers ${stats.total} startups and ${stats.highRiskCount} high-risk profiles.`,
+    evidence: [
+      "Greeting or general prompt detected.",
+      "No startup decision or dashboard update is implied.",
+      "Human approval workflow appears only when the prompt asks for concrete analysis or a platform action."
+    ],
+    sources: ["USI Brain interaction policy", "Startup OS demo dataset"],
+    confidence: "High",
+    missingData: [],
+    nextActions: [
+      "Try: Which startup is at risk?",
+      "Try: What mentor does Skyholic need?",
+      "Try: How can Ecombox grow?",
+      "Try: Generate NIION brief"
+    ],
+    proposedUpdate: null,
+    noSystemNote: true
   };
 }
 
 function detectIntent(normalizedPrompt) {
-  return Object.entries(intentKeywords).find(([, keywords]) => keywords.some((keyword) => normalizedPrompt.includes(keyword)))?.[0] || "overview";
+  if (intentKeywords.founderQa.some((keyword) => normalizedPrompt.includes(keyword))) return "founderQa";
+  return Object.entries(intentKeywords)
+    .filter(([intent]) => intent !== "founderQa")
+    .find(([, keywords]) => keywords.some((keyword) => normalizedPrompt.includes(keyword)))?.[0] || "overview";
+}
+
+function isGreetingPrompt(normalizedPrompt) {
+  const cleaned = normalizedPrompt.replace(/[^a-z0-9\s]/g, "").trim();
+  return ["hi", "hello", "hey", "yo", "xin chao", "chao", "chao ban"].includes(cleaned);
 }
 
 function findStartup(normalizedPrompt, startups) {
@@ -522,7 +582,16 @@ function inferPlatformAction({ type, startupName, proposedChange, rationale }) {
     ]);
   }
 
-  if (normalizedType.includes("growth")) {
+  if (normalizedType.includes("founder q&a") || normalizedType.includes("founder qa")) {
+    return founderQa({
+      startup: cleanStartup,
+      question: `What should ${cleanStartup} do next?`,
+      answer: proposedChange,
+      tags: ["usi-brain", "approved-draft", "founder-support"]
+    });
+  }
+
+  if (normalizedType.includes("growth") || normalizedType.includes("project board")) {
     return batch([
       projectTask({
         id: `${safeId}-growth`,
@@ -546,7 +615,7 @@ function inferPlatformAction({ type, startupName, proposedChange, rationale }) {
     });
   }
 
-  if (normalizedType.includes("risk") || normalizedType.includes("data completeness")) {
+  if (normalizedType.includes("risk") || normalizedType.includes("data completeness") || normalizedType.includes("data gap")) {
     return batch([
       projectTask({
         id: `${safeId}-review`,
@@ -577,7 +646,7 @@ function inferPlatformAction({ type, startupName, proposedChange, rationale }) {
     ]);
   }
 
-  if (normalizedType.includes("knowledge") || normalizedType.includes("workflow")) {
+  if (normalizedType.includes("knowledge") || normalizedType.includes("workflow") || normalizedType.includes("startup profile")) {
     return knowledgeNote({
       title: `${cleanStartup} - ${type}`,
       startup: cleanStartup,

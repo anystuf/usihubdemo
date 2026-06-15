@@ -96,11 +96,13 @@ async function askBrain(prompt) {
 function renderMessages() {
   const root = $("#chat-messages");
   if (!root) return;
+
   root.innerHTML = messages.map((message) => {
     if (message.role === "ai-card") return renderAiCard(message.data, message.proposalId);
     if (message.role === "loading") return `<div class="message typing-bubble">${escapeHtml(message.text)}<span></span><span></span><span></span></div>`;
     return `<div class="message ${message.role === "user" ? "user" : ""}">${escapeHtml(message.text)}</div>`;
   }).join("");
+
   root.scrollTop = root.scrollHeight;
 
   root.querySelectorAll("[data-proposal-action]").forEach((button) => {
@@ -135,8 +137,8 @@ function renderAiCard(response, proposalId) {
   const missingData = response.missingData?.length ? response.missingData : ["No explicit missing data returned."];
   const nextActions = response.nextActions?.length ? response.nextActions : ["Ask SGA/Leader to review the answer before acting."];
 
-  // Format answer with line breaks and bold support
-  const formattedAnswer = (response.answer || "")
+  // Escape first, then allow the controlled markdown-like bold markers used by the demo engine.
+  const formattedAnswer = escapeHtml(response.answer || "")
     .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
     .replace(/\n/g, "<br/>");
 
@@ -155,13 +157,13 @@ function renderAiCard(response, proposalId) {
 
       <div class="brain-next-actions">
         <strong style="display: block; margin-bottom: 8px; color: var(--navy-900);">Recommended Next Steps:</strong>
-        ${nextActions.slice(0, 4).map((action) => `<span>→ ${escapeHtml(action)}</span>`).join("")}
+        ${nextActions.slice(0, 4).map((action) => `<span>- ${escapeHtml(action)}</span>`).join("")}
       </div>
 
       <div class="brain-evidence-grid">
-        ${renderDetails("📋 Evidence & Framework", list(evidence), true)}
-        ${renderDetails("📚 Sources", list(sources.length ? sources : ["No source returned."]))}
-        ${renderDetails("❓ Data Gaps", list(missingData))}
+        ${renderDetails("Evidence & Framework", list(evidence), true)}
+        ${renderDetails("Sources", list(sources.length ? sources : ["No source returned."]), true)}
+        ${renderDetails("Data Gaps", list(missingData))}
       </div>
 
       ${response.proposedUpdate ? renderProposedUpdate(response.proposedUpdate, proposalId) : ""}
@@ -181,19 +183,16 @@ function renderDetails(title, content, open = false) {
 
 function renderProposedUpdate(proposal, proposalId) {
   const statusClass = proposal.approvalStatus === "pending" ? "warn" : proposal.approvalStatus === "approved" ? "good" : "bad";
-  const statusIcon = proposal.approvalStatus === "pending" ? "⏳" : proposal.approvalStatus === "approved" ? "✓" : "✗";
-  
+  const statusLabel = proposal.approvalStatus === "pending" ? "Pending" : proposal.approvalStatus === "approved" ? "Approved" : "Rejected";
+
   return `
     <div class="ai-proposal-card">
       <div class="ai-proposal-top">
         <div>
-          <p class="eyebrow">🤖 AI Proposed Update</p>
-          <h3>${escapeHtml(proposal.type || "Proposal")} — ${escapeHtml(proposal.startupName || "Program")}</h3>
+          <p class="eyebrow">AI Proposed Update</p>
+          <h3>${escapeHtml(proposal.type || "Proposal")} - ${escapeHtml(proposal.startupName || "Program")}</h3>
         </div>
-        <span class="status ${statusClass}" data-proposal-status="${proposalId}">
-          <span style="display: inline-block; margin-right: 4px;">${statusIcon}</span>
-          ${escapeHtml(proposal.approvalStatus || "pending")}
-        </span>
+        <span class="status ${statusClass}" data-proposal-status="${proposalId}">${statusLabel}</span>
       </div>
 
       <div class="proposal-field-change">
@@ -211,7 +210,7 @@ function renderProposedUpdate(proposal, proposalId) {
       </div>
 
       <div class="proposal-guardrail" style="padding: 10px; background: rgba(255, 193, 7, 0.08); border-radius: 8px; font-size: 12px; color: var(--ink-600); border-left: 3px solid #FFC107;">
-        ⚠️ <strong>Human Approval Required:</strong> This update will NOT be applied until you review and approve. AI proposes, humans decide.
+        <strong>Human Approval Required:</strong> This update will NOT be applied until you review and approve. AI proposes, humans decide.
       </div>
 
       <div class="proposal-actions">

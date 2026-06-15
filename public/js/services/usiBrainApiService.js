@@ -10,7 +10,9 @@ export async function askUsiBrain(prompt) {
     const localEvidence = await generateBrainResponse(prompt);
     return normalizeBrainResponse({
       ...localEvidence,
-      systemNote: "Answered by the local demo evidence engine so the MVP stays deterministic. Gemini/Firebase RAG can augment this later."
+      systemNote: localEvidence.noSystemNote
+        ? ""
+        : "Answered by the local demo evidence engine so the MVP stays deterministic. Gemini/Firebase RAG can augment this later."
     }, "Local evidence engine");
   }
 
@@ -36,6 +38,9 @@ export async function askUsiBrain(prompt) {
 
 function shouldUseDemoEvidenceEngine(prompt, context) {
   const normalized = prompt.toLowerCase();
+  const cleaned = normalized.replace(/[^a-z0-9\s]/g, "").trim();
+  if (["hi", "hello", "hey", "yo", "xin chao", "chao", "chao ban"].includes(cleaned)) return true;
+
   const demoTerms = [
     "risk", "at risk", "mentor", "grow", "growth", "brief", "missing", "data",
     "document", "source", "how to use", "skyholic", "niion", "onto", "ecombox",
