@@ -43,8 +43,8 @@ function shouldUseDemoEvidenceEngine(prompt, context) {
 
   const demoTerms = [
     "risk", "at risk", "mentor", "grow", "growth", "brief", "missing", "data",
-    "document", "source", "how to use", "skyholic", "niion", "onto", "ecombox",
-    "emergeniz", "air mattress", "study cake", "vocake", "vizion"
+    "document", "source", "how to use", "venture-alpha", "venture-beta", "venture-gamma", "venture-epsilon",
+    "venture-zeta", "air mattress", "study cake", "venture-iota", "venture-delta"
   ];
   return demoTerms.some((term) => normalized.includes(term)) ||
     context.startups.some((startup) => normalized.includes(startup.name.toLowerCase()));

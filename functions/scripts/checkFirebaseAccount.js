@@ -1,7 +1,7 @@
 const { execFileSync } = require("node:child_process");
 
-const REQUIRED_EMAIL = "jarvisstarkgpt4@gmail.com";
-const REQUIRED_PROJECT = "usi-hub-platform";
+const REQUIRED_EMAIL = process.env.REQUIRED_FIREBASE_EMAIL || "YOUR_FIREBASE_ACCOUNT_EMAIL";
+const REQUIRED_PROJECT = process.env.REQUIRED_FIREBASE_PROJECT || "YOUR_FIREBASE_PROJECT_ID";
 
 function main() {
   const loginList = runFirebase(["login:list"]);

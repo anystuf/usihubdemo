@@ -141,7 +141,7 @@ function renderNotifications() {
   return `
     <div class="utility-list">
       <article class="utility-item">
-        <strong>NIION risk review is waiting for SGA approval</strong>
+        <strong>Venture Beta risk review is waiting for SGA approval</strong>
         <p>USI Brain proposed a data completeness sprint. Review source evidence before adding official dashboard updates.</p>
       </article>
       <article class="utility-item">
@@ -150,7 +150,7 @@ function renderNotifications() {
       </article>
       <article class="utility-item">
         <strong>Mentor matching follow-up due this week</strong>
-        <p>Skyholic and EmerGeniZ need specialist mentor routing for regulated pilots and validation.</p>
+        <p>Venture Alpha and Venture Zeta need specialist mentor routing for regulated pilots and validation.</p>
       </article>
     </div>
   `;

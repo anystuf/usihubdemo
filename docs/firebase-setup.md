@@ -22,13 +22,13 @@ Configured services:
 Deploy and seed from the Firebase CLI account:
 
 ```text
-jarvisstarkgpt4@gmail.com
+YOUR_FIREBASE_ACCOUNT_EMAIL
 ```
 
 The project is pinned in `.firebaserc`:
 
 ```text
-usi-hub-platform
+YOUR_FIREBASE_PROJECT_ID
 ```
 
 Check before deploy:
@@ -45,7 +45,7 @@ If the wrong account is active:
 
 ```bash
 firebase login --reauth
-firebase use usi-hub-platform
+firebase use YOUR_FIREBASE_PROJECT_ID
 ```
 
 ## Gemini Secret

@@ -25,7 +25,7 @@ const COLLECTIONS = {
 async function main() {
   if (!admin.apps.length) {
     admin.initializeApp({
-      projectId: process.env.GCLOUD_PROJECT || process.env.GOOGLE_CLOUD_PROJECT || "usi-hub-platform"
+      projectId: process.env.GCLOUD_PROJECT || process.env.GOOGLE_CLOUD_PROJECT || "YOUR_FIREBASE_PROJECT_ID"
     });
   }
 
@@ -243,10 +243,10 @@ function buildTaxonomy() {
 function buildMentorSessions() {
   return [
     {
-      id: "skyholic-uav-regulatory-brief",
+      id: "venture-alpha-uav-regulatory-brief",
       programId: PROGRAM_ID,
       cohortId: COHORT_ID,
-      startupId: "skyholic",
+      startupId: "venture-alpha",
       mentorName: "Regulated Technology Mentor",
       mentorRole: "Legal / UAV advisor",
       sessionType: "mentor-review",
@@ -255,13 +255,13 @@ function buildMentorSessions() {
       brief: "Clarify Vietnam UAV pilot constraints and partner pathway.",
       notes: "",
       actionItems: ["Prepare pilot risk brief", "List possible university or enterprise partners"],
-      sourceDocumentIds: ["skyholic-ip-2025-incubatee-growth-roadmap-pdf"]
+      sourceDocumentIds: ["venture-alpha-ip-2025-incubatee-growth-roadmap-pdf"]
     },
     {
-      id: "ecombox-growth-playbook",
+      id: "venture-epsilon-growth-playbook",
       programId: PROGRAM_ID,
       cohortId: COHORT_ID,
-      startupId: "ecombox",
+      startupId: "venture-epsilon",
       mentorName: "B2B SaaS Growth Mentor",
       mentorRole: "Growth / customer success",
       sessionType: "mentor-review",
@@ -270,7 +270,7 @@ function buildMentorSessions() {
       brief: "Design partner-led onboarding and referral growth motion.",
       notes: "",
       actionItems: ["Segment stores by order volume", "Draft onboarding checklist"],
-      sourceDocumentIds: ["ecombox-incubatee-growth-roadmap-pdf"]
+      sourceDocumentIds: ["venture-epsilon-incubatee-growth-roadmap-pdf"]
     }
   ];
 }
@@ -307,14 +307,14 @@ function buildWorkshops() {
 function buildAiProposals() {
   return [
     {
-      id: "proposal-review-niion-risk",
+      id: "proposal-review-venture-beta-risk",
       programId: PROGRAM_ID,
-      startupId: "niion",
+      startupId: "venture-beta",
       type: "risk-review",
       prompt: "Which startup is at risk?",
-      answer: "NIION should be reviewed because product focus, unit economics, and buyer evidence are missing.",
-      evidence: ["NIION roadmap exists but product line and validation data need review."],
-      sources: ["[NIION] Incubatee Growth-Roadmap.pdf"],
+      answer: "Venture Beta should be reviewed because product focus, unit economics, and buyer evidence are missing.",
+      evidence: ["Venture Beta roadmap exists but product line and validation data need review."],
+      sources: ["Redacted Venture Beta Roadmap.pdf"],
       confidence: "Medium",
       missingData: ["Unit economics", "Target buyer segment", "Supply stability"],
       nextActions: ["Schedule SGA review", "Ask founder for 30-day validation plan"],
@@ -344,11 +344,11 @@ function inferSourceCategory(file) {
 
 function inferStartupId(file) {
   const lower = file.toLowerCase();
-  const names = ["skyholic", "niion", "onto", "vizion", "ecombox", "emergeniz", "air", "study", "vocake"];
+  const names = ["venture-alpha", "venture-beta", "venture-gamma", "venture-delta", "venture-epsilon", "venture-zeta", "air", "study", "venture-iota"];
   const found = names.find((name) => lower.includes(name));
   if (!found) return null;
-  if (found === "air") return "air-mattress";
-  if (found === "study") return "study-cake";
+  if (found === "air") return "venture-eta";
+  if (found === "study") return "venture-theta";
   return found;
 }
 

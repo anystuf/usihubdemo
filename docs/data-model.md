@@ -255,7 +255,7 @@ Expected Firebase Auth custom claims:
 {
   "role": "admin | leader | sga | program | mentor | trainer | founder | alumni",
   "programIds": ["usi-ip-2025"],
-  "startupIds": ["skyholic", "ecombox"],
+  "startupIds": ["venture-alpha", "venture-epsilon"],
   "admin": true
 }
 ```

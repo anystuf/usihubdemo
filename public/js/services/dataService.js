@@ -3,7 +3,7 @@ import { collection, getDocs, query, orderBy } from "https://www.gstatic.com/fir
 import { getFirebaseServices } from "./firebaseService.js";
 
 const startupProfiles = {
-  skyholic: {
+  "venture-alpha": {
     lastCheckIn: "2026-06-09",
     riskReason: "UAV pilots depend on permission, safety framing, and a credible partner; business development capacity is thinner than technical capacity.",
     mentorNeed: ["UAV regulation", "B2B/government sales", "Pilot partnership", "AI dashboard validation"],
@@ -14,7 +14,7 @@ const startupProfiles = {
     ],
     recommendedSupport: ["Create permission-ready pilot brief", "Match with regulated-tech mentor", "Find university or enterprise pilot partner"]
   },
-  niion: {
+  "venture-beta": {
     lastCheckIn: "2026-06-08",
     riskReason: "R&D direction is broad; product line, buyer segment, and unit economics need narrowing before GTM support.",
     mentorNeed: ["Product focus", "Unit economics", "Vietnam agriculture supply chain", "Brand positioning"],
@@ -25,7 +25,7 @@ const startupProfiles = {
     ],
     recommendedSupport: ["Choose one hero product", "Run 10 buyer interviews", "Build margin and supply stability model"]
   },
-  onto: {
+  "venture-gamma": {
     lastCheckIn: "2026-06-07",
     riskReason: "Marketplace risk is high because venue supply must be secured before user-side demand can be validated.",
     mentorNeed: ["Marketplace design", "Venue onboarding", "UI/UX", "Sports community activation"],
@@ -36,7 +36,7 @@ const startupProfiles = {
     ],
     recommendedSupport: ["Secure venue LOIs", "Define activation metric", "Test one tournament workflow"]
   },
-  ecombox: {
+  "venture-epsilon": {
     lastCheckIn: "2026-06-10",
     riskReason: "Lower risk because the problem and GTM path are clearer; scaling risk shifts to onboarding and customer success capacity.",
     mentorNeed: ["B2B SaaS growth", "Customer success", "Partner channel", "Pricing"],
@@ -47,7 +47,7 @@ const startupProfiles = {
     ],
     recommendedSupport: ["Build onboarding kit", "Create referral channel", "Segment sellers by order volume"]
   },
-  emergeniz: {
+  "venture-zeta": {
     lastCheckIn: "2026-06-06",
     riskReason: "HealthTech validation requires expert review, target buyer clarity, and careful legal/IP framing.",
     mentorNeed: ["Medical validation", "B2B buyer discovery", "Legal/IP", "Hardware testing"],

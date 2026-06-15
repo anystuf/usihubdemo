@@ -179,7 +179,7 @@ function renderQuestionCard(item) {
     <article class="qa-thread" data-question-id="${escapeHtml(item.id)}">
       <div class="qa-thread-main">
         <div class="qa-vote-rail">
-          <button class="qa-icon-button ${item.userVote ? "active" : ""}" type="button" data-qa-action="vote" data-question-id="${escapeHtml(item.id)}">▲</button>
+          <button class="qa-icon-button ${item.userVote ? "active" : ""}" type="button" data-qa-action="vote" data-question-id="${escapeHtml(item.id)}">â–²</button>
           <strong>${item.votes}</strong>
           <span>votes</span>
         </div>
@@ -198,7 +198,7 @@ function renderQuestionCard(item) {
               <div class="qa-avatar">${escapeHtml(item.authorInitials)}</div>
               <div>
                 <strong>${escapeHtml(item.author)}</strong>
-                <p>${escapeHtml(item.role)} · ${escapeHtml(item.updatedAt)}</p>
+                <p>${escapeHtml(item.role)} Â· ${escapeHtml(item.updatedAt)}</p>
               </div>
               ${item.accepted ? `<span class="status good">accepted</span>` : `<span class="status info">mentor answer</span>`}
             </div>
@@ -280,7 +280,7 @@ function bindQuestionActions() {
       const state = readQaState();
       state.answers[id] = state.answers[id] || [];
       state.answers[id].unshift({
-        author: "You · UII community",
+        author: "You Â· UII community",
         text: value,
         createdAt: new Date().toISOString()
       });
@@ -323,7 +323,7 @@ function buildQuestionModels() {
 
 function getProfile(item, index) {
   const profiles = {
-    Skyholic: {
+    "Venture Alpha": {
       author: "Mentor Linh Nguyen",
       authorInitials: "LN",
       role: "Regulated-tech mentor",
@@ -332,7 +332,7 @@ function getProfile(item, index) {
       accepted: true,
       updatedAt: "Updated today"
     },
-    Ecombox: {
+    "Venture Epsilon": {
       author: "Alumni Ops Circle",
       authorInitials: "AO",
       role: "Ecommerce SaaS operators",
@@ -341,7 +341,7 @@ function getProfile(item, index) {
       accepted: true,
       updatedAt: "Updated yesterday"
     },
-    NIION: {
+    "Venture Beta": {
       author: "USI Market Validation Team",
       authorInitials: "UV",
       role: "SGA + mentor review",

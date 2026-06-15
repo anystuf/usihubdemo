@@ -9,8 +9,8 @@ export const demoData = {
   ],
   startups: [
     {
-      id: "skyholic",
-      name: "Skyholic",
+      id: "venture-alpha",
+      name: "Venture Alpha",
       cohort: "IP 2025",
       stage: "PoC / MVP",
       sector: "AI / UAV",
@@ -20,13 +20,13 @@ export const demoData = {
       summary: "VTOL UAV concept for mapping, agriculture, rescue, logistics, and environmental monitoring with future AI dashboard potential.",
       traction: "Technical roadmap and pitch material available; validation depends on permissioned pilot testing.",
       nextAction: "Prepare a controlled pilot brief with risk assessment, use case, partner value, and legal checklist.",
-      sources: ["[Skyholic - IP 2025] Incubatee Growth-Roadmap.pdf", "Pitching desk UII_skyholic.pptx.pdf"],
+      sources: ["Redacted Venture Alpha Roadmap.pdf", "Redacted Venture Alpha Pitch.pdf"],
       tags: ["UAV", "AI dashboard", "regulated market", "pilot validation"],
       missingData: ["Confirmed pilot partner", "UAV flight permission path", "Customer willingness-to-pay evidence"]
     },
     {
-      id: "niion",
-      name: "NIION",
+      id: "venture-beta",
+      name: "Venture Beta",
       cohort: "IP 2025",
       stage: "Market validation",
       sector: "Agritech / Clean energy",
@@ -36,13 +36,13 @@ export const demoData = {
       summary: "Biomass product concept using agricultural waste with green positioning and potential rural supply chain relevance.",
       traction: "Growth roadmap available; needs tighter product line and market focus.",
       nextAction: "Choose one hero product and run a 30-day validation sprint with margin, buyer, and supply assumptions.",
-      sources: ["[NIION] Incubatee Growth-Roadmap.pdf"],
+      sources: ["Redacted Venture Beta Roadmap.pdf"],
       tags: ["biomass", "circular economy", "R&D focus", "Vietnam agriculture"],
       missingData: ["Unit economics", "Target buyer segment", "Supply stability", "Regulatory constraints"]
     },
     {
-      id: "onto",
-      name: "Onto",
+      id: "venture-gamma",
+      name: "Venture Gamma",
       cohort: "IP 2025",
       stage: "Beta launch",
       sector: "Sports platform",
@@ -52,13 +52,13 @@ export const demoData = {
       summary: "Sports ecosystem connecting players, venues, teams, coaches, referees, and tournaments.",
       traction: "Roadmap available; early viability depends on venue supply and repeat user behavior.",
       nextAction: "Validate with 10-15 venues and measure bookings, repeat use, churn, and event participation.",
-      sources: ["[Onto - IP 2025] Incubatee Growth-Roadmap.pdf"],
+      sources: ["Redacted Venture Gamma Roadmap.pdf"],
       tags: ["marketplace", "sports", "venue supply", "community"],
       missingData: ["Venue commitment", "Monthly active users", "Churn", "Revenue model"]
     },
     {
-      id: "vizion",
-      name: "Vizion",
+      id: "venture-delta",
+      name: "Venture Delta",
       cohort: "IP 2025",
       stage: "Growth roadmap",
       sector: "Technology",
@@ -68,29 +68,29 @@ export const demoData = {
       summary: "Startup with a dedicated incubatee growth-roadmap source in the 2025 reference set.",
       traction: "Roadmap file available; detailed performance should be reviewed before operational decisions.",
       nextAction: "Convert roadmap milestones into weekly measurable tasks and assign SGA follow-up.",
-      sources: ["_[Vizion - IP 2025] Incubatee Growth-Roadmap.pdf"],
+      sources: ["Redacted Venture Delta Roadmap.pdf"],
       tags: ["roadmap", "milestones", "mentor matching"],
       missingData: ["Sector details", "Current KPI baseline", "Mentor session notes"]
     },
     {
-      id: "ecombox",
-      name: "Ecombox",
+      id: "venture-epsilon",
+      name: "Venture Epsilon",
       cohort: "IP 2025",
       stage: "Launch / early growth",
       sector: "Ecommerce SaaS",
       risk: "Low",
       health: 82,
       founderNeed: "Growth marketing, customer success, affiliate channels, AI tracking positioning",
-      summary: "Ecommerce packing and order-control solution with pitch material under goihangchuan.vn reference.",
+      summary: "Ecommerce operations concept with redacted pitch material and synthetic demo metadata.",
       traction: "Roadmap and pitch source available; strong candidate for growth and customer-success playbooks.",
       nextAction: "Package onboarding, segment customers by order volume, and build partner-led acquisition.",
-      sources: ["[Ecombox] Incubatee Growth-Roadmap.pdf", "goihangchuan.vn pitch.pptx.pdf"],
+      sources: ["Redacted Venture Epsilon Roadmap.pdf", "Redacted Venture Epsilon Pitch.pdf"],
       tags: ["ecommerce", "SaaS", "operations", "customer success"],
       missingData: ["Current active stores", "Monthly recurring revenue", "Support load", "Conversion rate"]
     },
     {
-      id: "emergeniz",
-      name: "EmerGeniZ",
+      id: "venture-zeta",
+      name: "Venture Zeta",
       cohort: "IP 2025",
       stage: "PoC / MVP",
       sector: "HealthTech / MedTech",
@@ -100,13 +100,13 @@ export const demoData = {
       summary: "CPR training and emergency-assistance concept using sensors and machine learning for feedback.",
       traction: "Growth roadmap available; requires expert validation and careful medical/legal framing.",
       nextAction: "Interview medical trainers, schools, and corporate safety teams to identify the fastest buyer.",
-      sources: ["[EmerGeniZ - IP 2025] Incubatee Growth-Roadmap.pdf"],
+      sources: ["Redacted Venture Zeta Roadmap.pdf"],
       tags: ["healthtech", "CPR", "validation", "IP"],
       missingData: ["Clinical validation", "Target customer", "IP ownership", "Regulatory path"]
     },
     {
-      id: "air-mattress",
-      name: "Air Mattress",
+      id: "venture-eta",
+      name: "Venture Eta",
       cohort: "IP 2025",
       stage: "Pitch / roadmap",
       sector: "Consumer product",
@@ -116,13 +116,13 @@ export const demoData = {
       summary: "Consumer product startup with roadmap and pitch deck references in the source folder.",
       traction: "Roadmap and draft pitch deck available for review.",
       nextAction: "Define prototype validation criteria and compare direct-to-consumer vs channel distribution.",
-      sources: ["[Air Matterss - IP 2025] Incubatee Growth-Roadmap.pdf", "Airr Mattress - Pitch deck - Draft 2.0.pdf"],
+      sources: ["Redacted Venture Eta Roadmap.pdf", "Redacted Venture Eta Pitch.pdf"],
       tags: ["consumer product", "prototype", "distribution"],
       missingData: ["BOM", "Prototype testing", "Target price", "Distribution plan"]
     },
     {
-      id: "study-cake",
-      name: "Study Cake",
+      id: "venture-theta",
+      name: "Venture Theta",
       cohort: "IP 2025",
       stage: "MVP",
       sector: "EdTech / AI",
@@ -132,13 +132,13 @@ export const demoData = {
       summary: "AI-personalized language learning concept with gamification and mentor/teacher support potential.",
       traction: "Growth roadmap template/source available; market is crowded and needs clear positioning.",
       nextAction: "Run user tests with one narrow learner segment and compare retention against existing habits.",
-      sources: ["Study Cake - Incubatee Growth-Roadmap-Template_V02.pdf"],
+      sources: ["Redacted Venture Theta Roadmap.pdf"],
       tags: ["edtech", "AI learning", "gamification", "retention"],
       missingData: ["Retention", "Learning outcome proof", "Target learner", "Pricing"]
     },
     {
-      id: "vocake",
-      name: "Vocake",
+      id: "venture-iota",
+      name: "Venture Iota",
       cohort: "IP 2025",
       stage: "Pitch",
       sector: "Food / Consumer",
@@ -148,7 +148,7 @@ export const demoData = {
       summary: "Food/consumer startup with pitch deck reference available in the source folder.",
       traction: "Pitch deck available; needs conversion from pitch story into measurable incubation milestones.",
       nextAction: "Map pitch assumptions to customer, margin, production, and distribution validation tasks.",
-      sources: ["Vocake Pitch Deck.pdf"],
+      sources: ["Redacted Venture Iota Pitch.pdf"],
       tags: ["food", "consumer", "pitch", "market testing"],
       missingData: ["Current sales", "COGS", "Distribution partners", "Repeat purchase"]
     }
@@ -156,7 +156,7 @@ export const demoData = {
   aiInsights: [
     {
       title: "Highest-risk cluster",
-      body: "NIION, Onto, and EmerGeniZ show high-risk signals because key validation data is still missing.",
+      body: "Venture Beta, Venture Gamma, and Venture Zeta show high-risk signals because key validation data is still missing.",
       action: "Schedule focused validation reviews before using any score for decisions."
     },
     {
@@ -179,51 +179,41 @@ export const demoData = {
     { title: "Human approval workflow design", assignee: "Leadership + SGA", due: "2026-06-26", status: "Planned", progress: 0 }
   ],
   documents: [
-    { title: "Innovation Platform Proposal", type: "Proposal", startup: "Platform", tags: ["strategy", "IP", "commercialization"], indexed: "Ready", source: "Innovation Platform Proposal.pdf" },
-    { title: "High-level Plan", type: "Plan", startup: "Platform", tags: ["roadmap", "scope"], indexed: "Ready", source: "[Innovation Platform] High-level Plan.docx.pdf" },
-    { title: "Cohort 1 2026 Incubatees", type: "Cohort data", startup: "Cohort", tags: ["startup list", "documents"], indexed: "Partial", source: "Cohort 1_2026 Incubatees.xlsx" },
-    { title: "Cohort 2026 Document Matrix", type: "CSV", startup: "Cohort", tags: ["roadmap", "OKR", "NDA", "pitch"], indexed: "Ready", source: "Cohort 1_2026 Incubatees - Document.csv" },
-    { title: "Skyholic Growth Roadmap", type: "Roadmap", startup: "Skyholic", tags: ["UAV", "AI", "pilot"], indexed: "Ready", source: "[Skyholic - IP 2025] Incubatee Growth-Roadmap.pdf" },
-    { title: "NIION Growth Roadmap", type: "Roadmap", startup: "NIION", tags: ["biomass", "R&D"], indexed: "Ready", source: "[NIION] Incubatee Growth-Roadmap.pdf" },
-    { title: "Ecombox Growth Roadmap", type: "Roadmap", startup: "Ecombox", tags: ["ecommerce", "SaaS"], indexed: "Ready", source: "[Ecombox] Incubatee Growth-Roadmap.pdf" },
-    { title: "Vocake Pitch Deck", type: "Pitch deck", startup: "Vocake", tags: ["pitch", "consumer"], indexed: "Queued", source: "Vocake Pitch Deck.pdf" },
-    { title: "Cohort 2025 Orientation Slides", type: "Slides", startup: "Cohort", tags: ["orientation", "program"], indexed: "Queued", source: "[WIP] [Cohort 2025] Orientation Slides.pdf" }
+    { title: "Platform Strategy Brief", type: "Proposal", startup: "Platform", tags: ["strategy", "IP", "commercialization"], indexed: "Ready", source: "Redacted Platform Proposal.pdf" },
+    { title: "Platform Execution Plan", type: "Plan", startup: "Platform", tags: ["roadmap", "scope"], indexed: "Ready", source: "Redacted Platform Plan.pdf" },
+    { title: "Redacted Cohort Register", type: "Cohort data", startup: "Cohort", tags: ["startup list", "documents"], indexed: "Partial", source: "Redacted Cohort Register.xlsx" },
+    { title: "Redacted Document Matrix", type: "CSV", startup: "Cohort", tags: ["roadmap", "OKR", "NDA", "pitch"], indexed: "Ready", source: "Redacted Cohort Document Matrix.csv" },
+    { title: "Venture Alpha Growth Roadmap", type: "Roadmap", startup: "Venture Alpha", tags: ["UAV", "AI", "pilot"], indexed: "Ready", source: "Redacted Venture Alpha Roadmap.pdf" },
+    { title: "Venture Beta Growth Roadmap", type: "Roadmap", startup: "Venture Beta", tags: ["biomass", "R&D"], indexed: "Ready", source: "Redacted Venture Beta Roadmap.pdf" },
+    { title: "Venture Epsilon Growth Roadmap", type: "Roadmap", startup: "Venture Epsilon", tags: ["ecommerce", "SaaS"], indexed: "Ready", source: "Redacted Venture Epsilon Roadmap.pdf" },
+    { title: "Venture Iota Pitch Deck", type: "Pitch deck", startup: "Venture Iota", tags: ["pitch", "consumer"], indexed: "Queued", source: "Redacted Venture Iota Pitch.pdf" },
+    { title: "Program Orientation Slides", type: "Slides", startup: "Cohort", tags: ["orientation", "program"], indexed: "Queued", source: "Redacted Program Orientation Slides.pdf" }
   ],
   questions: [
     {
-      startup: "Skyholic",
+      startup: "Venture Alpha",
       question: "How should we approach UAV testing permission for a pilot?",
       answer: "Start with a controlled pilot through a university, research unit, or enterprise partner. Prepare a risk assessment, flight scope, data policy, and stakeholder value case before approaching authorities.",
       tags: ["legal", "pilot", "UAV"]
     },
     {
-      startup: "Ecombox",
+      startup: "Venture Epsilon",
       question: "How can we grow without hiring a large sales team?",
       answer: "Productize onboarding, build referral loops with ecommerce service providers, and segment stores by order volume so customer success effort scales with account value.",
       tags: ["growth", "SaaS", "customer success"]
     },
     {
-      startup: "NIION",
+      startup: "Venture Beta",
       question: "Which product direction should we validate first?",
       answer: "Select the product with the clearest buyer, fastest test cycle, and strongest gross margin. Do not run too many R&D tracks at once during incubation.",
       tags: ["focus", "R&D", "market validation"]
     }
   ],
   sourceSummary: [
-    { file: "USI_HUb_dashboard.html", value: "Old dashboard prototype with USI Hub 2.0 framing, dark navy/orange visual language, metrics, startup OS, project board, and mock AI concepts." },
-    { file: "USI_Innovatiion_platformdemo_bookface_version.html", value: "Bookface-inspired product demo with founder Q&A, startup profiles, project board, and prototype similarity framing." },
-    { file: "USI_Digital_tools.html", value: "Digital tools proposal dashboard covering user groups, problems, HCD plan, modules, benchmark logic, data input, tech direction, roadmap, and metrics." },
-    { file: "Innovation Platform Proposal.pdf", value: "Strategic proposal reference for platform positioning, IP, and commercialization narrative." },
-    { file: "[Innovation Platform] High-level Plan.docx.pdf", value: "High-level project plan reference for scope, phases, and execution framing." },
-    { file: "Tóm tắt dự án UEH Innovation Platform cho Khôi.pdf", value: "Vietnamese project summary likely useful for stakeholder communication and vision alignment." },
-    { file: "Cohort 1_2026 Incubatees.xlsx", value: "Structured cohort data source for future import into Firestore startup and document collections." },
-    { file: "Cohort 1_2026 Incubatees - Document.csv", value: "Document matrix listing startup document availability such as roadmaps, OKRs, metrics, NDA, TTUT, pitch decks, logos, coworking, and MVP testing plans." },
-    { file: "Cohort 1_2025 Incubatees - Startup's Information.pdf", value: "Startup information reference for the 2025 cohort." },
-    { file: "Cohort 1_2025 Incubatees - [20_07_2025]Startup Performance.pdf", value: "Performance reference for cohort tracking and risk indicators." },
-    { file: "Cohort 1_2025 Incubatees - Phân tích.pdf", value: "Analysis reference for future startup evaluation rules and report generation." },
-    { file: "Growth-roadmap PDFs", value: "Startup-specific incubation evidence for Skyholic, NIION, Onto, Vizion, Ecombox, EmerGeniZ, Air Mattress, and Study Cake." },
-    { file: "Pitch deck PDFs", value: "Pitch references for Skyholic, Ecombox/goihangchuan.vn, Air Mattress, and Vocake." },
-    { file: "[WIP] [Cohort 2025] Orientation Slides.pdf", value: "Program onboarding and orientation material for Knowledge Base indexing." },
-    { file: "UII_Logo.jpg", value: "Brand asset available for future visual polish." }
+    { file: "Legacy dashboard prototypes", value: "Redacted UI and workflow references used to shape the public demo." },
+    { file: "Redacted platform strategy docs", value: "High-level product vision and execution framing without confidential content." },
+    { file: "Redacted cohort metadata", value: "Synthetic cohort structure used to demonstrate Firestore-ready collections." },
+    { file: "Redacted venture documents", value: "Anonymized roadmap and pitch metadata for demo-only Startup OS and USI Brain responses." },
+    { file: "Public brand assets", value: "Non-confidential visual assets used for interface polish." }
   ]
 };

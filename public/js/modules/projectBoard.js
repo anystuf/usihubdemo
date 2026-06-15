@@ -29,7 +29,7 @@ export function renderProjectBoard() {
         </div>
       </div>
       <form class="chat-composer" id="task-form" style="border-top: 0; padding: 0;">
-        <input class="input" id="task-title" placeholder="Add task, e.g. Review NIION risk proposal" />
+        <input class="input" id="task-title" placeholder="Add task, e.g. Review Venture Beta risk proposal" />
         <button class="button orange" type="submit">Add task</button>
       </form>
     </section>

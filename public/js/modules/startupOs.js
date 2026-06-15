@@ -1,7 +1,7 @@
 import { getDemoData } from "../services/dataService.js";
 import { $, emptyState, escapeHtml, statusClass, tags } from "../utils/dom.js";
 
-let selectedStartupId = "skyholic";
+let selectedStartupId = "venture-alpha";
 
 export function renderStartupOs() {
   const data = getDemoData();

@@ -24,7 +24,7 @@ export function findStartupByNameOrId(query, startups) {
       ].map((value) => String(value).toLowerCase());
 
       return aliases.some((alias) => alias && normalized.includes(alias));
-    }) || (normalized.includes("emerg") ? startups.find((s) => s.id === "emergeniz") : null)
+    }) || (normalized.includes("emerg") ? startups.find((s) => s.id === "venture-zeta") : null)
   );
 }
 

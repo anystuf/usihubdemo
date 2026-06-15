@@ -67,12 +67,12 @@ https://anystuf.github.io/usihubdemo/
 
 ## Firebase And Gemini Setup
 
-The frontend is configured for Firebase project `usi-hub-platform` in `public/js/services/firebaseService.js`.
+The frontend is configured for Firebase project `YOUR_FIREBASE_PROJECT_ID` in `public/js/services/firebaseService.js`.
 
-This repo is pinned to Firebase project `usi-hub-platform` in `.firebaserc`. Before deploy/seed, make sure Firebase CLI is authenticated as:
+This repo is pinned to Firebase project `YOUR_FIREBASE_PROJECT_ID` in `.firebaserc`. Before deploy/seed, make sure Firebase CLI is authenticated as:
 
 ```text
-jarvisstarkgpt4@gmail.com
+YOUR_FIREBASE_ACCOUNT_EMAIL
 ```
 
 Check locally:
@@ -86,7 +86,7 @@ If needed:
 
 ```bash
 firebase login --reauth
-firebase use usi-hub-platform
+firebase use YOUR_FIREBASE_PROJECT_ID
 ```
 
 Run the project/account preflight check:
@@ -105,7 +105,7 @@ firebase deploy --only firestore:rules,firestore:indexes
 
 Firebase Storage is optional for this prototype until the upload flow is built. Storage is intentionally not included in `firebase.json` right now, so deploys will not touch it.
 
-If you want to enable Storage later, first open Firebase Console > Storage > Get Started for project `usi-hub-platform`, then add this back to `firebase.json`:
+If you want to enable Storage later, first open Firebase Console > Storage > Get Started for project `YOUR_FIREBASE_PROJECT_ID`, then add this back to `firebase.json`:
 
 ```json
 "storage": {
@@ -220,38 +220,11 @@ usi-hub-platform-v2/
   docs/
 ```
 
-## Useful Source Files Found In The Current Project Folder
+## Public Demo Data Policy
 
-The current source folder contains several useful reference/data files:
+This public repository intentionally contains only anonymized demo content. Real startup names, pitch deck filenames, cohort registers, contact files, Firebase project credentials, Gemini API keys, and private document contents must stay outside GitHub.
 
-| Source file | How it is useful |
-| --- | --- |
-| `USI_HUb_dashboard.html` | Old dashboard prototype with dark navy/orange visual language, metrics, startup OS, project board, and mock AI concepts. |
-| `USI_Innovatiion_platformdemo_bookface_version.html` | Bookface-style demo covering founder Q&A, startup profiles, mock USI Brain, and product-demo storytelling. |
-| `USI_Digital_tools.html` | Digital tools proposal dashboard covering users, problems, HCD validation, module selection, data input, technology direction, roadmap, and success metrics. |
-| `Innovation Platform Proposal.pdf` | Strategic proposal reference for positioning, IP, commercialization, and stakeholder narrative. |
-| `[Innovation Platform] High-level Plan.docx.pdf` | High-level project plan reference for scope and execution phases. |
-| `Tóm tắt dự án UEH Innovation Platform cho Khôi.pdf` | Vietnamese project summary for vision and stakeholder communication. |
-| `Cohort 1_2026 Incubatees.xlsx` | Structured cohort data source for future Firestore import. |
-| `Cohort 1_2026 Incubatees - Document.csv` | Document availability matrix for roadmaps, OKRs, metrics, NDA, agreements, pitch decks, logos, coworking, and MVP testing plans. |
-| `Cohort 1_2025 Incubatees - Startup's Information.pdf` | 2025 startup information reference. |
-| `Cohort 1_2025 Incubatees - [20_07_2025]Startup Performance.pdf` | Performance reference for future progress and risk signals. |
-| `Cohort 1_2025 Incubatees - Phân tích.pdf` | Analysis reference for future evaluation logic and reporting. |
-| `Cohort 1_2025 Incubatees - Incubatee Data for Email.pdf` | Contact/email-oriented cohort data reference. |
-| `[Skyholic - IP 2025] Incubatee Growth-Roadmap.pdf` | Startup-specific roadmap source for Skyholic. |
-| `Pitching desk UII_skyholic.pptx.pdf` | Skyholic pitch deck reference. |
-| `[NIION] Incubatee Growth-Roadmap.pdf` | Startup-specific roadmap source for NIION. |
-| `[Onto - IP 2025] Incubatee Growth-Roadmap.pdf` | Startup-specific roadmap source for Onto. |
-| `_[Vizion - IP 2025] Incubatee Growth-Roadmap.pdf` | Startup-specific roadmap source for Vizion. |
-| `[Ecombox] Incubatee Growth-Roadmap.pdf` | Startup-specific roadmap source for Ecombox. |
-| `goihangchuan.vn pitch.pptx.pdf` | Pitch deck reference associated with Ecombox/goihangchuan.vn. |
-| `[EmerGeniZ - IP 2025] Incubatee Growth-Roadmap.pdf` | Startup-specific roadmap source for EmerGeniZ. |
-| `[Air Matterss - IP 2025] Incubatee Growth-Roadmap.pdf` | Startup-specific roadmap source for Air Mattress. |
-| `Airr Mattress - Pitch deck - Draft 2.0.pdf` | Air Mattress pitch deck reference. |
-| `Study Cake - Incubatee Growth-Roadmap-Template_V02.pdf` | Startup-specific roadmap/template source for Study Cake. |
-| `Vocake Pitch Deck.pdf` | Vocake pitch deck reference. |
-| `[WIP] [Cohort 2025] Orientation Slides.pdf` | Program orientation material for future Knowledge Base indexing. |
-| `UII_Logo.jpg` | Brand asset for later polish. |
+The platform uses synthetic startup labels such as `Venture Alpha` and redacted source names to demonstrate workflows without exposing confidential program data.
 
 ## Current Prototype Pages
 

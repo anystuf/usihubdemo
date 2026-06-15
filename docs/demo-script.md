@@ -6,16 +6,16 @@ Explain that this is a static prototype for USI Hub / UEH Innovation Platform V2
 
 ## 2. Show Startup OS
 
-Filter by risk or sector. Open Skyholic, NIION, Ecombox, or EmerGeniZ. Point out traction, risk reason, mentor need, KPIs, linked documents, last check-in, next actions, and missing data.
+Filter by risk or sector. Open Venture Alpha, Venture Beta, Venture Epsilon, or Venture Zeta. Point out traction, risk reason, mentor need, KPIs, linked documents, last check-in, next actions, and missing data.
 
 ## 3. Show USI Brain
 
 Ask one of these prompts:
 
 - Which startup is at risk?
-- What mentor does Skyholic need?
-- How can Ecombox grow?
-- Generate NIION brief
+- What mentor does Venture Alpha need?
+- How can Venture Epsilon grow?
+- Generate Venture Beta brief
 
 Highlight the response format: answer, evidence, sources, confidence, missing data, next actions, and AI Proposed Update.
 

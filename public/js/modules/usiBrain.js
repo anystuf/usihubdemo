@@ -4,11 +4,11 @@ import { $, escapeHtml } from "../utils/dom.js";
 
 const suggestedPrompts = [
   "Which startup is at risk?",
-  "What mentor does Skyholic need?",
-  "How can Ecombox grow?",
-  "Generate NIION brief",
-  "What data is missing for Onto?",
-  "Create a founder Q&A draft for Ecombox growth"
+  "What mentor does Venture Alpha need?",
+  "How can Venture Epsilon grow?",
+  "Generate Venture Beta brief",
+  "What data is missing for Venture Gamma?",
+  "Create a founder Q&A draft for Venture Epsilon growth"
 ];
 
 let messages = [

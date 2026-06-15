@@ -27,7 +27,7 @@ const intentKeywords = {
   risk: ["risk", "at risk", "risky", "high-risk", "nguy co", "rui ro", "problem", "blocker"],
   mentor: ["mentor", "advisor", "trainer", "co van", "support", "need"],
   growth: ["grow", "growth", "scale", "customer", "khach hang", "gtm", "go-to-market"],
-  brief: ["brief", "meeting", "summary", "tom tat", "niion brief", "generate"],
+  brief: ["brief", "meeting", "summary", "tom tat", "venture-beta brief", "generate"],
   missing: ["missing", "thieu", "data", "evidence", "gap"],
   documents: ["document", "source", "file", "knowledge", "tai lieu"],
   founderQa: ["founder q&a", "founder qa", "q&a", "qa draft", "question draft", "answer draft", "draft answer"]
@@ -195,7 +195,7 @@ function buildMentorPortfolioAnswer(data) {
     .slice(0, 5);
 
   return {
-    answer: `Mentor priority should start with ${priority.map((startup) => startup.name).join(", ")}. Highest urgency: NIION for product focus/unit economics, Onto for venue marketplace validation, and EmerGeniZ for medical validation plus legal/IP framing.`,
+    answer: `Mentor priority should start with ${priority.map((startup) => startup.name).join(", ")}. Highest urgency: Venture Beta for product focus/unit economics, Venture Gamma for venue marketplace validation, and Venture Zeta for medical validation plus legal/IP framing.`,
     evidence: priority.map((startup) => `${startup.name}: ${startup.risk} risk, health ${startup.health}/100, needs ${(startup.mentorNeed || parseFounderNeeds(startup.founderNeed)).slice(0, 2).join(", ")}.`),
     sources: unique(priority.flatMap((startup) => startup.sources || [])),
     confidence: "Medium-high",
@@ -208,7 +208,7 @@ function buildMentorPortfolioAnswer(data) {
     proposedUpdate: buildProposal({
       type: "Mentor need update",
       startupName: "Cohort",
-      proposedChange: "Prioritize mentor matching for NIION, Onto, and EmerGeniZ before lower-risk startups.",
+      proposedChange: "Prioritize mentor matching for Venture Beta, Venture Gamma, and Venture Zeta before lower-risk startups.",
       rationale: "They carry the strongest combination of high risk, missing data, and validation-stage uncertainty."
     })
   };
@@ -466,9 +466,9 @@ function buildUsageAnswer(data) {
     missingData: ["Live mentor notes", "Full document text extraction", "Production approval log"],
     nextActions: [
       "Try: Which startup is at risk?",
-      "Try: What mentor does Skyholic need?",
-      "Try: How can Ecombox grow?",
-      "Try: Generate NIION brief"
+      "Try: What mentor does Venture Alpha need?",
+      "Try: How can Venture Epsilon grow?",
+      "Try: Generate Venture Beta brief"
     ],
     proposedUpdate: null
   };
@@ -482,7 +482,7 @@ function buildGeneralAnswer(data, prompt) {
     evidence: [
       "Startup OS tracks health, risk, founder needs, missing data, and validation status.",
       "Knowledge Base contains roadmaps, pitch decks, and protocol references.",
-      "Try prompts like: Which startup is at risk? What mentor does Skyholic need? How can Ecombox grow?"
+      "Try prompts like: Which startup is at risk? What mentor does Venture Alpha need? How can Venture Epsilon grow?"
     ],
     sources: ["Startup profiles", "Demo data", "AI analysis framework"],
     confidence: "Medium",
@@ -511,9 +511,9 @@ function buildGreetingAnswer(data) {
     missingData: [],
     nextActions: [
       "Try: Which startup is at risk?",
-      "Try: What mentor does Skyholic need?",
-      "Try: How can Ecombox grow?",
-      "Try: Generate NIION brief"
+      "Try: What mentor does Venture Alpha need?",
+      "Try: How can Venture Epsilon grow?",
+      "Try: Generate Venture Beta brief"
     ],
     proposedUpdate: null,
     noSystemNote: true
@@ -541,7 +541,7 @@ function findStartup(normalizedPrompt, startups) {
       startup.name.split("/")[0]
     ].map((value) => String(value).toLowerCase());
     return aliases.some((alias) => alias && normalizedPrompt.includes(alias));
-  }) || (normalizedPrompt.includes("emerg") ? getStartupById("emergeniz") : null);
+  }) || (normalizedPrompt.includes("emerg") ? getStartupById("venture-zeta") : null);
 }
 
 function unique(items) {

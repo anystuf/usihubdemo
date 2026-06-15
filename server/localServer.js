@@ -75,8 +75,8 @@ async function handleSeedFirestore(res) {
     cwd: path.resolve(__dirname, ".."),
     env: {
       ...process.env,
-      GCLOUD_PROJECT: process.env.GCLOUD_PROJECT || "usi-hub-platform",
-      GOOGLE_CLOUD_PROJECT: process.env.GOOGLE_CLOUD_PROJECT || "usi-hub-platform"
+      GCLOUD_PROJECT: process.env.GCLOUD_PROJECT || "YOUR_FIREBASE_PROJECT_ID",
+      GOOGLE_CLOUD_PROJECT: process.env.GOOGLE_CLOUD_PROJECT || "YOUR_FIREBASE_PROJECT_ID"
     },
     timeout: 60000
   }, (error, stdout, stderr) => {

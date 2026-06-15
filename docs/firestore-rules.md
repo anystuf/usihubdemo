@@ -36,7 +36,7 @@ The rules expect optional Firebase Auth custom claims:
 ```json
 {
   "role": "admin | leader | sga | program | mentor | trainer | founder | alumni",
-  "startupIds": ["skyholic", "ecombox"],
+  "startupIds": ["venture-alpha", "venture-epsilon"],
   "admin": true
 }
 ```

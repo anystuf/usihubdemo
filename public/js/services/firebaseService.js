@@ -6,20 +6,20 @@ import { getStorage } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-
 import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-functions.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCzWwRcSGM1kdr-rkwFzpU7TDSqzy6M9FA",
-  authDomain: "usi-hub-platform.firebaseapp.com",
-  projectId: "usi-hub-platform",
-  storageBucket: "usi-hub-platform.firebasestorage.app",
-  messagingSenderId: "143262095",
-  appId: "1:143262095:web:c7f0a20e757a89a019cbfa",
-  measurementId: "G-81W7PV02ZX"
+  apiKey: "",
+  authDomain: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: "",
+  measurementId: ""
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-const storage = getStorage(app);
-const functions = getFunctions(app);
+const app = isFirebaseConfigured() ? initializeApp(firebaseConfig) : null;
+const auth = app ? getAuth(app) : null;
+const db = app ? getFirestore(app) : null;
+const storage = app ? getStorage(app) : null;
+const functions = app ? getFunctions(app) : null;
 
 let analyticsPromise;
 
@@ -36,6 +36,8 @@ export function isFirebaseConfigured() {
 }
 
 export async function initAnalytics() {
+  if (!app) return null;
+
   if (!analyticsPromise) {
     analyticsPromise = isAnalyticsSupported()
       .then((supported) => (supported ? getAnalytics(app) : null))
@@ -46,6 +48,10 @@ export async function initAnalytics() {
 }
 
 export async function callFunction(name, payload) {
+  if (!functions) {
+    throw new Error("Firebase Functions is not configured for the public demo.");
+  }
+
   const callable = httpsCallable(functions, name);
   const result = await callable(payload);
   return result.data;

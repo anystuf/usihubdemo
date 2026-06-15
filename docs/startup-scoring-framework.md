@@ -8,13 +8,13 @@ This document explains how USI Brain assesses startup health and risk using a tr
 
 USI Hub uses **two core metrics** to evaluate startup progress:
 
-1. **Health Score (0-100)** — Measures operational readiness and validation progress
-2. **Risk Level (High/Medium/Low)** — Identifies obstacles and uncertainties
+1. **Health Score (0-100)** â€” Measures operational readiness and validation progress
+2. **Risk Level (High/Medium/Low)** â€” Identifies obstacles and uncertainties
 
 Both metrics are **evidence-based** and **rubric-driven**. This means:
-- ✓ Scores are defensible (tied to specific factors)
-- ✓ Decisions are consistent (same criteria for all startups)
-- ✓ Assessment gaps are visible (missing data is flagged)
+- âœ“ Scores are defensible (tied to specific factors)
+- âœ“ Decisions are consistent (same criteria for all startups)
+- âœ“ Assessment gaps are visible (missing data is flagged)
 
 ---
 
@@ -37,45 +37,45 @@ Both metrics are **evidence-based** and **rubric-driven**. This means:
 
 ```
 80-100: Exceptional - Ready for scale
-  → Founder execution strong
-  → Product-market fit signals clear
-  → Go-to-market validated
-  → Support type: Scaling & expansion
+  â†’ Founder execution strong
+  â†’ Product-market fit signals clear
+  â†’ Go-to-market validated
+  â†’ Support type: Scaling & expansion
 
 60-79: Strong - Well-positioned
-  → Validation underway
-  → Team building complete
-  → GTM strategy forming
-  → Support type: Growth acceleration
+  â†’ Validation underway
+  â†’ Team building complete
+  â†’ GTM strategy forming
+  â†’ Support type: Growth acceleration
 
 40-59: Developing - Making progress
-  → Core product working
-  → Initial customer feedback
-  → Team gaps being addressed
-  → Support type: Execution fundamentals
+  â†’ Core product working
+  â†’ Initial customer feedback
+  â†’ Team gaps being addressed
+  â†’ Support type: Execution fundamentals
 
 20-39: Early - Early validation
-  → MVP stage
-  → Founder learning fast
-  → Support heavy needed
-  → Support type: Validation + team building
+  â†’ MVP stage
+  â†’ Founder learning fast
+  â†’ Support heavy needed
+  â†’ Support type: Validation + team building
 
 0-19: Concept - Just starting
-  → Ideation phase
-  → Limited execution
-  → High support intensity
-  → Support type: Founder coaching
+  â†’ Ideation phase
+  â†’ Limited execution
+  â†’ High support intensity
+  â†’ Support type: Founder coaching
 ```
 
 ### Example Health Scores
 
 | Startup | Score | Reasoning |
 |---------|-------|-----------|
-| Ecombox | 82 | 8 paying customers, MVP launched, experienced team, clear GTM, SE market knowledge |
-| Skyholic | 72 | Traction + product strong, regulatory path clear, team capable, some GTM testing |
-| EmerGeniZ | 62 | MVP/PoC launched, user feedback collected, team forming, regulatory gaps, Vietnam healthcare focus |
-| Onto | 60 | Sports platform MVP, venue partners engaged, team learning, market dependency high |
-| NIION | 56 | AgriTech MVP, founder passionate, commercial path unclear, market validation gap |
+| Venture Epsilon | 82 | 8 paying customers, MVP launched, experienced team, clear GTM, SE market knowledge |
+| Venture Alpha | 72 | Traction + product strong, regulatory path clear, team capable, some GTM testing |
+| Venture Zeta | 62 | MVP/PoC launched, user feedback collected, team forming, regulatory gaps, Vietnam healthcare focus |
+| Venture Gamma | 60 | Sports platform MVP, venue partners engaged, team learning, market dependency high |
+| Venture Beta | 56 | AgriTech MVP, founder passionate, commercial path unclear, market validation gap |
 
 ---
 
@@ -215,11 +215,11 @@ LOW RISK if:
 
 | Startup | Level | Key Signals |
 |---------|-------|-------------|
-| NIION | High | Early validation, market path unclear, product-market fit hypothesis only, data gaps |
-| Onto | High | Venue adoption dependency, regulatory unknowns, customer concentration risk |
-| EmerGeniZ | High | Medical/regulatory validation missing, clinical evidence gaps, complex regulatory path |
-| Skyholic | Medium | Early validation phase, regulatory path identified, team capable, traction signals present |
-| Ecombox | Low | Clear GTM, paying customers, experienced team, regulatory path clear |
+| Venture Beta | High | Early validation, market path unclear, product-market fit hypothesis only, data gaps |
+| Venture Gamma | High | Venue adoption dependency, regulatory unknowns, customer concentration risk |
+| Venture Zeta | High | Medical/regulatory validation missing, clinical evidence gaps, complex regulatory path |
+| Venture Alpha | Medium | Early validation phase, regulatory path identified, team capable, traction signals present |
+| Venture Epsilon | Low | Clear GTM, paying customers, experienced team, regulatory path clear |
 
 ---
 
@@ -249,9 +249,9 @@ LOW RISK if:
 
 If a startup shows **data gaps** (missing in rubric fields):
 
-1. **Priority 1 — Critical**: Traction, revenue, customer feedback
-2. **Priority 2 — Important**: Team skills, GTM clarity, Vietnam market research
-3. **Priority 3 — Nice-to-have**: Advanced metrics, competitive analysis
+1. **Priority 1 â€” Critical**: Traction, revenue, customer feedback
+2. **Priority 2 â€” Important**: Team skills, GTM clarity, Vietnam market research
+3. **Priority 3 â€” Nice-to-have**: Advanced metrics, competitive analysis
 
 Request from founder in order of priority. Re-assess health/risk after each data collection round.
 
@@ -292,17 +292,17 @@ When you ask USI Brain a question, it uses this rubric to:
 USI Brain response might include:
 
 ```
-3 startups show high-risk signals: NIION, Onto, EmerGeniZ
+3 startups show high-risk signals: Venture Beta, Venture Gamma, Venture Zeta
 
 Evidence:
-- NIION: Early validation phase + unclear commercialization path
-- Onto: Venue adoption dependency + regulatory unknowns
-- EmerGeniZ: Medical validation missing + clinical evidence gaps
+- Venture Beta: Early validation phase + unclear commercialization path
+- Venture Gamma: Venue adoption dependency + regulatory unknowns
+- Venture Zeta: Medical validation missing + clinical evidence gaps
 
 Missing Data:
 - Latest founder feedback (all three)
-- Current traction metrics (NIION, Onto)
-- Regulatory pathway (EmerGeniZ)
+- Current traction metrics (Venture Beta, Venture Gamma)
+- Regulatory pathway (Venture Zeta)
 
 Recommended Next Step:
 Schedule individual validation reviews for each startup
@@ -316,29 +316,29 @@ The evidence comes directly from this rubric framework.
 ## Common Use Cases
 
 ### "Is this startup ready to scale?"
-→ Check Health Score (target: >75) + Risk Level (target: Low)
+â†’ Check Health Score (target: >75) + Risk Level (target: Low)
 
 ### "What mentor does this founder need?"
-→ Look at weak Health factors + Risk signals → Mentor specialty
+â†’ Look at weak Health factors + Risk signals â†’ Mentor specialty
 
 ### "How often should we check in?"
-→ Use Risk Level to set monitoring frequency (High: weekly, Medium: bi-weekly, Low: monthly)
+â†’ Use Risk Level to set monitoring frequency (High: weekly, Medium: bi-weekly, Low: monthly)
 
 ### "Why did the health score drop?"
-→ Compare previous factors to current ones → Identify what changed
+â†’ Compare previous factors to current ones â†’ Identify what changed
 
 ### "Should we approve this use of platform resources?"
-→ Check completeness + confidence level → Ask for more data if gaps too large
+â†’ Check completeness + confidence level â†’ Ask for more data if gaps too large
 
 ---
 
 ## Iteration & Feedback
 
 This framework is **intentionally transparent** so SGAs and mentors can:
-- ✓ Understand why USI Brain made a recommendation
-- ✓ Verify assessment matches reality
-- ✓ Request changes if factors feel misweighted
-- ✓ Contribute their own assessment
+- âœ“ Understand why USI Brain made a recommendation
+- âœ“ Verify assessment matches reality
+- âœ“ Request changes if factors feel misweighted
+- âœ“ Contribute their own assessment
 
 **To propose changes to the rubric**, document:
 1. Which factor or signal feels wrong?
@@ -376,7 +376,7 @@ If the rubric doesn't match your experience with a startup:
 2. Propose a factor adjustment
 3. Rerun assessment with new weights
 
-The goal is **useful, defensible scoring** — not perfect precision.
+The goal is **useful, defensible scoring** â€” not perfect precision.
 
 ---
 

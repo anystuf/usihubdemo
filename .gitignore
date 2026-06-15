@@ -5,3 +5,29 @@ node_modules/
 firebase-debug.log
 firestore-debug.log
 ui-debug.log
+
+# Public demo safety: do not commit raw startup documents or private data dumps.
+*.pdf
+*.doc
+*.docx
+*.ppt
+*.pptx
+*.xls
+*.xlsx
+*.csv
+*.tsv
+*.numbers
+*.key
+*.pages
+*.zip
+*.rar
+*.7z
+
+# Keep only anonymized demo data/source code in GitHub.
+private/
+secrets/
+raw-data/
+exports/
+uploads/
+firestore-export/
+storage-export/
