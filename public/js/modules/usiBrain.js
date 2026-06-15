@@ -35,18 +35,6 @@ export function renderUsiBrain() {
         <div class="suggestion-list" style="margin-top: 12px;">
           ${suggestedPrompts.map((prompt) => `<button type="button" data-prompt="${escapeHtml(prompt)}">${escapeHtml(prompt)}</button>`).join("")}
         </div>
-        <div class="insight-item" style="margin-top: 16px;">
-          <strong>Brain tool mode</strong>
-          <p class="muted-text" style="margin-top: 8px;">Approved proposals can create Project Board tasks, Knowledge Base notes, and Founder Q&A drafts in this demo.</p>
-        </div>
-        <div class="insight-item">
-          <strong>Guardrails</strong>
-          <p class="muted-text" style="margin-top: 8px;">USI Brain proposes. Humans approve. Production Firebase writes should store proposed updates first, not silently mutate startup records.</p>
-        </div>
-        <div class="insight-item">
-          <strong>Gemini via backend</strong>
-          <p class="muted-text" style="margin-top: 8px;">On Spark plan, use the local proxy with .env.local. On Blaze, deploy the Firebase Function with a secret.</p>
-        </div>
       </aside>
     </div>
   `;
