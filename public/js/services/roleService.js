@@ -4,7 +4,7 @@
  */
 
 export const ROLES = {
-  SGA: { id: "sga", label: "SGA", description: "Student Growth Advisor" },
+  SGA: { id: "sga", label: "SGA", description: "Startup Growth Associate" },
   LEADER: { id: "leader", label: "Leader", description: "Program Leader" },
   MENTOR: { id: "mentor", label: "Mentor", description: "Mentor" },
   FOUNDER: { id: "founder", label: "Founder", description: "Founder" }
