@@ -87,7 +87,7 @@ npm run dev
 
 The app calls `/api/usi-brain` first. If the local proxy is not running, it tries Firebase Function, then local fallback data.
 
-## USI Brain Function
+## USI Intelligence Function
 
 Callable function:
 

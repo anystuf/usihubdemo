@@ -8,16 +8,21 @@ const suggestedPrompts = [
   "How can Venture Epsilon grow?",
   "Generate Venture Beta brief",
   "What data is missing for Venture Gamma?",
-  "Create a founder Q&A draft for Venture Epsilon growth"
+  "Who should support Venture Zeta?"
 ];
 
 let messages = [
   {
     role: "ai",
-    text: "Ask about cohort risk, mentor needs, growth options, missing data, or a meeting brief. I will answer with evidence and propose platform actions for human approval only."
+    text: "Ask about cohort risk, mentor needs, growth options, missing data, support matching, or a meeting brief. I will answer with evidence and propose actions for human approval only."
   }
 ];
 let isThinking = false;
+
+let floatingMessages = [
+  { role: "ai", text: "USI Intelligence is available across the platform. Ask about a startup, support need, task, or source." }
+];
+let floatingThinking = false;
 
 export function renderUsiBrain() {
   return `
@@ -25,13 +30,13 @@ export function renderUsiBrain() {
       <section class="card chat-shell">
         <div class="chat-messages" id="chat-messages"></div>
         <form class="chat-composer" id="chat-form">
-          <input class="input" id="brain-input" placeholder="Ask USI Brain..." autocomplete="off" />
+          <input class="input" id="brain-input" placeholder="Ask USI Intelligence..." autocomplete="off" />
           <button class="button orange" type="submit">Send</button>
         </form>
       </section>
 
       <aside class="card card-pad">
-        <p class="eyebrow">Suggested prompts</p>
+        <p class="eyebrow">USI Intelligence prompts</p>
         <div class="suggestion-list" style="margin-top: 12px;">
           ${suggestedPrompts.map((prompt) => `<button type="button" data-prompt="${escapeHtml(prompt)}">${escapeHtml(prompt)}</button>`).join("")}
         </div>
@@ -64,7 +69,7 @@ async function askBrain(prompt) {
   isThinking = true;
   messages.push({ role: "user", text: prompt });
   const loadingId = `loading-${Date.now()}`;
-  messages.push({ role: "loading", id: loadingId, text: "USI Brain is checking sources" });
+  messages.push({ role: "loading", id: loadingId, text: "USI Intelligence is checking sources" });
   renderMessages();
 
   try {
@@ -74,7 +79,7 @@ async function askBrain(prompt) {
     messages.push({ role: "ai-card", data: response, proposalId });
   } catch (error) {
     messages = messages.filter((message) => message.id !== loadingId);
-    messages.push({ role: "ai", text: `USI Brain could not answer cleanly: ${error.message}` });
+    messages.push({ role: "ai", text: `USI Intelligence could not answer cleanly: ${error.message}` });
   } finally {
     isThinking = false;
     renderMessages();
@@ -135,7 +140,7 @@ function renderAiCard(response, proposalId) {
       <div class="brain-response-head">
         <span class="brain-avatar">USI</span>
         <div>
-          <strong>USI Brain</strong>
+          <strong>USI Intelligence</strong>
           <p>${escapeHtml(response.provider || "Evidence-based assistant")}</p>
         </div>
         <span class="confidence-pill">${escapeHtml(response.confidence || "Unknown")} confidence</span>
@@ -215,9 +220,96 @@ function summarizePlatformAction(action) {
   if (!action) return "Approve note only; no platform tool action attached.";
   const actions = action.type === "batch" ? action.actions || [] : [action];
   const labels = {
-    create_project_task: "create Project Board task",
+    create_project_task: "create incubation task",
     create_knowledge_note: "add Knowledge Base note",
-    create_founder_qa: "draft Founder Q&A answer"
+    create_internal_support_note: "draft internal support note"
   };
   return actions.map((item) => labels[item.type] || item.type).join(" + ");
+}
+
+export function renderFloatingIntelligence() {
+  return `
+    <aside class="floating-ai" id="floating-ai">
+      <button class="floating-ai-button" id="floating-ai-toggle" type="button">USI</button>
+      <section class="floating-ai-panel" id="floating-ai-panel" hidden>
+        <div class="floating-ai-head">
+          <div>
+            <strong>USI Intelligence</strong>
+            <p>Internal incubation assistant</p>
+          </div>
+          <button class="button secondary" id="floating-ai-close" type="button">Close</button>
+        </div>
+        <div class="floating-ai-messages" id="floating-ai-messages"></div>
+        <form class="floating-ai-form" id="floating-ai-form">
+          <input class="input" id="floating-ai-input" placeholder="Ask about this platform..." autocomplete="off" />
+          <button class="button orange" type="submit">Send</button>
+        </form>
+      </section>
+    </aside>
+  `;
+}
+
+export function bindFloatingIntelligence() {
+  $("#floating-ai-toggle")?.addEventListener("click", () => {
+    $("#floating-ai-panel").hidden = false;
+    renderFloatingMessages();
+  });
+  $("#floating-ai-close")?.addEventListener("click", () => {
+    $("#floating-ai-panel").hidden = true;
+  });
+  $("#floating-ai-form")?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (floatingThinking) return;
+    const input = $("#floating-ai-input");
+    const prompt = input.value.trim();
+    if (!prompt) return;
+    input.value = "";
+    await askFloating(prompt);
+  });
+  document.addEventListener("click", (event) => {
+    const trigger = event.target.closest("[data-intelligence-prompt]");
+    if (!trigger) return;
+    const panel = $("#floating-ai-panel");
+    const input = $("#floating-ai-input");
+    if (panel) panel.hidden = false;
+    renderFloatingMessages();
+    if (input) {
+      input.value = trigger.dataset.intelligencePrompt || "";
+      input.focus();
+    }
+  });
+  renderFloatingMessages();
+}
+
+async function askFloating(prompt) {
+  floatingThinking = true;
+  floatingMessages.push({ role: "user", text: prompt });
+  floatingMessages.push({ role: "loading", text: "Checking sources..." });
+  renderFloatingMessages();
+
+  try {
+    const response = await askUsiBrain(prompt);
+    floatingMessages = floatingMessages.filter((message) => message.role !== "loading");
+    floatingMessages.push({
+      role: "ai",
+      text: `${response.answer}\n\nNext: ${(response.nextActions || []).slice(0, 2).join(" | ")}`
+    });
+  } catch (error) {
+    floatingMessages = floatingMessages.filter((message) => message.role !== "loading");
+    floatingMessages.push({ role: "ai", text: `Could not answer: ${error.message}` });
+  } finally {
+    floatingThinking = false;
+    renderFloatingMessages();
+  }
+}
+
+function renderFloatingMessages() {
+  const root = $("#floating-ai-messages");
+  if (!root) return;
+  root.innerHTML = floatingMessages.map((message) => `
+    <div class="floating-message ${message.role === "user" ? "user" : ""}">
+      ${escapeHtml(message.text).replace(/\n/g, "<br/>")}
+    </div>
+  `).join("");
+  root.scrollTop = root.scrollHeight;
 }

@@ -130,19 +130,19 @@ Fields:
 - `workstream`
 - `summary`
 
-### `founderQuestions`
+### `supportNotes`
 
-Founder Q&A prototype.
+Internal support-note prototype for approved guidance, mentor observations, and follow-up context.
 
 Fields:
 
 - `programId`
 - `startupId`
 - `startup`
-- `authorRole`
-- `question`
-- `answer`
-- `answers`
+- `ownerRole`
+- `title`
+- `body`
+- `tags`
 - `tags`
 - `status`
 - `visibility`

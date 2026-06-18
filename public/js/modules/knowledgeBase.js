@@ -11,7 +11,7 @@ export function renderKnowledgeBase() {
   const startupLinkedCount = documents.filter((doc) => !["Platform", "Cohort"].includes(doc.startup)).length;
   return `
     <section class="grid grid-3" style="margin-bottom: 16px;">
-      <article class="card metric-card"><span>Total sources</span><strong>${documents.length}</strong><p>Tracked source metadata for USI Brain</p></article>
+      <article class="card metric-card"><span>Total sources</span><strong>${documents.length}</strong><p>Tracked source metadata for USI Intelligence</p></article>
       <article class="card metric-card"><span>Ready metadata</span><strong>${readyCount}</strong><p>Can be cited in demo answers</p></article>
       <article class="card metric-card"><span>Startup-linked</span><strong>${startupLinkedCount}</strong><p>Roadmaps and pitch evidence</p></article>
     </section>
@@ -48,11 +48,11 @@ export function renderKnowledgeBase() {
         </div>
         <div class="insight-item">
           <strong>Evidence standard</strong>
-          <p class="muted-text" style="margin-top: 8px;">USI Brain should cite document title, startup, confidence, missing data, and whether full text has been extracted.</p>
+          <p class="muted-text" style="margin-top: 8px;">USI Intelligence should cite document title, startup, confidence, missing data, and whether full text has been extracted.</p>
         </div>
         <div class="insight-item">
-          <strong>USI Brain tool action</strong>
-          <p class="muted-text" style="margin-top: 8px;">Approved Brain proposals can add reviewed AI notes here. Production version should write proposed documents to Firestore, not directly index them.</p>
+          <strong>USI Intelligence tool action</strong>
+          <p class="muted-text" style="margin-top: 8px;">Approved Intelligence proposals can add reviewed AI notes here. Production version should write proposed documents to Firestore, not directly index them.</p>
         </div>
         <div class="insight-item">
           <strong>Firestore demo seed</strong>
@@ -124,16 +124,15 @@ function renderDocuments() {
       <p class="muted-text"><b>Evidence use:</b> ${escapeHtml(doc.evidenceUse)}</p>
       <p class="muted-text"><b>Extraction:</b> ${escapeHtml(doc.extractionQuality)}</p>
       <div class="tag-row">${tags(doc.tags)}</div>
-      
+
       <div class="doc-actions" style="margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap;">
-        <button class="button secondary doc-action-btn" data-action="ask-brain" data-doc-title="${escapeHtml(doc.title)}" data-doc-startup="${escapeHtml(doc.startup)}" title="Ask USI Brain a question about this document">🤖 Ask USI Brain</button>
-        <button class="button secondary doc-action-btn" data-action="summarize" data-doc-title="${escapeHtml(doc.title)}" title="Generate a summary">📝 Summarize</button>
-        <button class="button secondary doc-action-btn" data-action="risk-signals" data-doc-title="${escapeHtml(doc.title)}" data-doc-startup="${escapeHtml(doc.startup)}" title="Extract risk signals">⚠️ Risk Signals</button>
+        <button class="button secondary doc-action-btn" data-action="ask-brain" data-doc-title="${escapeHtml(doc.title)}" data-doc-startup="${escapeHtml(doc.startup)}" title="Ask USI Intelligence a question about this document">Ask USI Intelligence</button>
+        <button class="button secondary doc-action-btn" data-action="summarize" data-doc-title="${escapeHtml(doc.title)}" title="Generate a summary">Summarize</button>
+        <button class="button secondary doc-action-btn" data-action="risk-signals" data-doc-title="${escapeHtml(doc.title)}" data-doc-startup="${escapeHtml(doc.startup)}" title="Extract risk signals">Risk Signals</button>
       </div>
     </article>
   `).join("");
 
-  // Bind action buttons
   document.querySelectorAll(".doc-action-btn").forEach((btn) => {
     btn.addEventListener("click", handleDocumentAction);
   });
@@ -147,7 +146,7 @@ function handleDocumentAction(event) {
   let prompt = "";
 
   if (action === "ask-brain") {
-    prompt = `Ask USI Brain about: ${docTitle}`;
+    prompt = `Ask USI Intelligence about: ${docTitle}`;
   } else if (action === "summarize") {
     prompt = `Summarize this document: ${docTitle}`;
   } else if (action === "risk-signals") {
@@ -155,23 +154,15 @@ function handleDocumentAction(event) {
   }
 
   if (prompt) {
-    // Navigate to USI Brain and trigger the prompt
-    window.location.hash = "#usi-brain";
-    
-    // Trigger the question after a brief delay to allow navigation
+    window.location.hash = "#usi-intelligence";
+
     setTimeout(() => {
       const input = document.querySelector("#brain-input");
-      if (input) {
-        input.value = prompt;
-        input.focus();
-        // Dispatch a change/input event to ensure form is aware of the value
-        input.dispatchEvent(new Event("input", { bubbles: true }));
-        // Auto-submit the form
-        const form = document.querySelector("#chat-form");
-        if (form) {
-          form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
-        }
-      }
+      if (!input) return;
+      input.value = prompt;
+      input.focus();
+      input.dispatchEvent(new Event("input", { bubbles: true }));
+      document.querySelector("#chat-form")?.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
     }, 100);
   }
 }

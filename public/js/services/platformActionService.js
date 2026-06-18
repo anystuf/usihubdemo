@@ -5,7 +5,7 @@ export const PLATFORM_ACTION_EVENT = "usi-platform-action-applied";
 const storageKeys = {
   projectTasks: "usiHubProjectTasks",
   knowledgeNotes: "usiHubKnowledgeNotes",
-  founderQuestions: "usiHubFounderQuestions",
+  supportNotes: "usiHubSupportNotes",
   auditLog: "usiHubBrainActionLog"
 };
 
@@ -28,21 +28,21 @@ export function getDocumentsWithLocal(baseDocuments = []) {
   return [...readList(storageKeys.knowledgeNotes), ...baseDocuments];
 }
 
-export function getFounderQuestionsWithLocal(baseQuestions = []) {
-  return [...readList(storageKeys.founderQuestions), ...baseQuestions];
+export function getSupportNotesWithLocal(baseNotes = []) {
+  return [...readList(storageKeys.supportNotes), ...baseNotes];
 }
 
-export function addFounderQuestion(question) {
-  const questions = readList(storageKeys.founderQuestions);
-  questions.unshift({
-    startup: question.startup || "Demo founder",
-    question: question.question,
-    answer: question.answer || "USI Brain drafted this answer. Mentor/SGA review is still required.",
-    tags: question.tags || ["brain-draft", "needs-review"],
+export function addSupportNote(note) {
+  const notes = readList(storageKeys.supportNotes);
+  notes.unshift({
+    startup: note.startup || "Program",
+    title: note.title || "Internal support note",
+    body: note.body || "USI Intelligence drafted this note. Mentor/SGA review is still required.",
+    tags: note.tags || ["intelligence-draft", "needs-review"],
     createdBy: "human-demo"
   });
-  writeList(storageKeys.founderQuestions, questions);
-  notify("founderQuestions");
+  writeList(storageKeys.supportNotes, notes);
+  notify("supportNotes");
 }
 
 export function applyPlatformAction(proposal) {
@@ -82,46 +82,46 @@ function applySingleAction(action, proposal) {
     const tasks = [...(savedTasks.length ? savedTasks : getDemoData().projectTasks)];
     tasks.unshift({
       id: action.id || `brain-task-${Date.now()}`,
-      title: action.title || proposal.proposedChange || "Review USI Brain proposal",
+      title: action.title || proposal.proposedChange || "Review USI Intelligence proposal",
       assignee: action.assignee || "SGA",
       due: action.due || "2026-06-30",
       status: action.status || "Next",
       progress: Number(action.progress ?? 10),
       priority: action.priority || "High",
       workstream: action.workstream || "AI-assisted operations",
-      notes: action.notes || proposal.rationale || "Created after human approval of a USI Brain proposal.",
-      createdBy: "usi-brain-approved"
+      notes: action.notes || proposal.rationale || "Created after human approval of a USI Intelligence proposal.",
+      createdBy: "usi-intelligence-approved"
     });
     writeList(storageKeys.projectTasks, tasks);
-    return { targets: ["Project Board"] };
+    return { targets: ["Incubation Worklist"] };
   }
 
   if (action.type === "create_knowledge_note") {
     const notes = readList(storageKeys.knowledgeNotes);
     notes.unshift({
-      title: action.title || `${proposal.startupName || "Program"} - USI Brain note`,
+      title: action.title || `${proposal.startupName || "Program"} - USI Intelligence note`,
       type: action.documentType || "AI note",
       startup: action.startup || proposal.startupName || "Program",
-      tags: action.tags || ["usi-brain", "approved-note"],
+      tags: action.tags || ["usi-intelligence", "approved-note"],
       indexed: action.indexed || "Partial",
-      source: action.source || "USI Brain approved proposal",
+      source: action.source || "USI Intelligence approved proposal",
       evidenceUse: action.evidenceUse || proposal.rationale || "Approved AI note for future Knowledge Base review.",
       extractionQuality: action.extractionQuality || "Human-approved metadata; full text extraction pending.",
       permissionLevel: action.permissionLevel || "Program",
-      createdBy: "usi-brain-approved"
+      createdBy: "usi-intelligence-approved"
     });
     writeList(storageKeys.knowledgeNotes, notes);
     return { targets: ["Knowledge Base"] };
   }
 
-  if (action.type === "create_founder_qa") {
-    addFounderQuestion({
+  if (action.type === "create_internal_support_note") {
+    addSupportNote({
       startup: action.startup || proposal.startupName || "Program",
-      question: action.question || `What should ${proposal.startupName || "this startup"} do next?`,
-      answer: action.answer || proposal.proposedChange || "Review this guidance with a mentor before treating it as official.",
-      tags: action.tags || ["usi-brain", "approved-answer"]
+      title: action.title || `${proposal.startupName || "Program"} support note`,
+      body: action.body || proposal.proposedChange || "Review this guidance with a mentor before treating it as official.",
+      tags: action.tags || ["usi-intelligence", "approved-note"]
     });
-    return { targets: ["Founder Q&A"] };
+    return { targets: ["Support notes"] };
   }
 
   return { targets: ["Approval log"] };

@@ -1,6 +1,6 @@
 # AI / RAG Plan
 
-USI Brain should run through Firebase Cloud Functions or another secure backend. LLM API keys must not appear in frontend code.
+USI Intelligence should run through Firebase Cloud Functions or another secure backend. LLM API keys must not appear in frontend code.
 
 The current scaffold exposes a callable function named `askUsiBrain` that calls Gemini `gemini-3.5-flash` from the backend. The key is expected as the Firebase Functions secret `GEMINI_API_KEY`.
 
@@ -12,7 +12,7 @@ The current scaffold exposes a callable function named `askUsiBrain` that calls 
 - Mentor notes
 - Workshop materials
 - Orientation slides
-- Founder Q&A answers approved for reuse
+- Internal support notes approved for reuse
 - Vietnam market, regulation, mentor, investor, and ecosystem references
 
 ## Response Format

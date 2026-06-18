@@ -16,15 +16,15 @@ For demo speed, these collections are publicly readable:
 - `startups`
 - `documents`
 - `projectTasks`
+- `contacts`
+- `supportNotes`
 - `aiInsights`
 - `sourceFiles`
-- `founderQuestions`
 - `workshops`
 
 Writes are restricted:
 
-- `programs`, `cohorts`, `startups`, `documents`, `projectTasks`, `aiInsights`, `sourceFiles`, `workshops`: staff/admin roles only.
-- `founderQuestions`: signed-in users can create; staff can moderate.
+- `programs`, `cohorts`, `startups`, `documents`, `projectTasks`, `contacts`, `supportNotes`, `aiInsights`, `sourceFiles`, `workshops`: staff/admin roles only.
 - `mentorSessions`: staff or linked startup users can read; staff can write.
 - `aiProposals`: signed-in users can create pending proposals; staff can approve/review; admin can delete.
 - `users`: user can read/write own profile; admin can manage all.
@@ -92,7 +92,8 @@ After seeding, Firestore should show:
 - `startups`
 - `documents`
 - `projectTasks`
-- `founderQuestions`
+- `contacts`
+- `supportNotes`
 - `mentorSessions`
 - `workshops`
 - `aiInsights`

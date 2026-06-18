@@ -1,5 +1,5 @@
 /**
- * Evidence synthesis utilities for USI Brain
+ * Evidence synthesis utilities for USI Intelligence
  * Builds rich, contextualized evidence from demo data for AI answers
  */
 

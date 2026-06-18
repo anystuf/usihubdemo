@@ -1,20 +1,22 @@
 import { $ , $$ } from "./utils/dom.js";
 import { renderOverview } from "./modules/overview.js";
-import { bindStartupOs, renderStartupOs } from "./modules/startupOs.js";
-import { bindUsiBrain, renderUsiBrain } from "./modules/usiBrain.js";
-import { bindProjectBoard, renderProjectBoard } from "./modules/projectBoard.js";
+import { bindStartupDetailPage, bindStartupOs, renderStartupDetailPage, renderStartupOs } from "./modules/startupOs.js";
+import { bindFloatingIntelligence, bindUsiBrain, renderFloatingIntelligence, renderUsiBrain } from "./modules/usiBrain.js";
+import { bindProjectBoard, bindTaskDetailPage, renderProjectBoard, renderTaskDetailPage } from "./modules/projectBoard.js";
 import { bindKnowledgeBase, renderKnowledgeBase } from "./modules/knowledgeBase.js";
-import { bindFounderQa, renderFounderQa } from "./modules/founderQa.js";
+import { bindContacts, renderContacts } from "./modules/contacts.js";
 import { initAnalytics } from "./services/firebaseService.js";
 import { getDataSource, loadPlatformData } from "./services/dataService.js";
 import { getCurrentRole, setCurrentRole, ROLES, getRoleGreeting } from "./services/roleService.js";
 
 const routes = {
   "overview": { title: "Overview Dashboard", render: renderOverview },
-  "startup-os": { title: "Startup OS", render: renderStartupOs, bind: bindStartupOs },
-  "founder-qa": { title: "Founder Q&A", render: renderFounderQa, bind: bindFounderQa },
-  "usi-brain": { title: "USI Brain", render: renderUsiBrain, bind: bindUsiBrain },
-  "project-board": { title: "Project Board", render: renderProjectBoard, bind: bindProjectBoard },
+  "startup-os": { title: "Startup List", render: renderStartupOs, bind: bindStartupOs },
+  "startup-detail": { title: "Startup Detail", render: renderStartupDetailPage, bind: bindStartupDetailPage },
+  "contacts": { title: "Contacts", render: renderContacts, bind: bindContacts },
+  "usi-intelligence": { title: "USI Intelligence", render: renderUsiBrain, bind: bindUsiBrain },
+  "project-board": { title: "Incubation Worklist", render: renderProjectBoard, bind: bindProjectBoard },
+  "task-detail": { title: "Task Detail", render: renderTaskDetailPage, bind: bindTaskDetailPage },
   "knowledge-base": { title: "Knowledge Base", render: renderKnowledgeBase, bind: bindKnowledgeBase }
 };
 
@@ -89,6 +91,8 @@ $("#app-root").innerHTML = `
 
 await loadPlatformData();
 renderRoute();
+document.body.insertAdjacentHTML("beforeend", renderFloatingIntelligence());
+bindFloatingIntelligence();
 initAnalytics();
 
 function updateDataSourcePill() {
@@ -142,7 +146,7 @@ function renderNotifications() {
     <div class="utility-list">
       <article class="utility-item">
         <strong>Venture Beta risk review is waiting for SGA approval</strong>
-        <p>USI Brain proposed a data completeness sprint. Review source evidence before adding official dashboard updates.</p>
+        <p>USI Intelligence proposed a data completeness sprint. Review source evidence before adding official dashboard updates.</p>
       </article>
       <article class="utility-item">
         <strong>2 Knowledge Base sources need extraction</strong>
@@ -164,7 +168,7 @@ function renderApprovals() {
         <p>Approve actions only after checking evidence, sources, confidence, and missing data. AI must not make final startup decisions.</p>
       </article>
       <article class="utility-item">
-        <strong>Pending: Project Board actions</strong>
+        <strong>Pending: Incubation Worklist actions</strong>
         <p>Brain-approved actions can create tasks locally now. Later this should write to Firestore collection <b>aiProposals</b> first.</p>
       </article>
       <article class="utility-item">
@@ -192,7 +196,7 @@ function renderSettings() {
       </article>
       <article class="utility-item">
         <strong>AI action mode</strong>
-        <p>Human approval required. Approved actions can update demo Project Board, Knowledge Base, and Founder Q&A state.</p>
+        <p>Human approval required. Approved actions can update demo incubation tasks and Knowledge Base notes.</p>
       </article>
       <article class="utility-item">
         <strong>Role-based Permissions</strong>

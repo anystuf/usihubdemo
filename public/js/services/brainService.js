@@ -23,14 +23,14 @@ import {
 } from "../utils/startupScoringRubric.js";
 
 const intentKeywords = {
-  help: ["how to use", "use usi brain", "help", "guide", "huong dan", "cach dung"],
+  help: ["how to use", "use usi brain", "use usi intelligence", "help", "guide", "huong dan", "cach dung"],
   risk: ["risk", "at risk", "risky", "high-risk", "nguy co", "rui ro", "problem", "blocker"],
   mentor: ["mentor", "advisor", "trainer", "co van", "support", "need"],
   growth: ["grow", "growth", "scale", "customer", "khach hang", "gtm", "go-to-market"],
   brief: ["brief", "meeting", "summary", "tom tat", "venture-beta brief", "generate"],
   missing: ["missing", "thieu", "data", "evidence", "gap"],
   documents: ["document", "source", "file", "knowledge", "tai lieu"],
-  founderQa: ["founder q&a", "founder qa", "q&a", "qa draft", "question draft", "answer draft", "draft answer"]
+  supportNote: ["support note", "internal note", "draft note", "action note", "review note"]
 };
 
 export async function generateBrainResponse(prompt) {
@@ -46,7 +46,7 @@ export async function generateBrainResponse(prompt) {
   if (intent === "missing" && !startup) return buildPortfolioMissingDataAnswer(data);
   if (intent === "mentor" && startup) return buildMentorAnswer(startup);
   if (intent === "growth" && startup) return buildGrowthAnswer(startup);
-  if (intent === "founderQa" && startup) return buildFounderQaAnswer(startup, prompt);
+  if (intent === "supportNote" && startup) return buildInternalSupportNoteAnswer(startup, prompt);
   if (intent === "brief" && startup) return buildBriefAnswer(startup);
   if (intent === "missing" && startup) return buildMissingDataAnswer(startup);
   if (intent === "documents" && startup) return buildDocumentAnswer(startup);
@@ -60,7 +60,7 @@ export function buildAiProposalFromResponse(response, prompt) {
     type: "Knowledge note update",
     startupName: "Program",
     proposedChange: `Create a reviewed knowledge note from the prompt: "${prompt}".`,
-    rationale: "USI Brain found a useful question but needs SGA review before updating official records."
+    rationale: "USI Intelligence found a useful question but needs SGA review before updating official records."
   });
 }
 
@@ -248,18 +248,18 @@ function buildGrowthAnswer(startup) {
   };
 }
 
-function buildFounderQaAnswer(startup, prompt) {
+function buildInternalSupportNoteAnswer(startup, prompt) {
   const data = getDemoData();
   const growthEvidence = buildGrowthSupportEvidence(startup, data.documents);
   const mentorEvidence = buildMentorMatchEvidence(startup, data.documents);
-  const draftQuestion = prompt.toLowerCase().includes("growth")
-    ? `How can ${startup.name} grow from its current stage?`
-    : `What should ${startup.name} do next?`;
+  const draftTitle = prompt.toLowerCase().includes("growth")
+    ? `${startup.name} growth support note`
+    : `${startup.name} next-step support note`;
   const primaryMove = startup.nextAction || growthEvidence.blockers[0] || mentorEvidence.primaryNeed;
   const draftAnswer = `${startup.name} should focus on ${primaryMove}. For the next sprint, keep the scope narrow: define one measurable founder action, collect the missing evidence, and ask an SGA or mentor to review progress before updating the official startup profile.`;
 
   return {
-    answer: `I can draft a Founder Q&A answer for ${startup.name}, but it should remain a reviewed draft until an SGA/Leader approves it.\n\nQuestion: ${draftQuestion}\n\nDraft answer: ${draftAnswer}`,
+    answer: `I can draft an internal support note for ${startup.name}, but it should remain a reviewed draft until an SGA/Leader approves it.\n\nNote: ${draftTitle}\n\nDraft: ${draftAnswer}`,
     evidence: [
       generateStartupSummary(startup),
       `Founder need: ${startup.founderNeed || "Not provided"}`,
@@ -267,19 +267,19 @@ function buildFounderQaAnswer(startup, prompt) {
       `Recommended next action: ${startup.nextAction || "Needs SGA review"}`,
       ...growthEvidence.evidence.slice(0, 2)
     ],
-    sources: unique([...(startup.sources || []), "Founder Q&A demo policy"]),
+    sources: unique([...(startup.sources || []), "Internal support-note policy"]),
     confidence: assessDataConfidence(startup).confidence,
     missingData: startup.missingData || [],
     nextActions: [
       "Approve the draft only after SGA/mentor review.",
-      "Publish it as Founder Q&A guidance, not as a final decision.",
-      "Link the answer to the relevant roadmap or pitch source."
+      "Attach it to the startup profile or Knowledge Base as an internal note.",
+      "Link the note to the relevant roadmap or pitch source."
     ],
     proposedUpdate: buildProposal({
-      type: "Founder Q&A draft update",
+      type: "Internal support note update",
       startupName: startup.name,
       proposedChange: draftAnswer,
-      rationale: `The draft uses ${startup.name}'s current Startup OS profile, source references, and next-action field. Human review is required before founders treat it as official guidance.`
+      rationale: `The draft uses ${startup.name}'s current Startup OS profile, source references, and next-action field. Human review is required before it becomes official guidance.`
     })
   };
 }
@@ -358,7 +358,7 @@ function buildMissingDataAnswer(startup) {
     nextActions: [
       ...startup.missingData.slice(0, 3).map((item) => `REQUEST FROM FOUNDER: ${item}`),
       "TIMELINE: Complete by next mentor session (2 weeks)",
-      "Then: Re-run USI Brain for updated risk/health assessment"
+      "Then: Re-run USI Intelligence for updated risk/health assessment"
     ],
     proposedUpdate: buildProposal({
       type: "Data gap update",
@@ -384,7 +384,7 @@ function buildPortfolioMissingDataAnswer(data) {
     nextActions: [
       "Turn each top gap into a founder data request.",
       "Attach uploaded evidence to the linked startup profile.",
-      "Re-run USI Brain after documents are indexed."
+      "Re-run USI Intelligence after documents are indexed."
     ],
     proposedUpdate: buildProposal({
       type: "Data gap update",
@@ -455,13 +455,13 @@ function buildUsageAnswer(data) {
   const stats = getStartupStats(data.startups);
 
   return {
-    answer: `Use USI Brain like an SGA co-pilot: ask one concrete question about risk, mentor fit, growth, missing data, documents, or a meeting brief. It will answer from the demo Startup OS and Knowledge Base, then create a proposed update for human approval. Current demo covers ${stats.total} startups and flags ${stats.highRiskCount} high-risk profiles.`,
+    answer: `Use USI Intelligence like an SGA co-pilot: ask one concrete question about risk, mentor fit, growth, missing data, documents, or a meeting brief. It will answer from the demo Startup OS and Knowledge Base, then create a proposed update for human approval. Current demo covers ${stats.total} startups and flags ${stats.highRiskCount} high-risk profiles.`,
     evidence: [
       "Startup OS contains profile, risk, health, founder needs, missing data, and linked source references.",
       "Knowledge Base tracks roadmap, pitch deck, cohort, and platform documents.",
-      "Guardrail: USI Brain can propose updates only; SGA/Leader approval is required before dashboard data changes."
+      "Guardrail: USI Intelligence can propose updates only; SGA/Leader approval is required before dashboard data changes."
     ],
-    sources: ["Startup OS demo profiles", "Knowledge Base demo documents", "USI Brain guardrails"],
+    sources: ["Startup OS demo profiles", "Knowledge Base demo documents", "USI Intelligence guardrails"],
     confidence: "High",
     missingData: ["Live mentor notes", "Full document text extraction", "Production approval log"],
     nextActions: [
@@ -500,13 +500,13 @@ function buildGreetingAnswer(data) {
   const stats = getStartupStats(data.startups);
 
   return {
-    answer: `Hi. I am USI Brain, the incubation co-pilot for USI Hub. Ask me about startup risk, mentor needs, growth support, missing data, source lookup, or meeting briefs. Current demo data covers ${stats.total} startups and ${stats.highRiskCount} high-risk profiles.`,
+    answer: `Hi. I am USI Intelligence, the incubation co-pilot for USI Hub. Ask me about startup risk, mentor needs, growth support, missing data, source lookup, or meeting briefs. Current demo data covers ${stats.total} startups and ${stats.highRiskCount} high-risk profiles.`,
     evidence: [
       "Greeting or general prompt detected.",
       "No startup decision or dashboard update is implied.",
       "Human approval workflow appears only when the prompt asks for concrete analysis or a platform action."
     ],
-    sources: ["USI Brain interaction policy", "Startup OS demo dataset"],
+    sources: ["USI Intelligence interaction policy", "Startup OS demo dataset"],
     confidence: "High",
     missingData: [],
     nextActions: [
@@ -521,9 +521,9 @@ function buildGreetingAnswer(data) {
 }
 
 function detectIntent(normalizedPrompt) {
-  if (intentKeywords.founderQa.some((keyword) => normalizedPrompt.includes(keyword))) return "founderQa";
+  if (intentKeywords.supportNote.some((keyword) => normalizedPrompt.includes(keyword))) return "supportNote";
   return Object.entries(intentKeywords)
-    .filter(([intent]) => intent !== "founderQa")
+    .filter(([intent]) => intent !== "supportNote")
     .find(([, keywords]) => keywords.some((keyword) => normalizedPrompt.includes(keyword)))?.[0] || "overview";
 }
 
@@ -572,7 +572,7 @@ function inferPlatformAction({ type, startupName, proposedChange, rationale }) {
       knowledgeNote({
         title: `${cleanStartup} meeting brief`,
         startup: cleanStartup,
-        tags: ["meeting-brief", "usi-brain", "approved"]
+        tags: ["meeting-brief", "usi-intelligence", "approved"]
       }),
       projectTask({
         id: `${safeId}-prep`,
@@ -582,12 +582,11 @@ function inferPlatformAction({ type, startupName, proposedChange, rationale }) {
     ]);
   }
 
-  if (normalizedType.includes("founder q&a") || normalizedType.includes("founder qa")) {
-    return founderQa({
+  if (normalizedType.includes("internal support") || normalizedType.includes("support note")) {
+    return knowledgeNote({
+      title: `${cleanStartup} internal support note`,
       startup: cleanStartup,
-      question: `What should ${cleanStartup} do next?`,
-      answer: proposedChange,
-      tags: ["usi-brain", "approved-draft", "founder-support"]
+      tags: ["support-note", "usi-intelligence", "approved-draft"]
     });
   }
 
@@ -598,11 +597,10 @@ function inferPlatformAction({ type, startupName, proposedChange, rationale }) {
         title: `Run growth support sprint for ${cleanStartup}`,
         workstream: "Growth support"
       }),
-      founderQa({
+      knowledgeNote({
+        title: `${cleanStartup} growth recommendation note`,
         startup: cleanStartup,
-        question: `How should ${cleanStartup} act on this growth recommendation?`,
-        answer: proposedChange,
-        tags: ["growth", "usi-brain", "approved-draft"]
+        tags: ["growth", "usi-intelligence", "approved-draft"]
       })
     ]);
   }
@@ -625,7 +623,7 @@ function inferPlatformAction({ type, startupName, proposedChange, rationale }) {
       knowledgeNote({
         title: `${cleanStartup} risk/data review note`,
         startup: cleanStartup,
-        tags: ["risk-review", "missing-data", "usi-brain"]
+        tags: ["risk-review", "missing-data", "usi-intelligence"]
       })
     ]);
   }
@@ -637,11 +635,10 @@ function inferPlatformAction({ type, startupName, proposedChange, rationale }) {
         title: `Request missing data from ${cleanStartup}`,
         workstream: "Founder follow-up"
       }),
-      founderQa({
+      knowledgeNote({
+        title: `${cleanStartup} missing-data request note`,
         startup: cleanStartup,
-        question: `What data should ${cleanStartup} provide next?`,
-        answer: proposedChange,
-        tags: ["missing-data", "founder-request", "usi-brain"]
+        tags: ["missing-data", "founder-request", "usi-intelligence"]
       })
     ]);
   }
@@ -650,13 +647,13 @@ function inferPlatformAction({ type, startupName, proposedChange, rationale }) {
     return knowledgeNote({
       title: `${cleanStartup} - ${type}`,
       startup: cleanStartup,
-      tags: ["knowledge-base", "usi-brain", "approved-note"]
+      tags: ["knowledge-base", "usi-intelligence", "approved-note"]
     });
   }
 
   return projectTask({
     id: `${safeId}-followup`,
-    title: `Review USI Brain proposal for ${cleanStartup}`,
+    title: `Review USI Intelligence proposal for ${cleanStartup}`,
     workstream: "Operations"
   });
 
@@ -682,22 +679,12 @@ function inferPlatformAction({ type, startupName, proposedChange, rationale }) {
     return {
       type: "create_knowledge_note",
       documentType: "AI note",
-      title: `${cleanStartup} - approved USI Brain note`,
+      title: `${cleanStartup} - approved USI Intelligence note`,
       startup: cleanStartup,
-      tags: ["usi-brain", "approved-note"],
+      tags: ["usi-intelligence", "approved-note"],
       evidenceUse: rationale,
       ...overrides
     };
   }
 
-  function founderQa(overrides = {}) {
-    return {
-      type: "create_founder_qa",
-      startup: cleanStartup,
-      question: `What should ${cleanStartup} do next?`,
-      answer: proposedChange,
-      tags: ["usi-brain", "approved-answer"],
-      ...overrides
-    };
-  }
 }

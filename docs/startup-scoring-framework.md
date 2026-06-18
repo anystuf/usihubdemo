@@ -1,6 +1,6 @@
 # USI Hub Startup Scoring Framework
 
-This document explains how USI Brain assesses startup health and risk using a transparent, repeatable scoring rubric.
+This document explains how USI Intelligence assesses startup health and risk using a transparent, repeatable scoring rubric.
 
 ---
 
@@ -278,9 +278,9 @@ Request from founder in order of priority. Re-assess health/risk after each data
 
 ---
 
-## USI Brain Integration
+## USI Intelligence Integration
 
-When you ask USI Brain a question, it uses this rubric to:
+When you ask USI Intelligence a question, it uses this rubric to:
 
 1. **Assess health score** - Which factors are strong/weak?
 2. **Identify risk signals** - What obstacles are visible?
@@ -289,7 +289,7 @@ When you ask USI Brain a question, it uses this rubric to:
 
 ### Example: "Which startup is at risk?"
 
-USI Brain response might include:
+USI Intelligence response might include:
 
 ```
 3 startups show high-risk signals: Venture Beta, Venture Gamma, Venture Zeta
@@ -335,7 +335,7 @@ The evidence comes directly from this rubric framework.
 ## Iteration & Feedback
 
 This framework is **intentionally transparent** so SGAs and mentors can:
-- âœ“ Understand why USI Brain made a recommendation
+- Understand why USI Intelligence made a recommendation
 - âœ“ Verify assessment matches reality
 - âœ“ Request changes if factors feel misweighted
 - âœ“ Contribute their own assessment

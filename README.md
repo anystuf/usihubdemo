@@ -6,9 +6,9 @@ Clean static prototype for a startup incubation management platform. This folder
 
 - Static HTML/CSS/vanilla JavaScript prototype in `public/`
 - Modular CSS and JavaScript structure
-- Enriched demo data for startup traction, risk reasons, mentor needs, evidence sources, missing data, support plans, documents, project tasks, Founder Q&A, and USI Brain responses
-- Evidence-based USI Brain fallback with AI Proposed Update cards and human approval demo controls
-- Interactive Startup OS, Knowledge Base, dashboard charts, and Project Board
+- Enriched demo data for startup traction, risk reasons, mentor needs, contacts, evidence sources, missing data, support plans, documents, incubation tasks, and USI Intelligence responses
+- Evidence-based USI Intelligence fallback with AI Proposed Update cards and human approval demo controls
+- Interactive startup list/detail pages, Contacts, Knowledge Base, dashboard charts, and Incubation Worklist
 - Firebase-ready folder structure for later Auth, Firestore, Storage, Hosting, and Cloud Functions
 - Firebase web app config wired in the frontend
 - `askUsiBrain` Firebase callable function scaffold for Gemini 3.5 Flash through backend only
@@ -28,7 +28,7 @@ Then open:
 http://localhost:4173
 ```
 
-This local server serves the static app and exposes `/api/usi-brain` as a local Gemini proxy.
+This local server serves the static app and exposes `/api/usi-brain` as a local Gemini proxy for USI Intelligence.
 
 Create `.env.local` first:
 
@@ -153,7 +153,8 @@ After seeding, Firestore should contain:
 - `startups`
 - `documents`
 - `projectTasks`
-- `founderQuestions`
+- `contacts`
+- `supportNotes`
 - `aiInsights`
 - `sourceFiles`
 - `platformConfig/demoSeed`
@@ -186,7 +187,7 @@ firebase deploy --only hosting
 
 The frontend reads Firestore first. If Firestore is empty, rules are not deployed, or the browser cannot read the database, it falls back to local demo data so the prototype remains usable.
 
-USI Brain calls the callable function `askUsiBrain`. If the function is not deployed or the secret is not configured, the UI falls back to local demo responses.
+USI Intelligence calls the callable function `askUsiBrain`. If the function is not deployed or the secret is not configured, the UI falls back to local demo responses.
 
 ### If Firebase Project Is Still On Spark Plan
 
@@ -195,7 +196,7 @@ Firebase Functions secrets require Blaze, so Spark cannot deploy the Gemini back
 1. Keep Firebase Hosting/Firestore as-is.
 2. Run locally with `npm run dev`.
 3. Store the Gemini key in `.env.local`.
-4. USI Brain will call `/api/usi-brain` locally.
+4. USI Intelligence will call `/api/usi-brain` locally.
 
 Do not deploy `.env.local` or hard-code the Gemini key into frontend JavaScript.
 
@@ -229,10 +230,12 @@ The platform uses synthetic startup labels such as `Venture Alpha` and redacted 
 ## Current Prototype Pages
 
 - Overview Dashboard
-- Startup OS
-- Founder Q&A
-- USI Brain
-- Project Board
+- Startup List
+- Startup Detail
+- Contacts
+- USI Intelligence
+- Incubation Worklist
+- Task Detail
 - Knowledge Base
 
 ## Current Limitations
@@ -240,7 +243,7 @@ The platform uses synthetic startup labels such as `Venture Alpha` and redacted 
 - MVP demo data works locally before Firebase collections exist.
 - Firebase app config is connected, but Auth/Firestore/Storage workflows are not implemented yet.
 - Firestore read is connected for demo collections, but create/update workflows are still not implemented in the UI.
-- USI Brain can use the local Gemini proxy or Firebase callable function scaffold, but real RAG retrieval is not implemented yet.
+- USI Intelligence can use the local Gemini proxy or Firebase callable function scaffold, but real RAG retrieval is not implemented yet.
 - Startup data is curated demo data based on available references and should not be treated as verified operational truth.
 - AI responses do not update dashboards or startup records.
 - Upload UI is a placeholder and does not send files anywhere.
@@ -248,7 +251,7 @@ The platform uses synthetic startup labels such as `Venture Alpha` and redacted 
 
 ## Product Principles Captured
 
-- USI Brain is a future RAG assistant for internal USI knowledge and startup support.
+- USI Intelligence is a future RAG assistant for internal USI knowledge and startup support.
 - AI must answer with evidence, sources, confidence, missing data, and suggested next actions.
 - AI must not make final decisions about startups.
 - AI must not directly update dashboard/startup data.
@@ -257,7 +260,7 @@ The platform uses synthetic startup labels such as `Venture Alpha` and redacted 
 
 ## Suggested Next Steps
 
-1. Seed Firestore collections: `startups`, `documents`, `projectTasks`, `mentorSessions`, `founderQuestions`, `workshops`, `aiProposals`.
+1. Seed Firestore collections: `startups`, `documents`, `projectTasks`, `contacts`, `mentorSessions`, `workshops`, `aiProposals`.
 2. Add Firebase Auth and role-based access for SGA, leader, mentor, trainer, founder, alumni, and admin.
 3. Build document upload to Firebase Storage and metadata creation in Firestore.
 4. Deploy and test Cloud Functions for secure Gemini/RAG calls. Never expose LLM API keys in frontend code.

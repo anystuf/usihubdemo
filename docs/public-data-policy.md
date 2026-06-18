@@ -19,7 +19,7 @@ This repository is a public demo repository. It must not contain confidential st
 
 ## AI Data Rule
 
-USI Brain must not send full confidential documents to Gemini from the public demo. Production RAG should send only approved, redacted snippets through a backend, with audit logs and human approval.
+USI Intelligence must not send full confidential documents to Gemini from the public demo. Production RAG should send only approved, redacted snippets through a backend, with audit logs and human approval.
 
 ## Production Storage Rule
 

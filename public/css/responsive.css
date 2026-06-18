@@ -92,6 +92,10 @@
     grid-template-columns: 1fr;
   }
 
+  .table-row {
+    grid-template-columns: 1fr;
+  }
+
   .chat-shell {
     min-height: calc(100vh - 168px);
   }
@@ -129,6 +133,21 @@
 
   .brain-response {
     width: 100%;
+  }
+
+  .floating-ai {
+    right: 14px;
+    bottom: 14px;
+  }
+
+  .floating-ai-panel {
+    right: -6px;
+    width: calc(100vw - 28px);
+    height: 78vh;
+  }
+
+  .floating-ai-messages {
+    height: calc(78vh - 138px);
   }
 
   .brain-response-head {

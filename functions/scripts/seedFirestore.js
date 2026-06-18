@@ -14,7 +14,8 @@ const COLLECTIONS = {
   startups: "startups",
   documents: "documents",
   projectTasks: "projectTasks",
-  founderQuestions: "founderQuestions",
+  contacts: "contacts",
+  supportNotes: "supportNotes",
   mentorSessions: "mentorSessions",
   workshops: "workshops",
   aiInsights: "aiInsights",
@@ -47,7 +48,8 @@ async function main() {
       "startups",
       "documents",
       "projectTasks",
-      "founderQuestions",
+      "contacts",
+      "supportNotes",
       "aiInsights",
       "sourceFiles",
       "workshops"
@@ -67,7 +69,7 @@ async function main() {
     year: 2025,
     status: "demo",
     ownerTeam: "USI / UEH Innovation Platform",
-    description: "Demo incubation program for startup operating system, knowledge base, and USI Brain prototype."
+    description: "Demo incubation program for startup operating system, knowledge base, and USI Intelligence prototype."
   }, now, counts);
 
   writeDoc(batch, db, COLLECTIONS.cohorts, COHORT_ID, {
@@ -95,9 +97,13 @@ async function main() {
     writeDoc(batch, db, COLLECTIONS.projectTasks, slug(task.title), normalizeTask(task), now, counts);
   });
 
-  demoData.questions.forEach((question, index) => {
+  (demoData.contacts || []).forEach((contact) => {
+    writeDoc(batch, db, COLLECTIONS.contacts, slug(contact.name), normalizeContact(contact), now, counts);
+  });
+
+  (demoData.questions || []).forEach((question, index) => {
     const startupId = startupIdByName[question.startup] || slug(question.startup);
-    writeDoc(batch, db, COLLECTIONS.founderQuestions, `${startupId}-${index + 1}`, normalizeQuestion(question, startupId), now, counts);
+    writeDoc(batch, db, COLLECTIONS.supportNotes, `${startupId}-${index + 1}`, normalizeSupportNote(question, startupId), now, counts);
   });
 
   demoData.aiInsights.forEach((insight) => {
@@ -186,27 +192,33 @@ function normalizeTask(task) {
   return {
     ...task,
     programId: PROGRAM_ID,
-    priority: task.status === "Done" ? "normal" : "high",
-    workstream: inferWorkstream(task.title),
+    priority: task.priority || (task.status === "Done" ? "normal" : "high"),
+    workstream: task.workstream || inferWorkstream(task.title),
     summary: `${task.assignee} owns this ${task.status.toLowerCase()} task.`
   };
 }
 
-function normalizeQuestion(question, startupId) {
+function normalizeContact(contact) {
   return {
-    ...question,
+    ...contact,
+    programId: PROGRAM_ID,
+    cohortId: COHORT_ID,
+    availabilityStatus: contact.availability || "Demo availability",
+    matchStartupIds: (contact.matchFor || []).map(slug)
+  };
+}
+
+function normalizeSupportNote(question, startupId) {
+  return {
+    title: question.question,
+    body: question.answer,
+    startup: question.startup,
+    tags: question.tags || [],
     programId: PROGRAM_ID,
     cohortId: COHORT_ID,
     startupId,
-    authorRole: "founder",
-    answers: [
-      {
-        authorRole: "mentor",
-        body: question.answer,
-        approvedForKnowledgeBase: true
-      }
-    ],
-    status: "answered",
+    ownerRole: "sga",
+    status: "approved-demo",
     approvedKnowledgeBaseEntryId: null
   };
 }
@@ -294,7 +306,7 @@ function buildWorkshops() {
       programId: PROGRAM_ID,
       cohortId: COHORT_ID,
       title: "RAG-ready Startup Documentation",
-      topic: "How founders should submit evidence for USI Brain",
+      topic: "How founders should submit evidence for USI Intelligence",
       trainerName: "Data / IT Team",
       date: "2026-06-25",
       status: "planned",

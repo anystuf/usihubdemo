@@ -38,34 +38,42 @@ export function getRoleModuleEmphasis(role) {
   const emphasis = {
     sga: {
       overview: "Health metrics, risk assessment, at-risk startups, action items",
-      "startup-os": "Full profiles, risk scoring, missing data, mentor matches",
-      "founder-qa": "Reviewed answers, shared knowledge, mentor notes",
-      "usi-brain": "AI proposals, approval workflow, data collection",
-      "project-board": "All tasks, workstream view, priority tracking",
+      "startup-os": "Startup list, filtering, cohort view, quick triage",
+      "startup-detail": "Full profile, risk scoring, missing data, mentor matches",
+      contacts: "Mentors, experts, trainers, and support matching data",
+      "usi-intelligence": "AI proposals, approval workflow, data collection",
+      "project-board": "Startup support tasks, workstream view, priority tracking",
+      "task-detail": "Task owners, progress updates, notes, and follow-up",
       "knowledge-base": "Full document metadata, indexing status, evidence use"
     },
     leader: {
       overview: "Cohort summary, risk distribution, program KPIs, mentoring load",
-      "startup-os": "Health distribution, risk portfolio, team composition",
-      "founder-qa": "Themes, pattern analysis, mentor feedback trends",
-      "usi-brain": "Cohort-level insights, allocation recommendations",
+      "startup-os": "Portfolio list, cohort comparison, sector distribution",
+      "startup-detail": "Health distribution, risk portfolio, team composition",
+      contacts: "Support network coverage and mentor capacity",
+      "usi-intelligence": "Cohort-level insights, allocation recommendations",
       "project-board": "Workstream summary, blockers, resource allocation",
+      "task-detail": "Individual incubation task accountability",
       "knowledge-base": "Extraction priority, document impact, evidence standards"
     },
     mentor: {
       overview: "Assigned startups only, next milestones, check-in schedule",
-      "startup-os": "Assigned startup details, validation needs, support gaps",
-      "founder-qa": "Session notes, Q&A from mentees",
-      "usi-brain": "Questions about mentee startups only",
+      "startup-os": "Assigned startup list and quick context",
+      "startup-detail": "Assigned startup details, validation needs, support gaps",
+      contacts: "Relevant experts and trainers for handoff",
+      "usi-intelligence": "Questions about mentee startups only",
       "project-board": "My assigned tasks, mentee milestones",
+      "task-detail": "My task scope, due date, status, and notes",
       "knowledge-base": "Documents relevant to my mentees"
     },
     founder: {
       overview: "My startup health, milestone progress, mentor feedback",
-      "startup-os": "My startup profile, next actions, mentor match",
-      "founder-qa": "My Q&A, community answers, my workspace",
-      "usi-brain": "Questions about my startup, growth insights",
+      "startup-os": "My startup profile summary and next actions",
+      "startup-detail": "My startup profile, roadblocks, metrics, and support plan",
+      contacts: "Approved contacts assigned to my startup",
+      "usi-intelligence": "Questions about my startup, growth insights",
       "project-board": "My milestones, my tasks",
+      "task-detail": "My task details, milestones, and status",
       "knowledge-base": "Relevant to my startup, guides, templates"
     }
   };

@@ -77,10 +77,15 @@ service cloud.firestore {
         hasRequiredFields(["title", "assignee", "due", "status", "progress"]);
     }
 
-    function validFounderQuestionCreate() {
+    function validContact() {
       return validBaseDoc() &&
-        hasRequiredFields(["question", "startup", "status"]) &&
-        request.resource.data.status in ["open", "answered", "archived"];
+        hasRequiredFields(["name", "type", "expertise", "availabilityStatus"]);
+    }
+
+    function validSupportNote() {
+      return validBaseDoc() &&
+        hasRequiredFields(["title", "body", "startup", "status"]) &&
+        request.resource.data.status in ["draft", "approved-demo", "archived"];
     }
 
     function validAiProposalCreate() {
@@ -133,6 +138,12 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
 
+    match /contacts/{contactId} {
+      allow read: if publicDemoRead();
+      allow create, update: if isStaff() && validContact();
+      allow delete: if isAdmin();
+    }
+
     match /aiInsights/{insightId} {
       allow read: if publicDemoRead();
       allow create, update: if isStaff() && validBaseDoc();
@@ -147,15 +158,9 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
 
-    match /founderQuestions/{questionId} {
+    match /supportNotes/{noteId} {
       allow read: if publicDemoRead();
-      allow create: if signedIn() && validFounderQuestionCreate();
-      allow update: if isStaff() || (
-        isFounder() &&
-        resource.data.createdBy == request.auth.uid &&
-        request.resource.data.diff(resource.data).affectedKeys()
-          .hasOnly(["question", "tags", "updatedAt"])
-      );
+      allow create, update: if isStaff() && validSupportNote();
       allow delete: if isStaff();
     }
 

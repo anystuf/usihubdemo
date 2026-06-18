@@ -67,18 +67,20 @@ const collectionMap = {
   startups: "startups",
   documents: "documents",
   projectTasks: "projectTasks",
-  questions: "founderQuestions",
+  questions: "supportNotes",
   aiInsights: "aiInsights",
-  sourceSummary: "sourceFiles"
+  sourceSummary: "sourceFiles",
+  contacts: "contacts"
 };
 
 const orderFields = {
   startups: "name",
   documents: "title",
   projectTasks: "due",
-  questions: "startup",
+  questions: "title",
   aiInsights: "title",
-  sourceSummary: "file"
+  sourceSummary: "file",
+  contacts: "name"
 };
 
 export function getDemoData() {
@@ -114,8 +116,13 @@ async function fetchFirestoreData() {
   const { db } = getFirebaseServices();
   const entries = await Promise.all(
     Object.entries(collectionMap).map(async ([key, collectionName]) => {
-      const docs = await fetchCollection(db, collectionName, orderFields[key]);
-      return [key, docs];
+      try {
+        const docs = await fetchCollection(db, collectionName, orderFields[key]);
+        return [key, docs];
+      } catch (error) {
+        console.warn(`Firestore collection unavailable: ${collectionName}`, error);
+        return [key, []];
+      }
     })
   );
 
@@ -144,7 +151,8 @@ function mergeWithFallback(remote) {
     projectTasks: remote.projectTasks.length ? remote.projectTasks : demoData.projectTasks,
     questions: remote.questions.length ? remote.questions : demoData.questions,
     aiInsights: remote.aiInsights.length ? remote.aiInsights : demoData.aiInsights,
-    sourceSummary: remote.sourceSummary.length ? remote.sourceSummary : demoData.sourceSummary
+    sourceSummary: remote.sourceSummary.length ? remote.sourceSummary : demoData.sourceSummary,
+    contacts: remote.contacts.length ? remote.contacts : demoData.contacts
   };
 }
 
@@ -222,7 +230,7 @@ function buildMetrics(metrics, startups, documents, tasks) {
     { label: "Total startups", value: String(startups.length), note: "Active startup profiles in demo OS" },
     { label: "At-risk startups", value: String(atRisk), note: "Require SGA/Leader review" },
     { label: "Pending actions", value: String(pendingActions), note: "Missing data and follow-up requests" },
-    { label: "Open project tasks", value: String(openTasks), note: "Execution board items not done" },
+    { label: "Open support tasks", value: String(openTasks), note: "Incubation worklist items not done" },
     { label: "Documents indexed", value: String(indexedDocs), note: `${documents.length} documents tracked in Knowledge Base` },
     { label: "AI proposals", value: String(Math.max(3, atRisk)), note: "Human approval required before updates" }
   ];
@@ -311,7 +319,7 @@ function inferEvidenceUse(doc) {
   if (doc.type === "Pitch deck") return "Market story, product assumptions, traction, and fundraising narrative.";
   if (doc.type === "Cohort data" || doc.type === "CSV") return "Cohort document tracking and data completeness.";
   if (doc.type === "Proposal" || doc.type === "Plan") return "Platform vision, operating model, and stakeholder reporting.";
-  return "Knowledge Base reference for USI Brain evidence retrieval.";
+  return "Knowledge Base reference for USI Intelligence evidence retrieval.";
 }
 
 function inferWorkstream(title = "") {

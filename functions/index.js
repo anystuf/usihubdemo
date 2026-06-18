@@ -26,7 +26,7 @@ exports.askUsiBrain = onCall({ secrets: [geminiApiKey], cors: true }, async (req
 
 async function callGemini(prompt, context, apiKey) {
   const systemInstruction = [
-    "You are USI Brain, a prototype RAG assistant for USI Hub / UEH Innovation Platform.",
+    "You are USI Intelligence, a prototype RAG assistant for USI Hub / UEH Innovation Platform.",
     "Answer for startup incubation management and founder support.",
     "Use the provided context as evidence. If data is missing, say so.",
     "Never make final decisions about startups.",

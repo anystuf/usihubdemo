@@ -40,7 +40,7 @@ export function renderOverview() {
         <p class="eyebrow">Executive analytics</p>
         <h2>Visual cohort report</h2>
       </div>
-      <p>Charts are generated from the same demo dataset used by Startup OS, Knowledge Base, and USI Brain.</p>
+      <p>Charts are generated from the same demo dataset used by Startup OS, Knowledge Base, and USI Intelligence.</p>
     </section>
 
     <div class="grid grid-4">
@@ -103,7 +103,7 @@ export function renderOverview() {
       <aside class="card card-pad">
         <div class="section-header" style="margin-top: 0;">
           <div>
-            <p class="eyebrow">USI Brain preview</p>
+            <p class="eyebrow">USI Intelligence preview</p>
             <h2>Demo insights</h2>
           </div>
         </div>

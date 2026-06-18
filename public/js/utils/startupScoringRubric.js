@@ -1,7 +1,7 @@
 /**
  * Startup Scoring Rubric
  * Defines how health scores and risk levels are calculated from startup data
- * Used by USI Brain to justify risk/health assessments with clear rubrics
+ * Used by USI Intelligence to justify risk/health assessments with clear rubrics
  */
 
 /**

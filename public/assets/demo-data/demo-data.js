@@ -166,17 +166,24 @@ export const demoData = {
     },
     {
       title: "Human approval rule",
-      body: "USI Brain should only propose updates. SGAs or leaders approve changes before dashboard data is updated.",
+      body: "USI Intelligence should only propose updates. SGAs or leaders approve changes before dashboard data is updated.",
       action: "Design proposed-update workflow before Firebase write access."
     }
   ],
   projectTasks: [
-    { title: "Source inventory and README", assignee: "Platform team", due: "2026-06-13", status: "Done", progress: 100 },
-    { title: "Static prototype shell", assignee: "Product", due: "2026-06-14", status: "In progress", progress: 80 },
-    { title: "Firebase schema draft", assignee: "Data/IT", due: "2026-06-18", status: "Next", progress: 20 },
-    { title: "RAG source permissions map", assignee: "SGA lead", due: "2026-06-21", status: "Next", progress: 15 },
-    { title: "Founder demo feedback round", assignee: "Program team", due: "2026-06-24", status: "Planned", progress: 0 },
-    { title: "Human approval workflow design", assignee: "Leadership + SGA", due: "2026-06-26", status: "Planned", progress: 0 }
+    { title: "Investor readiness review", startup: "Venture Epsilon", assignee: "Program team", due: "2026-06-24", status: "In progress", progress: 65, workstream: "Investor connection", priority: "High", notes: "Prepare traction narrative, customer segment, and partnership ask before warm introductions." },
+    { title: "Pilot permission workshop", startup: "Venture Alpha", assignee: "SGA lead", due: "2026-06-21", status: "Next", progress: 20, workstream: "Mini-workshop", priority: "High", notes: "Coordinate regulated-pilot checklist and invite mentor with UAV/compliance background." },
+    { title: "Validation sprint planning", startup: "Venture Beta", assignee: "SGA + mentor", due: "2026-06-23", status: "Next", progress: 25, workstream: "Market validation", priority: "High", notes: "Define one hero product, buyer interview plan, and margin model assumptions." },
+    { title: "Venue partner outreach", startup: "Venture Gamma", assignee: "Partnership team", due: "2026-06-26", status: "Planned", progress: 10, workstream: "Partner connection", priority: "Medium", notes: "Build a shortlist of venues and test one booking workflow." },
+    { title: "Medical validation advisory session", startup: "Venture Zeta", assignee: "Expert network", due: "2026-06-28", status: "Planned", progress: 0, workstream: "Expert support", priority: "High", notes: "Match with healthtech advisor and define claims that need evidence review." },
+    { title: "Document permission and RAG readiness", startup: "Cohort", assignee: "Data/IT", due: "2026-06-30", status: "Next", progress: 15, workstream: "Data governance", priority: "Medium", notes: "Confirm document-level AI permissions before indexing private source material." }
+  ],
+  contacts: [
+    { id: "contact-mentor-growth", name: "Growth Mentor A", type: "Mentor", contact: "growth-mentor@demo.invalid", expertise: ["B2B SaaS growth", "Customer success", "Pricing"], sector: "Ecommerce SaaS", availability: "This week", matchFor: ["Venture Epsilon"], notes: "Useful for onboarding, expansion channels, and customer success playbooks." },
+    { id: "contact-uav-reg", name: "Regulated Tech Expert", type: "Expert", contact: "regulated-tech@demo.invalid", expertise: ["UAV regulation", "Pilot safety", "Government sales"], sector: "AI / UAV", availability: "Next week", matchFor: ["Venture Alpha"], notes: "Best fit for pilot permission path and risk assessment." },
+    { id: "contact-market-validation", name: "Market Validation Trainer", type: "Trainer", contact: "validation-trainer@demo.invalid", expertise: ["Buyer interviews", "Unit economics", "Product focus"], sector: "Agritech / Clean energy", availability: "This week", matchFor: ["Venture Beta"], notes: "Can help narrow the hero product and validation sprint." },
+    { id: "contact-marketplace", name: "Marketplace Operator", type: "Mentor", contact: "marketplace-mentor@demo.invalid", expertise: ["Venue onboarding", "Marketplace liquidity", "Community activation"], sector: "Sports platform", availability: "Flexible", matchFor: ["Venture Gamma"], notes: "Supports supply-side onboarding and activation metrics." },
+    { id: "contact-healthtech", name: "HealthTech Advisor", type: "Expert", contact: "healthtech-advisor@demo.invalid", expertise: ["Medical validation", "Legal/IP", "B2B buyer discovery"], sector: "HealthTech / MedTech", availability: "Next week", matchFor: ["Venture Zeta"], notes: "Review validation claims and buyer segmentation." }
   ],
   documents: [
     { title: "Platform Strategy Brief", type: "Proposal", startup: "Platform", tags: ["strategy", "IP", "commercialization"], indexed: "Ready", source: "Redacted Platform Proposal.pdf" },
@@ -213,7 +220,7 @@ export const demoData = {
     { file: "Legacy dashboard prototypes", value: "Redacted UI and workflow references used to shape the public demo." },
     { file: "Redacted platform strategy docs", value: "High-level product vision and execution framing without confidential content." },
     { file: "Redacted cohort metadata", value: "Synthetic cohort structure used to demonstrate Firestore-ready collections." },
-    { file: "Redacted venture documents", value: "Anonymized roadmap and pitch metadata for demo-only Startup OS and USI Brain responses." },
+    { file: "Redacted venture documents", value: "Anonymized roadmap and pitch metadata for demo-only Startup OS and USI Intelligence responses." },
     { file: "Public brand assets", value: "Non-confidential visual assets used for interface polish." }
   ]
 };

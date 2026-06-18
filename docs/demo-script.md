@@ -2,15 +2,27 @@
 
 ## 1. Open Overview
 
-Explain that this is a static prototype for USI Hub / UEH Innovation Platform V2. It shows how startup progress, documents, project execution, and AI-supported recommendations could live in one product experience.
+Explain that this is an internal USI Hub / UEH Innovation Platform MVP. It shows how startup progress, documents, support work, and AI-supported recommendations can live in one operating system.
 
-## 2. Show Startup OS
+## 2. Show Startup List
 
-Filter by risk or sector. Open Venture Alpha, Venture Beta, Venture Epsilon, or Venture Zeta. Point out traction, risk reason, mentor need, KPIs, linked documents, last check-in, next actions, and missing data.
+Filter by risk, cohort, sector, or search by name. Open Venture Alpha, Venture Beta, Venture Epsilon, or Venture Zeta.
 
-## 3. Show USI Brain
+## 3. Show Startup Detail
 
-Ask one of these prompts:
+Point out the basic profile and the four important operating blocks: Roadblocks & Needs, Business Metrics, AI Recommendation, and On-going Supports.
+
+## 4. Show Contacts
+
+Explain that mentors, experts, and trainers are tracked as a matching data source. This supports future AI recommendations without letting AI make final decisions.
+
+## 5. Show Incubation Worklist
+
+Add or filter a task for a startup, then open Task Detail. Explain that this replaces Kanban-first project management with a startup-support worklist: mini-workshops, investor connections, partner introductions, mentor matching, and evidence collection.
+
+## 6. Show USI Intelligence
+
+Use either the page or the floating chat widget. Ask one of these prompts:
 
 - Which startup is at risk?
 - What mentor does Venture Alpha need?
@@ -21,22 +33,10 @@ Highlight the response format: answer, evidence, sources, confidence, missing da
 
 Click Approve/Reject on the proposed update to show the product principle: AI suggests; SGA/Leader approves.
 
-If the local proxy is running with `.env.local`, USI Brain uses Gemini 3.5 Flash locally. If Firebase Functions is deployed and `GEMINI_API_KEY` is configured, it can use the backend function. If neither is available, it falls back to local demo logic and displays the provider note in the answer card.
-
-## 4. Show Knowledge Base
+## 7. Show Knowledge Base
 
 Explain that current PDFs, CSV/XLSX files, pitch decks, roadmaps, and slides become searchable evidence. Show indexed status, evidence use, extraction quality, and linked startup.
 
-If running locally with Google credentials, click Seed Firestore to create demo collections.
+## 8. Close With Guardrails
 
-## 5. Show Founder Q&A
-
-Explain the Bookface-inspired loop: founders ask trusted questions, mentors/SGAs/alumni answer, and high-quality answers can be approved into the Knowledge Base.
-
-## 6. Close With Guardrails
-
-AI does not make final decisions. AI does not directly update startup data. USI Brain should only create proposed updates that a human approves.
-
-## Optional: Show Project Board
-
-Add a task, move it across columns, and increase progress. Explain that this is local demo state now and maps to Firestore `projectTasks` later.
+AI does not make final decisions. AI does not directly update startup data. USI Intelligence should only create proposed updates that a human approves.

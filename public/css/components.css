@@ -280,3 +280,119 @@
   border-radius: inherit;
   background: var(--orange-600);
 }
+
+.table-like {
+  display: grid;
+  gap: 8px;
+}
+
+.table-row {
+  display: grid;
+  grid-template-columns: 1.5fr 1.2fr 1fr .7fr .7fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+}
+
+.table-row span {
+  min-width: 0;
+}
+
+.table-row small {
+  display: block;
+  margin-top: 4px;
+  color: var(--ink-500);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.table-head {
+  background: var(--soft-blue);
+  color: var(--ink-500);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.floating-ai {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 80;
+}
+
+.floating-ai-button {
+  width: 58px;
+  height: 58px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--orange-500);
+  color: #fff;
+  font-weight: 900;
+  box-shadow: var(--shadow-lg);
+  cursor: pointer;
+}
+
+.floating-ai-panel {
+  position: absolute;
+  right: 0;
+  bottom: 72px;
+  width: min(380px, calc(100vw - 32px));
+  height: 520px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: var(--shadow-lg);
+}
+
+.floating-ai-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px;
+  background: var(--navy-900);
+  color: #fff;
+}
+
+.floating-ai-head p {
+  margin-top: 2px;
+  color: rgba(255, 255, 255, .72);
+  font-size: 12px;
+}
+
+.floating-ai-messages {
+  height: 382px;
+  overflow: auto;
+  padding: 14px;
+  background: #eef6fb;
+}
+
+.floating-message {
+  width: fit-content;
+  max-width: 88%;
+  margin-bottom: 10px;
+  padding: 10px 12px;
+  border-radius: 14px 14px 14px 4px;
+  background: #fff;
+  color: var(--ink-700);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.floating-message.user {
+  margin-left: auto;
+  border-radius: 14px 14px 4px 14px;
+  background: var(--navy-800);
+  color: #fff;
+}
+
+.floating-ai-form {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  border-top: 1px solid var(--line);
+}

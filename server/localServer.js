@@ -1,4 +1,4 @@
-﻿import http from "node:http";
+import http from "node:http";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -11,7 +11,7 @@ loadLocalEnv();
 
 const PORT = Number(process.env.PORT || 4173);
 const PUBLIC_DIR = path.resolve(__dirname, "../public");
-const GEMINI_MODEL = "gemini-3.5-flash";
+const GEMINI_MODELS = ["gemini-3.5-flash", "gemini-2.5-flash", "gemini-2.5-pro"];
 
 const mimeTypes = {
   ".html": "text/html; charset=utf-8",
@@ -49,24 +49,31 @@ const server = http.createServer(async (req, res) => {
 
 server.listen(PORT, () => {
   console.log(`USI Hub local server running at http://localhost:${PORT}`);
-  console.log("USI Brain local proxy:", process.env.GEMINI_API_KEY ? "enabled" : "missing GEMINI_API_KEY");
+  console.log("USI Intelligence local proxy:", process.env.GEMINI_API_KEY ? "enabled" : "missing GEMINI_API_KEY");
 });
 
 async function handleUsiBrain(req, res) {
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) {
-    sendJson(res, 503, { error: "Missing GEMINI_API_KEY in .env.local" });
-    return;
-  }
+  try {
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      sendJson(res, 503, { error: "Missing GEMINI_API_KEY in .env.local" });
+      return;
+    }
 
-  const { prompt, context } = await readJsonBody(req);
-  if (!prompt || typeof prompt !== "string") {
-    sendJson(res, 400, { error: "Prompt is required" });
-    return;
-  }
+    const { prompt, context } = await readJsonBody(req);
+    if (!prompt || typeof prompt !== "string") {
+      sendJson(res, 400, { error: "Prompt is required" });
+      return;
+    }
 
-  const responseText = await callGemini(prompt, context || {}, apiKey);
-  sendJson(res, 200, parseStructuredResponse(responseText));
+    const { text: responseText, model } = await callGemini(prompt, context || {}, apiKey);
+    const parsedResponse = parseStructuredResponse(responseText);
+    sendJson(res, 200, { ...parsedResponse, modelUsed: model });
+  } catch (error) {
+    console.error("Error in handleUsiBrain:", error.message);
+    console.error("Full error:", error);
+    sendJson(res, 500, { error: error.message || "Failed to call Gemini API" });
+  }
 }
 
 async function handleSeedFirestore(res) {
@@ -75,8 +82,8 @@ async function handleSeedFirestore(res) {
     cwd: path.resolve(__dirname, ".."),
     env: {
       ...process.env,
-      GCLOUD_PROJECT: process.env.GCLOUD_PROJECT || "YOUR_FIREBASE_PROJECT_ID",
-      GOOGLE_CLOUD_PROJECT: process.env.GOOGLE_CLOUD_PROJECT || "YOUR_FIREBASE_PROJECT_ID"
+      GCLOUD_PROJECT: process.env.GCLOUD_PROJECT || "usi-hub-platform",
+      GOOGLE_CLOUD_PROJECT: process.env.GOOGLE_CLOUD_PROJECT || "usi-hub-platform"
     },
     timeout: 60000
   }, (error, stdout, stderr) => {
@@ -100,7 +107,7 @@ async function handleSeedFirestore(res) {
 
 async function callGemini(prompt, context, apiKey) {
   const systemInstruction = [
-    "You are USI Brain, a prototype RAG assistant for USI Hub / UEH Innovation Platform.",
+    "You are USI Intelligence, a prototype RAG assistant for USI Hub / UEH Innovation Platform.",
     "Answer for startup incubation management and founder support.",
     "Use the provided context as evidence. If data is missing, say so.",
     "Never make final decisions about startups.",
@@ -134,51 +141,67 @@ async function callGemini(prompt, context, apiKey) {
     required: ["answer", "evidence", "sources", "confidence", "missingData", "nextActions", "proposedUpdate"]
   };
 
-  const body = {
-    system_instruction: {
-      parts: [{ text: systemInstruction }]
-    },
-    contents: [
-      {
-        role: "user",
-        parts: [
+  // Try each model in sequence
+  for (const model of GEMINI_MODELS) {
+    try {
+      const body = {
+        system_instruction: {
+          parts: [{ text: systemInstruction }]
+        },
+        contents: [
           {
-            text: JSON.stringify({
-              userQuestion: prompt,
-              availableContext: context
-            })
+            role: "user",
+            parts: [
+              {
+                text: JSON.stringify({
+                  userQuestion: prompt,
+                  availableContext: context
+                })
+              }
+            ]
           }
-        ]
-      }
-    ],
-    generationConfig: {
-      temperature: 0.35,
-      maxOutputTokens: 1400,
-      responseFormat: {
-        text: {
-          mimeType: "application/json",
-          schema: brainResponseSchema
+        ],
+        generationConfig: {
+          temperature: 0.35,
+          maxOutputTokens: 1400,
+          responseFormat: {
+            text: {
+              mimeType: "application/json",
+              schema: brainResponseSchema
+            }
+          }
         }
+      };
+
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-goog-api-key": apiKey
+        },
+        body: JSON.stringify(body)
+      });
+
+      if (!response.ok) {
+        const text = await response.text();
+        console.log(`Model ${model} failed (${response.status}), trying next...`);
+        continue;
       }
+
+      const json = await response.json();
+      const result = json?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+      if (result) {
+        console.log(`Successfully used model: ${model}`);
+        return { text: result, model };
+      }
+    } catch (error) {
+      console.log(`Model ${model} error: ${error.message}, trying next...`);
+      continue;
     }
-  };
-
-  const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "x-goog-api-key": apiKey
-    },
-    body: JSON.stringify(body)
-  });
-
-  if (!response.ok) {
-    const text = await response.text();
-    throw new Error(`Gemini API request failed: ${response.status} ${text.slice(0, 300)}`);
   }
 
-  const json = await response.json();
-  return json?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+  // If all models fail, throw error
+  throw new Error(`All Gemini models failed (tried: ${GEMINI_MODELS.join(", ")})`);
 }
 
 function parseStructuredResponse(text) {
@@ -323,4 +346,3 @@ function loadLocalEnv() {
     }
   });
 }
-
