@@ -159,9 +159,10 @@ function mergeWithFallback(remote) {
 function enrichPlatformData(data) {
   const documentsByStartup = groupDocumentsByStartup(data.documents || []);
   const startups = (data.startups || []).map((startup) => enrichStartup(startup, documentsByStartup[startup.name] || []));
-  const metrics = buildMetrics(data.metrics || [], startups, data.documents || [], data.projectTasks || []);
   const projectTasks = (data.projectTasks || []).map((task, index) => enrichTask(task, index));
   const documents = (data.documents || []).map((doc) => enrichDocument(doc));
+  const aiProposals = data.aiProposals || buildDemoAiProposals(startups);
+  const metrics = buildMetrics(startups, documents, projectTasks, aiProposals);
 
   return {
     ...data,
@@ -169,7 +170,7 @@ function enrichPlatformData(data) {
     startups,
     projectTasks,
     documents,
-    aiProposals: data.aiProposals || buildDemoAiProposals(startups),
+    aiProposals,
     dashboard: buildDashboard(startups, documents, projectTasks)
   };
 }
@@ -220,7 +221,7 @@ function enrichTask(task, index) {
   };
 }
 
-function buildMetrics(metrics, startups, documents, tasks) {
+function buildMetrics(startups, documents, tasks, aiProposals) {
   const atRisk = startups.filter((startup) => startup.risk === "High").length;
   const pendingActions = startups.reduce((sum, startup) => sum + (startup.missingData?.length || 0), 0);
   const indexedDocs = documents.filter((doc) => doc.indexed === "Ready").length;
@@ -232,7 +233,7 @@ function buildMetrics(metrics, startups, documents, tasks) {
     { label: "Pending actions", value: String(pendingActions), note: "Missing data and follow-up requests" },
     { label: "Open support tasks", value: String(openTasks), note: "Incubation worklist items not done" },
     { label: "Documents indexed", value: String(indexedDocs), note: `${documents.length} documents tracked in Knowledge Base` },
-    { label: "AI proposals", value: String(Math.max(3, atRisk)), note: "Human approval required before updates" }
+    { label: "AI proposals", value: String(aiProposals.filter((proposal) => proposal.approvalStatus === "pending").length), note: "Human approval required before updates" }
   ];
 }
 
