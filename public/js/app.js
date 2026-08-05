@@ -1,17 +1,19 @@
 import { $ , $$ } from "./utils/dom.js";
-import { renderOverview } from "./modules/overview.js";
+import { bindOverview, renderOverview } from "./modules/overview.js";
 import { bindStartupDetailPage, bindStartupOs, renderStartupDetailPage, renderStartupOs } from "./modules/startupOs.js";
 import { bindFloatingIntelligence, bindUsiBrain, renderFloatingIntelligence, renderUsiBrain } from "./modules/usiBrain.js";
 import { bindProjectBoard, bindTaskDetailPage, renderProjectBoard, renderTaskDetailPage } from "./modules/projectBoard.js";
 import { bindKnowledgeBase, renderKnowledgeBase } from "./modules/knowledgeBase.js";
 import { bindContacts, renderContacts } from "./modules/contacts.js";
+import { bindCohort22026, renderCohort22026 } from "./modules/cohort2_2026.js";
 import { initAnalytics } from "./services/firebaseService.js";
 import { getDataSource, loadPlatformData } from "./services/dataService.js";
 import { getCurrentRole, setCurrentRole, ROLES, getRoleGreeting } from "./services/roleService.js";
 
 const routes = {
-  "overview": { title: "Overview Dashboard", render: renderOverview },
+  "overview": { title: "Overview Dashboard", render: renderOverview, bind: bindOverview },
   "startup-os": { title: "Startup List", render: renderStartupOs, bind: bindStartupOs },
+  "cohort-2-2026": { title: "Cohort 2 2026", render: renderCohort22026, bind: bindCohort22026 },
   "startup-detail": { title: "Startup Detail", render: renderStartupDetailPage, bind: bindStartupDetailPage },
   "contacts": { title: "Contacts", render: renderContacts, bind: bindContacts },
   "usi-intelligence": { title: "USI Intelligence", render: renderUsiBrain, bind: bindUsiBrain },
