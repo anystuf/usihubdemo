@@ -1,10 +1,4 @@
-/* =========================================================
-   USI Hub Overview V2
-   Matches current overview.js class names
-   Reduced card radius by approximately 50%
-   ========================================================= */
 
-/* Page structure */
 
 .overview-page {
   display: grid;
