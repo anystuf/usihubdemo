@@ -1,2 +1,474 @@
-.overview-page{display:grid;gap:16px}.overview-header{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;padding:2px}.overview-header h2{margin-top:4px;color:var(--navy-900);font-size:clamp(28px,3vw,36px);line-height:1.12}.overview-header>div>p:last-child{max-width:690px;margin-top:8px;color:var(--ink-500);font-size:14px;line-height:1.55}.overview-filters{display:flex;gap:8px;flex-wrap:wrap}.overview-filters .select{min-height:40px;max-width:190px}.overview-filters .select:disabled{cursor:help;color:var(--ink-500);background:#f6f8fb}.overview-kpi-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}.overview-metric{display:grid;min-height:166px;align-content:start;padding:15px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--white);box-shadow:0 4px 13px rgba(11,37,89,.045);transition:border-color 160ms ease,box-shadow 160ms ease,transform 160ms ease}.overview-metric:hover{border-color:rgba(240,107,31,.52);box-shadow:var(--shadow-soft);transform:translateY(-1px)}.overview-metric:focus-visible,.overview-priority:focus-visible,.overview-table-link:focus-visible,.overview-task:focus-visible,.overview-filters select:focus-visible{outline:3px solid rgba(240,107,31,.34);outline-offset:3px}.overview-metric-label{color:var(--ink-500);font-size:10px;font-weight:850;letter-spacing:.06em;text-transform:uppercase}.overview-metric strong{margin-top:11px;color:var(--navy-900);font-size:30px;line-height:1}.overview-metric-note{min-height:32px;margin-top:9px;color:var(--ink-500);font-size:11px;line-height:1.4}.overview-metric-action{margin-top:auto;padding-top:9px;color:var(--blue-600);font-size:11px;font-weight:800}.overview-main-grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(320px,.9fr);gap:16px;align-items:start}.overview-action-stack{display:grid;gap:16px}.overview-section-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}.overview-section-head h3{margin-top:4px;color:var(--navy-900);font-size:18px;line-height:1.3}.overview-chart-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.overview-chart{min-width:0;padding:14px;border:1px solid var(--line);border-radius:var(--radius-md);background:#fbfdff}.overview-chart h4{color:var(--navy-900);font-size:13px}.overview-donut{position:relative;width:112px;height:112px;display:grid;place-items:center;margin:16px auto 14px;border-radius:50%}.overview-donut::after{content:"";position:absolute;inset:21px;border-radius:50%;background:var(--white)}.overview-donut span{position:relative;z-index:1;color:var(--navy-900);font-size:24px;font-weight:800}.overview-legend,.overview-bars{display:grid;gap:8px}.overview-legend span,.overview-bars>div{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center;color:var(--ink-700);font-size:11px}.overview-legend i{width:9px;height:9px;border-radius:50%}.overview-bars>div{grid-template-columns:minmax(78px,1fr) minmax(62px,1.15fr) auto}.overview-priority-list,.overview-insight-list,.overview-task-list{display:grid;gap:9px}.overview-priority{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px;border:1px solid var(--line);border-radius:var(--radius-sm);background:#fff;transition:border-color 160ms ease,background 160ms ease}.overview-priority:hover{border-color:rgba(240,107,31,.48);background:#fffaf7}.overview-priority strong{display:block;color:var(--navy-900);font-size:12px;line-height:1.35}.overview-priority small{display:block;margin-top:4px;color:var(--ink-500);font-size:11px;line-height:1.35}.overview-insight{padding:11px;border:1px solid var(--line);border-radius:var(--radius-sm);background:#fff}.overview-insight strong{color:var(--navy-900);font-size:12px}.overview-insight p{margin-top:5px;color:var(--ink-500);font-size:11px;line-height:1.45}.overview-ai-note{margin-top:11px;padding:10px 11px;border-left:3px solid var(--orange-600);border-radius:0 var(--radius-sm) var(--radius-sm) 0;background:var(--orange-100);color:var(--ink-700);font-size:11px;line-height:1.5}.overview-detail-grid{display:grid;grid-template-columns:minmax(0,1.28fr) minmax(300px,.9fr);gap:16px;align-items:start}.overview-health-table{display:grid;gap:7px}.overview-health-row{display:grid;grid-template-columns:minmax(130px,1.25fr) minmax(150px,1fr) 105px 105px;gap:11px;align-items:center;padding:10px 11px;border:1px solid var(--line);border-radius:var(--radius-sm);background:#fff;color:var(--ink-700);font-size:12px}.overview-health-head{border-color:transparent;border-radius:0;background:#f4f8fd;color:var(--ink-500);font-size:10px;font-weight:850;letter-spacing:.05em;text-transform:uppercase}.overview-table-link,.overview-task{border:0;background:transparent;font:inherit;text-align:left}.overview-table-link{color:var(--navy-900);font-weight:800;cursor:pointer}.overview-table-link:hover{color:var(--orange-600);text-decoration:underline}.overview-score{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}.overview-score strong{color:var(--navy-900);font-size:11px}.overview-task{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px;border:1px solid var(--line);border-radius:var(--radius-sm);cursor:pointer}.overview-task:hover{border-color:rgba(240,107,31,.48);background:#fffaf7}.overview-task strong{display:block;color:var(--navy-900);font-size:12px;line-height:1.35}.overview-task small{display:block;margin-top:4px;color:var(--ink-500);font-size:11px}.overview-empty{padding:14px;border:1px dashed rgba(240,107,31,.5);border-radius:var(--radius-sm);background:var(--orange-100);color:var(--ink-700);font-size:12px;line-height:1.5}@media(max-width:1240px){.overview-kpi-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:1050px){.overview-main-grid,.overview-detail-grid{grid-template-columns:1fr}}@media(max-width:700px){.overview-header{align-items:stretch;flex-direction:column}.overview-filters{display:grid;grid-template-columns:1fr}.overview-filters .select{max-width:none;width:100%}.overview-kpi-grid,.overview-chart-grid{grid-template-columns:1fr}.overview-health-row{grid-template-columns:1fr;gap:7px}.overview-health-head{display:none}.overview-health-row>span:last-child::before{content:"Stage: ";color:var(--ink-500);font-size:11px;font-weight:700}}
-.overview-page .card{border-radius:var(--radius-md)}
+/* =========================================
+   1. BỐ CỤC CHUNG (PAGE & LAYOUT)
+========================================= */
+.overview-page {
+  display: grid;
+  gap: 16px;
+}
+
+.overview-page .card {
+  border-radius: var(--radius-md);
+}
+
+.overview-main-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.9fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.overview-detail-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.28fr) minmax(300px, 0.9fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.overview-action-stack {
+  display: grid;
+  gap: 16px;
+}
+
+.overview-section-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.overview-section-head h3 {
+  margin-top: 4px;
+  color: var(--navy-900);
+  font-size: 18px;
+  line-height: 1.3;
+}
+
+
+/* =========================================
+   2. HEADER & BỘ LỌC (HEADER & FILTERS)
+========================================= */
+.overview-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 2px;
+}
+
+.overview-header h2 {
+  margin-top: 4px;
+  color: var(--navy-900);
+  font-size: clamp(28px, 3vw, 36px);
+  line-height: 1.12;
+}
+
+.overview-header > div > p:last-child {
+  max-width: 690px;
+  margin-top: 8px;
+  color: var(--ink-500);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.overview-filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.overview-filters .select {
+  min-height: 40px;
+  max-width: 190px;
+}
+
+.overview-filters .select:disabled {
+  cursor: help;
+  color: var(--ink-500);
+  background: #f6f8fb;
+}
+
+
+/* =========================================
+   3. CHỈ SỐ KPI (METRICS & KPI GRID)
+========================================= */
+.overview-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.overview-metric {
+  display: grid;
+  min-height: 166px;
+  align-content: start;
+  padding: 15px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--white);
+  box-shadow: 0 4px 13px rgba(11, 37, 89, 0.045);
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.overview-metric:hover {
+  border-color: rgba(240, 107, 31, 0.52);
+  box-shadow: var(--shadow-soft);
+  transform: translateY(-1px);
+}
+
+.overview-metric-label {
+  color: var(--ink-500);
+  font-size: 10px;
+  font-weight: 850;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.overview-metric strong {
+  margin-top: 11px;
+  color: var(--navy-900);
+  font-size: 30px;
+  line-height: 1;
+}
+
+.overview-metric-note {
+  min-height: 32px;
+  margin-top: 9px;
+  color: var(--ink-500);
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.overview-metric-action {
+  margin-top: auto;
+  padding-top: 9px;
+  color: var(--blue-600);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+
+/* =========================================
+   4. TRẠNG THÁI FOCUS (ACCESSIBILITY)
+========================================= */
+.overview-metric:focus-visible,
+.overview-priority:focus-visible,
+.overview-table-link:focus-visible,
+.overview-task:focus-visible,
+.overview-filters select:focus-visible {
+  outline: 3px solid rgba(240, 107, 31, 0.34);
+  outline-offset: 3px;
+}
+
+
+/* =========================================
+   5. BIỂU ĐỒ (CHARTS)
+========================================= */
+.overview-chart-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.overview-chart {
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: #fbfdff;
+}
+
+.overview-chart h4 {
+  color: var(--navy-900);
+  font-size: 13px;
+}
+
+.overview-donut {
+  position: relative;
+  width: 112px;
+  height: 112px;
+  display: grid;
+  place-items: center;
+  margin: 16px auto 14px;
+  border-radius: 50%;
+}
+
+.overview-donut::after {
+  content: "";
+  position: absolute;
+  inset: 21px;
+  border-radius: 50%;
+  background: var(--white);
+}
+
+.overview-donut span {
+  position: relative;
+  z-index: 1;
+  color: var(--navy-900);
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.overview-legend,
+.overview-bars {
+  display: grid;
+  gap: 8px;
+}
+
+.overview-legend span,
+.overview-bars > div {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 8px;
+  align-items: center;
+  color: var(--ink-700);
+  font-size: 11px;
+}
+
+.overview-legend i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+
+.overview-bars > div {
+  grid-template-columns: minmax(78px, 1fr) minmax(62px, 1.15fr) auto;
+}
+
+
+/* =========================================
+   6. DANH SÁCH (PRIORITY, INSIGHT, TASK)
+========================================= */
+.overview-priority-list,
+.overview-insight-list,
+.overview-task-list {
+  display: grid;
+  gap: 9px;
+}
+
+.overview-priority {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  transition: border-color 160ms ease, background 160ms ease;
+}
+
+.overview-priority:hover {
+  border-color: rgba(240, 107, 31, 0.48);
+  background: #fffaf7;
+}
+
+.overview-priority strong {
+  display: block;
+  color: var(--navy-900);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.overview-priority small {
+  display: block;
+  margin-top: 4px;
+  color: var(--ink-500);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.overview-insight {
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: #fff;
+}
+
+.overview-insight strong {
+  color: var(--navy-900);
+  font-size: 12px;
+}
+
+.overview-insight p {
+  margin-top: 5px;
+  color: var(--ink-500);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.overview-ai-note {
+  margin-top: 11px;
+  padding: 10px 11px;
+  border-left: 3px solid var(--orange-600);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: var(--orange-100);
+  color: var(--ink-700);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+/* Base reset for buttons acting as links/tasks */
+.overview-table-link,
+.overview-task {
+  border: 0;
+  background: transparent;
+  font: inherit;
+  text-align: left;
+}
+
+.overview-task {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.overview-task:hover {
+  border-color: rgba(240, 107, 31, 0.48);
+  background: #fffaf7;
+}
+
+.overview-task strong {
+  display: block;
+  color: var(--navy-900);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.overview-task small {
+  display: block;
+  margin-top: 4px;
+  color: var(--ink-500);
+  font-size: 11px;
+}
+
+
+/* =========================================
+   7. BẢNG DỮ LIỆU (HEALTH TABLE & SCORES)
+========================================= */
+.overview-health-table {
+  display: grid;
+  gap: 7px;
+}
+
+.overview-health-row {
+  display: grid;
+  grid-template-columns: minmax(130px, 1.25fr) minmax(150px, 1fr) 105px 105px;
+  gap: 11px;
+  align-items: center;
+  padding: 10px 11px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  color: var(--ink-700);
+  font-size: 12px;
+}
+
+.overview-health-head {
+  border-color: transparent;
+  border-radius: 0;
+  background: #f4f8fd;
+  color: var(--ink-500);
+  font-size: 10px;
+  font-weight: 850;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.overview-table-link {
+  color: var(--navy-900);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.overview-table-link:hover {
+  color: var(--orange-600);
+  text-decoration: underline;
+}
+
+.overview-score {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: center;
+}
+
+.overview-score strong {
+  color: var(--navy-900);
+  font-size: 11px;
+}
+
+
+/* =========================================
+   8. TRẠNG THÁI TRỐNG (EMPTY STATE)
+========================================= */
+.overview-empty {
+  padding: 14px;
+  border: 1px dashed rgba(240, 107, 31, 0.5);
+  border-radius: var(--radius-sm);
+  background: var(--orange-100);
+  color: var(--ink-700);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+
+/* =========================================
+   9. MEDIA QUERIES (RESPONSIVE)
+========================================= */
+@media (max-width: 1240px) {
+  .overview-kpi-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1050px) {
+  .overview-main-grid,
+  .overview-detail-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .overview-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  
+  .overview-filters {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  
+  .overview-filters .select {
+    max-width: none;
+    width: 100%;
+  }
+  
+  .overview-kpi-grid,
+  .overview-chart-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .overview-health-row {
+    grid-template-columns: 1fr;
+    gap: 7px;
+  }
+  
+  .overview-health-head {
+    display: none;
+  }
+  
+  .overview-health-row > span:last-child::before {
+    content: "Stage: ";
+    color: var(--ink-500);
+    font-size: 11px;
+    font-weight: 700;
+  }
+}
