@@ -948,3 +948,51 @@
 .support-chart div {
   grid-template-columns: minmax(116px, 1fr) minmax(90px, 1.4fr) auto;
 }
+.cohort-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.cohort-hero h2 {
+  margin-top: 6px;
+  color: var(--navy-900);
+  font-size: 28px;
+}
+
+.cohort-status-panel {
+  min-width: 160px;
+  display: grid;
+  gap: 6px;
+  padding: 16px;
+  border: 1px solid rgba(42, 171, 238, 0.18);
+  border-radius: var(--radius-lg);
+  background: #f7fbff;
+  text-align: right;
+}
+
+.cohort-status-panel strong {
+  color: var(--navy-900);
+  font-size: 34px;
+  line-height: 1;
+}
+
+.cohort-status-panel span:last-child {
+  color: var(--ink-500);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.empty-panel {
+  padding: 18px;
+  border: 1px dashed rgba(240, 107, 31, 0.48);
+  border-radius: var(--radius-lg);
+  background: var(--orange-100);
+}
+
+.empty-panel strong {
+  color: var(--navy-900);
+  font-size: 15px;
+}

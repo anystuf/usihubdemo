@@ -60,6 +60,15 @@
     font-weight: 800;
   }
 
+  .cohort-hero {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .cohort-status-panel {
+    text-align: left;
+  }
+
   .topbar {
     align-items: flex-start;
     flex-direction: column;
