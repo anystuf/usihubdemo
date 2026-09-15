@@ -1051,3 +1051,12 @@
 .startup-detail-logo { width:44px; height:44px; border-radius:50%; object-fit:cover; border:2px solid rgba(240,107,31,.2); }
 .startup-table-identity { display:flex; align-items:center; gap:10px; }
 .startup-logo { width:34px; height:34px; display:grid; place-items:center; border-radius:9px; background:linear-gradient(135deg,#0b2559,#2aabee); color:#fff; font-size:.72rem; font-weight:800; letter-spacing:.04em; }
+.brain-intro { position:relative; overflow:hidden; display:flex; justify-content:space-between; gap:18px; align-items:center; border-radius:12px; background:linear-gradient(135deg,#f7fbff,#eef6fb); }
+.brain-intro-copy { position:relative; z-index:1; max-width:700px; }
+.brain-intro-title { display:flex; align-items:center; gap:12px; }
+.brain-intro-title h2 { margin:4px 0 0; }
+.brain-intro .eyebrow { margin-bottom:0; }
+.brain-guardrails { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+.brain-guardrails span { padding:6px 9px; border:1px solid rgba(11,37,89,.12); border-radius:999px; color:var(--navy-900); background:rgba(255,255,255,.72); font-size:.72rem; font-weight:700; }
+.brain-intro-art { width:180px; height:90px; object-fit:cover; border-radius:10px; opacity:.85; }
+@media (max-width:600px) { .brain-intro-art { display:none; } }

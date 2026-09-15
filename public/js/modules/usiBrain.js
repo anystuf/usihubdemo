@@ -23,9 +23,14 @@ let floatingMessages = [
   { role: "ai", text: "USI Intelligence is available across the platform. Ask about a startup, support need, task, or source." }
 ];
 let floatingThinking = false;
+const aiVisualUrl = new URL("../../assets/visuals/data.svg", import.meta.url).href;
 
 export function renderUsiBrain() {
   return `
+    <section class="card card-pad brain-intro">
+      <div class="brain-intro-copy"><div class="brain-intro-title"><span class="brain-avatar">USI</span><div><p class="eyebrow">AI decision support</p><h2>USI Intelligence</h2></div></div><p class="muted-text">Turn startup, cohort, task, and knowledge records into an evidence-led next action.</p><div class="brain-guardrails"><span>Evidence first</span><span>Sources shown</span><span>Human approval required</span></div></div>
+      <img src="${aiVisualUrl}" alt="" class="brain-intro-art" />
+    </section>
     <div class="brain-layout">
       <section class="card chat-shell">
         <div class="chat-messages" id="chat-messages"></div>
