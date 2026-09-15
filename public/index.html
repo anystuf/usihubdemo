@@ -27,6 +27,7 @@
 
       <nav class="sidebar-nav">
         <a class="nav-link active" href="#overview" data-route="overview">Overview</a>
+        <a class="nav-link" href="#ecosystem" data-route="ecosystem">Ecosystem Hub</a>
         <a class="nav-link" href="#startup-os" data-route="startup-os">Startups</a>
         <a class="nav-link" href="#cohort-2-2026" data-route="cohort-2-2026">Cohort 2 2026</a>
         <a class="nav-link" href="#startup-detail" data-route="startup-detail">Startup Detail</a>
@@ -49,19 +50,21 @@
         <div class="topbar-actions">
           <div class="role-selector" id="role-selector-container">
             <label for="role-selector" style="font-size: 12px; color: var(--ink-500); margin-right: 6px;">View as:</label>
-            <select class="select" id="role-selector" style="min-width: 140px;">
+            <select class="select" id="role-selector" style="min-width: 118px;">
               <option value="sga" selected>SGA (Startup Growth Associate)</option>
               <option value="leader">Leader</option>
               <option value="mentor">Mentor</option>
               <option value="founder">Founder</option>
             </select>
           </div>
+          <button class="topbar-control" type="button" id="language-switch" aria-label="Switch to Vietnamese" title="Switch language">Tiếng Việt</button>
+          <button class="topbar-control" type="button" id="theme-switch" aria-label="Switch to dark mode">Tối</button>
           <button class="topbar-control" type="button" id="notifications-button">
             <span class="control-dot">3</span>
             Notifications
           </button>
-          <button class="topbar-control" type="button" id="approval-button">Approvals</button>
-          <button class="topbar-control primary" type="button" id="settings-button">Settings</button>
+          <button class="topbar-control primary" type="button" id="approval-button">Approvals</button>
+          <button class="topbar-control quiet" type="button" id="settings-button">Settings</button>
         </div>
       </header>
 

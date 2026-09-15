@@ -6,13 +6,13 @@ import { getStorage } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-
 import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-functions.js";
 
 const firebaseConfig = {
-  apiKey: "",
-  authDomain: "",
-  projectId: "",
-  storageBucket: "",
-  messagingSenderId: "",
-  appId: "",
-  measurementId: ""
+  apiKey: "AIzaSyCzWwRcSGM1kdr-rkwFzpU7TDSqzy6M9FA",
+  authDomain: "usi-hub-platform.firebaseapp.com",
+  projectId: "usi-hub-platform",
+  storageBucket: "usi-hub-platform.firebasestorage.app",
+  messagingSenderId: "143262095",
+  appId: "1:143262095:web:c7f0a20e757a89a019cbfa",
+  measurementId: "G-81W7PV02ZX"
 };
 
 const app = isFirebaseConfigured() ? initializeApp(firebaseConfig) : null;

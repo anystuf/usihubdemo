@@ -6,12 +6,15 @@ import { bindProjectBoard, bindTaskDetailPage, renderProjectBoard, renderTaskDet
 import { bindKnowledgeBase, renderKnowledgeBase } from "./modules/knowledgeBase.js";
 import { bindContacts, renderContacts } from "./modules/contacts.js";
 import { bindCohort22026, renderCohort22026 } from "./modules/cohort2_2026.js";
+import { bindEcosystemHub, renderEcosystemHub } from "./modules/ecosystemHub.js";
 import { initAnalytics } from "./services/firebaseService.js";
 import { getDataSource, loadPlatformData } from "./services/dataService.js";
 import { getCurrentRole, setCurrentRole, ROLES, getRoleGreeting } from "./services/roleService.js";
+import { getLanguage, initLanguage } from "./services/languageService.js";
 
 const routes = {
   "overview": { title: "Overview Dashboard", render: renderOverview, bind: bindOverview },
+  "ecosystem": { title: "Ecosystem Hub", render: renderEcosystemHub, bind: bindEcosystemHub },
   "startup-os": { title: "Startup List", render: renderStartupOs, bind: bindStartupOs },
   "cohort-2-2026": { title: "Cohort 2 2026", render: renderCohort22026, bind: bindCohort22026 },
   "startup-detail": { title: "Startup Detail", render: renderStartupDetailPage, bind: bindStartupDetailPage },
@@ -21,6 +24,22 @@ const routes = {
   "task-detail": { title: "Task Detail", render: renderTaskDetailPage, bind: bindTaskDetailPage },
   "knowledge-base": { title: "Knowledge Base", render: renderKnowledgeBase, bind: bindKnowledgeBase }
 };
+
+const themeKey = "usiHubTheme";
+
+function getTheme() {
+  try { return localStorage.getItem(themeKey) === "dark" ? "dark" : "light"; } catch { return "light"; }
+}
+
+function applyTheme(theme = getTheme()) {
+  document.documentElement.dataset.theme = theme;
+  const button = $("#theme-switch");
+  if (!button) return;
+  const dark = theme === "dark";
+  button.textContent = getLanguage() === "vi" ? (dark ? "Sáng" : "Tối") : (dark ? "Light" : "Dark");
+  button.setAttribute("aria-label", getLanguage() === "vi" ? (dark ? "Chuyển sang giao diện sáng" : "Chuyển sang giao diện tối") : (dark ? "Switch to light mode" : "Switch to dark mode"));
+  button.setAttribute("aria-pressed", String(dark));
+}
 
 function getRoute() {
   const hash = window.location.hash.replace("#", "");
@@ -55,8 +74,17 @@ function renderRoute() {
 }
 
 window.addEventListener("hashchange", renderRoute);
+window.addEventListener("languageChanged", renderRoute);
+window.addEventListener("languageChanged", () => applyTheme());
 $("#mobile-menu-button")?.addEventListener("click", () => $(".sidebar")?.classList.toggle("open"));
 $$(".nav-link").forEach((link) => link.addEventListener("click", () => $(".sidebar")?.classList.remove("open")));
+$("#theme-switch")?.addEventListener("click", () => {
+  const nextTheme = getTheme() === "dark" ? "light" : "dark";
+  try { localStorage.setItem(themeKey, nextTheme); } catch {}
+  applyTheme(nextTheme);
+});
+initLanguage();
+applyTheme();
 
 // Role selector binding
 $("#role-selector")?.addEventListener("change", (event) => {

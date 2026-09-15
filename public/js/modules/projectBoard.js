@@ -6,6 +6,7 @@ import {
   saveProjectTasks
 } from "../services/platformActionService.js";
 import { $, escapeHtml, statusClass } from "../utils/dom.js";
+import { translate } from "../services/languageService.js";
 
 const taskKey = "usiHubSelectedTaskId";
 const statuses = ["Planned", "Next", "In progress", "Done"];
@@ -124,13 +125,13 @@ export function renderTaskDetailPage() {
         </div>
         <span class="status ${statusClass(task.status)}">${escapeHtml(task.status)}</span>
       </div>
-      <p class="muted-text" style="margin-top: 10px;">${escapeHtml(task.notes || "No notes yet.")}</p>
+      <p class="muted-text" style="margin-top: 10px;">${escapeHtml(translate(task.notes || "No notes yet."))}</p>
       <div class="detail-grid">
         <div class="detail-stat"><span>Startup</span><strong>${escapeHtml(task.startup || "Cohort")}</strong></div>
         <div class="detail-stat"><span>Owner</span><strong>${escapeHtml(task.assignee || "SGA")}</strong></div>
         <div class="detail-stat"><span>Due date</span><strong>${escapeHtml(task.due)}</strong></div>
-        <div class="detail-stat"><span>Priority</span><strong>${escapeHtml(task.priority || "Medium")}</strong></div>
-        <div class="detail-stat"><span>Workstream</span><strong>${escapeHtml(task.workstream || "Operations")}</strong></div>
+        <div class="detail-stat"><span>Priority</span><strong>${escapeHtml(translate(task.priority || "Medium"))}</strong></div>
+        <div class="detail-stat"><span>Workstream</span><strong>${escapeHtml(translate(task.workstream || "Operations"))}</strong></div>
         <div class="detail-stat"><span>Progress</span><strong>${Number(task.progress || 0)}%</strong></div>
       </div>
     </section>
@@ -140,7 +141,7 @@ export function renderTaskDetailPage() {
       <div class="task-controls" style="margin-top: 12px;">
         <label>
           <span>Owner</span>
-          <input class="input" id="detail-assignee" value="${escapeHtml(task.assignee || "SGA")}" />
+          <input class="input" id="detail-assignee" value="${escapeHtml(translate(task.assignee || "SGA"))}" />
         </label>
         <label>
           <span>Due date</span>
@@ -149,7 +150,7 @@ export function renderTaskDetailPage() {
         <label>
           <span>Status</span>
           <select class="select compact" id="detail-status">
-            ${statuses.map((status) => `<option value="${escapeHtml(status)}" ${task.status === status ? "selected" : ""}>${escapeHtml(status)}</option>`).join("")}
+            ${statuses.map((status) => `<option value="${escapeHtml(status)}" ${task.status === status ? "selected" : ""}>${escapeHtml(translate(status))}</option>`).join("")}
           </select>
         </label>
         <label>
@@ -159,7 +160,7 @@ export function renderTaskDetailPage() {
       </div>
       <label style="display: grid; gap: 7px; margin-top: 12px;">
         <span>Notes</span>
-        <textarea class="input" id="detail-notes" rows="4">${escapeHtml(task.notes || "")}</textarea>
+        <textarea class="input" id="detail-notes" rows="4">${escapeHtml(translate(task.notes || ""))}</textarea>
       </label>
       <div class="task-meta" style="margin-top: 12px;">
         <button class="button secondary" type="button" id="back-to-task-list">Back to worklist</button>

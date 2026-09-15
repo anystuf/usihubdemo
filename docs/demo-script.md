@@ -1,42 +1,53 @@
-# Demo Script
+# USI Hub — Silent Demo Script
 
-## 1. Open Overview
+**Format:** screen recording or live click-through only. No voiceover.
 
-Explain that this is an internal USI Hub / UEH Innovation Platform MVP. It shows how startup progress, documents, support work, and AI-supported recommendations can live in one operating system.
+**Target length:** 4–6 minutes.
 
-## 2. Show Startup List
+**Demo URL:** `https://anystuf.github.io/usihubdemo/#overview`
 
-Filter by risk, cohort, sector, or search by name. Open Venture Alpha, Venture Beta, Venture Epsilon, or Venture Zeta.
+**Data note:** use only the anonymized public demo records. Do not open or display confidential source files.
 
-## 3. Show Startup Detail
+## Recording setup
 
-Point out the basic profile and the four important operating blocks: Roadblocks & Needs, Business Metrics, AI Recommendation, and On-going Supports.
+1. Open the demo URL in a desktop browser.
+2. Set browser zoom to 90–100% and close unrelated tabs.
+3. Start on `Overview` with the sidebar visible.
+4. Keep the cursor visible and pause for 1–2 seconds after each navigation.
+5. Use on-screen captions only; do not record microphone audio.
 
-## 4. Show Contacts
+## Walkthrough
 
-Explain that mentors, experts, and trainers are tracked as a matching data source. This supports future AI recommendations without letting AI make final decisions.
+| Time | Screen action | What should be visible | Optional on-screen caption |
+|---|---|---|---|
+| 0:00–0:20 | Load `#/overview`. Scroll from the header to the KPI cards. | Overview Dashboard, cohort filter, six KPI cards. | `One operating view for startup support` |
+| 0:20–0:45 | Scroll through Executive Analytics. | Risk distribution, lifecycle-stage distribution, support needs, document readiness. | `See portfolio signals before the next meeting` |
+| 0:45–1:05 | Scroll to Top Priorities and Recent Support Tasks. | Risk reviews, open tasks, document follow-ups, AI proposal count, task list. | `Turn signals into owned next actions` |
+| 1:05–1:25 | Click `Startups` in the sidebar. Filter or sort by risk, then open `Venture Beta` (or another visible startup). | Startup OS list and startup record. | `Move from portfolio view to one startup` |
+| 1:25–2:05 | On Startup Detail, scroll through the profile. | Startup summary, health/risk signal, road-map style Lifecycle Progress, Roadblocks & Needs, Business Metrics, ongoing supports. | `Track stage progress with evidence and data gaps` |
+| 2:05–2:30 | In the AI Recommendation area, select a suggested prompt or open `USI Intelligence`. | Grounded recommendation with evidence, sources, confidence, missing data, and next actions. | `AI proposes a next step` |
+| 2:30–2:45 | If an AI Proposed Update is shown, click `Review`, then `Approve` or `Reject`. | Proposal status changes and the approval/audit interaction. | `Humans approve; AI never writes silently` |
+| 2:45–3:05 | Click `Incubation Tasks` / `Project Board`. Open one task. | Startup-support worklist, owner, due date, priority, and task detail. | `Coordinate follow-up work, not just status` |
+| 3:05–3:25 | Click `Knowledge Base`. Apply a category or status filter and open a record. | Course/catalog-style knowledge cards, source metadata, linked startup, readiness/evidence fields. | `Make institutional knowledge reusable` |
+| 3:25–3:55 | Click `USI Intelligence` or use the floating USI button. Submit: `Which startup is at risk?` | Answer panel with evidence and a clear local-demo provider label when applicable. | `Ask for a grounded portfolio brief` |
+| 3:55–4:15 | Open the role selector and switch between `SGA`, `Leader`, `Mentor`, and `Founder`. | Role-context presentation changes. | `Same platform, role-relevant context` |
+| 4:15–4:30 | Return to `Overview`. End on the dashboard. | Overview with the main coordination signals visible. | `AI proposes. Humans decide.` |
 
-## 5. Show Incubation Worklist
+## Silent interaction rules
 
-Add or filter a task for a startup, then open Task Detail. Explain that this replaces Kanban-first project management with a startup-support worklist: mini-workshops, investor connections, partner introductions, mentor matching, and evidence collection.
+- Do not narrate, record a microphone, or add a voice track.
+- Use short captions instead of spoken explanations.
+- Do not claim that demo health scores are authoritative.
+- Do not imply that role switching is production RBAC; it changes demo presentation only.
+- Do not show Firebase seed controls, confidential records, raw interviews, API keys, or local-server screens.
+- If an action is unavailable, continue to the next row rather than improvising a backend claim.
 
-## 6. Show USI Intelligence
+## AI status to show accurately
 
-Use either the page or the floating chat widget. Ask one of these prompts:
+- On GitHub Pages, responses come from the deterministic local evidence engine over bundled demo data.
+- Gemini is available only through the configured local server or Firebase callable path; it is not called directly from the public browser page.
+- RAG retrieval is planned but not active in this demonstrator.
 
-- Which startup is at risk?
-- What mentor does Venture Alpha need?
-- How can Venture Epsilon grow?
-- Generate Venture Beta brief
+## End state
 
-Highlight the response format: answer, evidence, sources, confidence, missing data, next actions, and AI Proposed Update.
-
-Click Approve/Reject on the proposed update to show the product principle: AI suggests; SGA/Leader approves.
-
-## 7. Show Knowledge Base
-
-Explain that current PDFs, CSV/XLSX files, pitch decks, roadmaps, and slides become searchable evidence. Show indexed status, evidence use, extraction quality, and linked startup.
-
-## 8. Close With Guardrails
-
-AI does not make final decisions. AI does not directly update startup data. USI Intelligence should only create proposed updates that a human approves.
+Finish on the Overview dashboard with the sidebar and KPI/analytics area in view. The final frame should communicate a governed incubation operating system, not a generic chatbot: shared startup context, actionable work, reusable knowledge, and human approval of AI proposals.

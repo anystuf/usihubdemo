@@ -206,7 +206,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 14px;
+  padding: 7px 11px;
   border: 1px solid rgba(42, 171, 238, 0.18);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.82);
@@ -221,7 +221,9 @@
 }
 
 .role-selector #role-selector {
-  min-width: 140px;
+  min-width: 118px;
+  width: 150px;
+  flex: 0 0 150px;
   padding: 4px 8px;
   border: none;
   background: transparent;
@@ -244,6 +246,23 @@
   background: var(--orange-600);
   color: var(--white);
   font-size: 11px;
+}
+
+.topbar-control.quiet {
+  border-color: var(--line);
+  background: transparent;
+  color: var(--ink-700);
+  box-shadow: none;
+}
+
+.topbar-control.quiet:hover {
+  background: var(--surface);
+  color: var(--navy-900);
+}
+
+#notifications-button .control-dot {
+  flex: 0 0 20px;
+  margin-right: -2px;
 }
 
 .workspace {
