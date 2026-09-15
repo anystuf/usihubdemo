@@ -3,6 +3,7 @@ import { $, emptyState, escapeHtml, statusClass, tags } from "../utils/dom.js";
 import { getDefaultRecommendation, getLifecycleStage, getLifecycleSteps, getStageMetrics } from "../utils/startupLifecycle.js";
 
 const selectedKey = "usiHubSelectedStartupId";
+const uiiLogoUrl = new URL("../../assets/UII_Logo.jpg", import.meta.url).href;
 
 export function renderStartupOs() {
   const data = getDemoData();
@@ -65,9 +66,12 @@ export function renderStartupDetailPage() {
   return `
     <section class="card card-pad">
       <div class="detail-title">
-        <div>
+        <div class="startup-detail-identity">
+          <img src="${uiiLogoUrl}" alt="" class="startup-detail-logo" />
+          <div>
           <p class="eyebrow">Startup profile</p>
           <h2>${escapeHtml(startup.name)}</h2>
+          </div>
         </div>
         <span class="status ${statusClass(startup.risk)}">${escapeHtml(startup.risk)} risk</span>
       </div>
@@ -89,7 +93,7 @@ export function renderStartupDetailPage() {
         <span class="pill">Evidence-led view</span>
       </div>
       <ol class="startup-lifecycle" aria-label="Startup lifecycle">
-        ${lifecycleSteps.map((step, index) => `<li class="startup-lifecycle-step ${step.state}"><span class="startup-lifecycle-marker">${step.state === "complete" ? "✓" : index + 1}</span><span>${escapeHtml(step.label)}</span></li>`).join("")}
+        ${lifecycleSteps.map((step, index) => `<li class="startup-lifecycle-step ${step.state}"><span class="startup-lifecycle-marker">${step.state === "complete" ? "✓" : index + 1}</span><span class="startup-lifecycle-label">${escapeHtml(step.label)}</span><small>${step.state === "complete" ? "Completed" : step.state === "current" ? "Current stage" : "Next gate"}</small></li>`).join("")}
       </ol>
       <p class="muted-text startup-lifecycle-note">Stage is taken from the current startup record. “Not recorded” metrics are data gaps, not estimates.</p>
     </section>
@@ -192,7 +196,7 @@ function renderStartupTable() {
     </div>
     ${startups.map((startup) => `
       <div class="table-row">
-        <span><strong>${escapeHtml(startup.name)}</strong><small>${escapeHtml((startup.mentorNeed || []).slice(0, 2).join(", "))}</small></span>
+        <span class="startup-table-identity"><span class="startup-logo" aria-hidden="true">${escapeHtml(startupInitials(startup.name))}</span><span><strong>${escapeHtml(startup.name)}</strong><small>${escapeHtml((startup.mentorNeed || []).slice(0, 2).join(", "))}</small></span></span>
         <span>${escapeHtml(startup.sector)}<small>${escapeHtml(startup.cohort)}</small></span>
         <span>${escapeHtml(startup.stage)}</span>
         <span><span class="status ${statusClass(startup.risk)}">${escapeHtml(startup.risk)}</span></span>
@@ -203,6 +207,10 @@ function renderStartupTable() {
   `;
 
   bindStartupDetailPage();
+}
+
+function startupInitials(name = "Startup") {
+  return String(name).split(/\s+/).filter(Boolean).slice(0, 2).map((part) => part[0]).join("").toUpperCase();
 }
 
 function getFilteredStartups() {

@@ -523,6 +523,8 @@
 .overview-health-row { display: grid; grid-template-columns: minmax(130px, 1.2fr) minmax(170px, 1fr) 100px minmax(120px, 1fr); gap: 12px; align-items: center; padding: 11px 0; border-bottom: 1px solid var(--line); min-width: 620px; }
 .overview-health-head { color: var(--ink-500); font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; }
 .overview-table-link { border: 0; background: transparent; color: var(--ink); text-align: left; padding: 0; font-weight: 700; cursor: pointer; }
+.overview-startup-cell { display:flex; align-items:center; gap:9px; }
+.overview-startup-avatar { width:30px; height:30px; display:grid; place-items:center; border-radius:8px; background:linear-gradient(135deg,var(--navy-900),var(--blue-600)); color:var(--white); font-size:.68rem; letter-spacing:.04em; }
 .overview-score { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; }
 .overview-task { display: grid; grid-template-columns: 1fr auto; gap: 12px; width: 100%; text-align: left; cursor: pointer; color: inherit; }
 .overview-task-meta { color: var(--ink-500); font-size: .82rem; }
