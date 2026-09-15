@@ -10,7 +10,7 @@ import { bindEcosystemHub, renderEcosystemHub } from "./modules/ecosystemHub.js"
 import { initAnalytics } from "./services/firebaseService.js";
 import { getDataSource, loadPlatformData } from "./services/dataService.js";
 import { getCurrentRole, setCurrentRole, ROLES, getRoleGreeting } from "./services/roleService.js";
-import { getLanguage, initLanguage } from "./services/languageService.js";
+import { getLanguage, initLanguage, translate } from "./services/languageService.js";
 
 const routes = {
   "overview": { title: "Overview Dashboard", render: renderOverview, bind: bindOverview },
@@ -23,6 +23,19 @@ const routes = {
   "project-board": { title: "Incubation Worklist", render: renderProjectBoard, bind: bindProjectBoard },
   "task-detail": { title: "Task Detail", render: renderTaskDetailPage, bind: bindTaskDetailPage },
   "knowledge-base": { title: "Knowledge Base", render: renderKnowledgeBase, bind: bindKnowledgeBase }
+};
+
+const routeLabels = {
+  overview: "Overview",
+  ecosystem: "Ecosystem Hub",
+  "startup-os": "Startup List",
+  "cohort-2-2026": "Cohort 2 2026",
+  "startup-detail": "Startup Detail",
+  contacts: "Contacts",
+  "project-board": "Incubation Worklist",
+  "task-detail": "Task Detail",
+  "knowledge-base": "Knowledge Base",
+  "usi-intelligence": "USI Intelligence"
 };
 
 const themeKey = "usiHubTheme";
@@ -50,7 +63,7 @@ function renderRoute() {
   const routeKey = getRoute();
   const route = routes[routeKey];
 
-  $("#page-title").textContent = route.title;
+  $("#page-title").textContent = translate(routeLabels[routeKey] || route.title);
   try {
     $("#app-root").innerHTML = route.render();
   } catch (error) {
@@ -65,6 +78,7 @@ function renderRoute() {
 
   $$(".nav-link").forEach((link) => {
     link.classList.toggle("active", link.dataset.route === routeKey);
+    link.textContent = translate(routeLabels[link.dataset.route] || link.textContent.trim());
   });
 
   route.bind?.();
