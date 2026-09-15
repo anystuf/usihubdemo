@@ -254,7 +254,7 @@ function enrichTask(task, index) {
 
 function buildMetrics(startups, documents, tasks, aiProposals) {
   const atRisk = startups.filter((startup) => startup.risk === "High").length;
-  const openTasks = tasks.filter((task) => task.status !== "Done").length;
+  const openTasks = tasks.filter((task) => task.status !== "Done");
   const overdueTasks = openTasks.filter((task) => {
     const dueDate = new Date(`${task.due}T23:59:59`);
     return !Number.isNaN(dueDate.getTime()) && dueDate < new Date();
@@ -269,7 +269,7 @@ function buildMetrics(startups, documents, tasks, aiProposals) {
   return [
     { label: "Total startups", value: String(startups.length), note: "Active startup profiles in demo OS" },
     { label: "Startups needing attention", value: String(atRisk), note: "Require SGA/Leader review" },
-    { label: "Open support tasks", value: String(openTasks), note: "Incubation worklist items not done" },
+    { label: "Open support tasks", value: String(openTasks.length), note: "Incubation worklist items not done" },
     { label: "Overdue actions", value: String(overdueTasks), note: "Open tasks past their due date" },
     { label: "Startups overdue for check-in", value: String(staleCheckIns), note: "No update recorded in 14+ days" },
     { label: "Missing information", value: String(missingData), note: "Data items to add" },
