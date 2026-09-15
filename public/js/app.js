@@ -9,7 +9,7 @@ import { bindCohort22026, renderCohort22026 } from "./modules/cohort2_2026.js";
 import { initAnalytics } from "./services/firebaseService.js";
 import { getDataSource, loadPlatformData } from "./services/dataService.js";
 import { getCurrentRole, setCurrentRole, ROLES, getRoleGreeting } from "./services/roleService.js";
-import { getLanguage, initLanguage, setLanguage, translate } from "./services/languageService.js";
+import { getLanguage, initLanguage, localizePage, setLanguage, translate } from "./services/languageService.js";
 
 const routes = {
   "overview": { title: "Overview Dashboard", render: renderOverview, bind: bindOverview },
@@ -50,6 +50,7 @@ function renderRoute() {
   });
 
   route.bind?.();
+  localizePage(document);
   $(".sidebar")?.classList.remove("open");
   document.documentElement.dataset.dataSource = getDataSource();
   updateDataSourcePill();
@@ -84,7 +85,7 @@ function applyLanguageChrome() {
     "startup-os": "Startups",
     "cohort-2-2026": "Cohort 2 2026",
     "startup-detail": "Startup Detail",
-    contacts: "Khám phá hệ sinh thái",
+    contacts: "Ecosystem Hub",
     "project-board": "Incubation Tasks",
     "task-detail": "Task Detail",
     "knowledge-base": "Knowledge Base",
@@ -140,6 +141,7 @@ $("#app-root").innerHTML = `
 
 await loadPlatformData();
 renderRoute();
+applyLanguageChrome();
 document.body.insertAdjacentHTML("beforeend", renderFloatingIntelligence());
 bindFloatingIntelligence();
 initAnalytics();
