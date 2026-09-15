@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "node server/localServer.js",
+    "start": "node server/localServer.js",
     "check": "node --check server/localServer.js"
   },
   "dependencies": {}
