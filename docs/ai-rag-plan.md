@@ -2,7 +2,7 @@
 
 USI Intelligence should run through Firebase Cloud Functions or another secure backend. LLM API keys must not appear in frontend code.
 
-The current scaffold exposes a callable function named `askUsiBrain` that calls Gemini `gemini-3.5-flash` from the backend. The key is expected as the Firebase Functions secret `GEMINI_API_KEY`.
+The current scaffold exposes a callable function named `askUsiBrain` that calls Gemini `gemini-2.5-flash` from the backend. The key is expected as the Firebase Functions secret `GEMINI_API_KEY`.
 
 ## Retrieval Sources
 

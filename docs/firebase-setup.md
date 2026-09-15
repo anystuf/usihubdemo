@@ -98,7 +98,7 @@ askUsiBrain
 Model:
 
 ```text
-gemini-3.5-flash
+gemini-2.5-flash
 ```
 
 The function returns:

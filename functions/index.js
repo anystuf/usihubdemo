@@ -5,7 +5,7 @@ const admin = require("firebase-admin");
 admin.initializeApp();
 
 const geminiApiKey = defineSecret("GEMINI_API_KEY");
-const GEMINI_MODEL = "gemini-3.5-flash";
+const GEMINI_MODEL = "gemini-2.5-flash";
 
 exports.askUsiBrain = onCall({ secrets: [geminiApiKey], cors: true }, async (request) => {
   const prompt = String(request.data?.prompt || "").trim();
