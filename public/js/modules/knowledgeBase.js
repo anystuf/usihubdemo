@@ -3,6 +3,7 @@ import { PLATFORM_ACTION_EVENT, getDocumentsWithLocal } from "../services/platfo
 import { $, escapeHtml, statusClass, tags } from "../utils/dom.js";
 
 let actionListenerBound = false;
+const visualAssetRoot = new URL("../../assets/visuals/", import.meta.url).href;
 
 export function renderKnowledgeBase() {
   const data = getDemoData();
@@ -15,7 +16,7 @@ export function renderKnowledgeBase() {
       <span class="pill">${documents.length} resources</span>
     </section>
     <section class="knowledge-featured-grid" aria-label="Featured resources">
-      ${documents.slice(0, 3).map((doc) => `<article class="knowledge-featured-card ${docTypeClass(doc.type)}"><div><span class="knowledge-featured-kicker">${escapeHtml(doc.type || "Resource")}</span><h3>${escapeHtml(doc.title)}</h3><p>${escapeHtml(doc.evidenceUse)}</p></div><span class="knowledge-featured-arrow" aria-hidden="true">→</span></article>`).join("")}
+      ${documents.slice(0, 3).map((doc) => `<article class="knowledge-featured-card ${docTypeClass(doc.type)}"><img class="knowledge-featured-art" src="${visualAssetRoot}${docTypeVisual(doc.type)}" alt="" /><div class="knowledge-featured-copy"><span class="knowledge-featured-kicker">${escapeHtml(doc.type || "Resource")}</span><h3>${escapeHtml(doc.title)}</h3><p>${escapeHtml(doc.evidenceUse)}</p></div><span class="knowledge-featured-arrow" aria-hidden="true">→</span></article>`).join("")}
     </section>
     <section class="grid grid-3 knowledge-stats" style="margin-bottom: 16px;">
       <article class="card metric-card"><span>Total sources</span><strong>${documents.length}</strong><p>Tracked source metadata for USI Intelligence</p></article>
@@ -152,6 +153,13 @@ function docTypeClass(type = "") {
   if (value.includes("roadmap") || value.includes("pitch")) return "is-startup";
   if (value.includes("cohort") || value.includes("csv")) return "is-data";
   return "is-program";
+}
+
+function docTypeVisual(type = "") {
+  const value = String(type).toLowerCase();
+  if (value.includes("proposal") || value.includes("plan")) return "strategy.svg";
+  if (value.includes("roadmap") || value.includes("pitch")) return "startup.svg";
+  return "data.svg";
 }
 
 function handleDocumentAction(event) {
