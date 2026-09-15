@@ -1,5 +1,6 @@
 import { getDemoData } from "../services/dataService.js";
 import { $, emptyState, escapeHtml, statusClass, tags } from "../utils/dom.js";
+import { getDefaultRecommendation, getLifecycleStage, getLifecycleSteps, getStageMetrics } from "../utils/startupLifecycle.js";
 
 const selectedKey = "usiHubSelectedStartupId";
 
@@ -57,6 +58,10 @@ export function renderStartupDetailPage() {
   }
 
   const contacts = getMatchedContacts(startup);
+  const lifecycle = getLifecycleStage(startup.stage);
+  const lifecycleSteps = getLifecycleSteps(startup.stage);
+  const stageMetrics = getStageMetrics(startup);
+  const defaultRecommendation = getDefaultRecommendation(startup);
   return `
     <section class="card card-pad">
       <div class="detail-title">
@@ -76,6 +81,17 @@ export function renderStartupDetailPage() {
         <div class="detail-stat"><span>Last check-in</span><strong>${escapeHtml(startup.lastCheckIn)}</strong></div>
         <div class="detail-stat"><span>Sources</span><strong>${escapeHtml(String(startup.sources.length))}</strong></div>
       </div>
+    </section>
+
+    <section class="card card-pad startup-lifecycle-card" style="margin-top: 16px;">
+      <div class="section-header" style="margin-top: 0;">
+        <div><p class="eyebrow">Lifecycle progress</p><h3>Current stage: ${escapeHtml(lifecycle.label)}</h3></div>
+        <span class="pill">Evidence-led view</span>
+      </div>
+      <ol class="startup-lifecycle" aria-label="Startup lifecycle">
+        ${lifecycleSteps.map((step, index) => `<li class="startup-lifecycle-step ${step.state}"><span class="startup-lifecycle-marker">${step.state === "complete" ? "✓" : index + 1}</span><span>${escapeHtml(step.label)}</span></li>`).join("")}
+      </ol>
+      <p class="muted-text startup-lifecycle-note">Stage is taken from the current startup record. “Not recorded” metrics are data gaps, not estimates.</p>
     </section>
 
     <div class="grid grid-2" style="margin-top: 16px;">
@@ -100,9 +116,9 @@ export function renderStartupDetailPage() {
 
       <section class="card card-pad">
         <p class="eyebrow">Business metrics</p>
-        <h3>Operating snapshot</h3>
+        <h3>Stage-specific operating snapshot</h3>
         <div class="detail-grid" style="margin-top: 12px;">
-          ${(startup.kpis || []).map((kpi) => `
+          ${stageMetrics.map((kpi) => `
             <div class="detail-stat"><span>${escapeHtml(kpi.label)}</span><strong>${escapeHtml(kpi.value)}</strong></div>
           `).join("")}
         </div>
@@ -117,7 +133,8 @@ export function renderStartupDetailPage() {
       <section class="card card-pad">
         <p class="eyebrow">AI recommendation</p>
         <h3>Suggested support path</h3>
-        <p class="muted-text" style="margin-top: 8px;">${escapeHtml(startup.nextAction)}</p>
+        <p class="muted-text" style="margin-top: 8px;">${escapeHtml(defaultRecommendation)}</p>
+        <p class="muted-text startup-ai-boundary">AI proposes based on available records; an SGA or program lead must approve any change.</p>
         <div class="tag-row">${tags((contacts || []).map((contact) => `${contact.type}: ${contact.name}`))}</div>
         <button class="button orange" type="button" style="margin-top: 12px;" data-intelligence-prompt="Review ${escapeHtml(startup.name)} and recommend the next support action with evidence.">Ask USI Intelligence</button>
       </section>

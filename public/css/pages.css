@@ -996,3 +996,24 @@
   color: var(--navy-900);
   font-size: 15px;
 }
+.knowledge-catalog-header { display:flex; justify-content:space-between; gap:16px; align-items:flex-start; margin-bottom:16px; }
+.knowledge-catalog-header h2 { margin:4px 0 6px; }
+.knowledge-stats .metric-card { border-radius:12px; }
+.knowledge-course-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+.knowledge-course-card { display:grid; grid-template-columns:72px 1fr; gap:10px 14px; align-items:start; border:1px solid var(--line); border-radius:10px; padding:14px; background:var(--surface); }
+.knowledge-course-cover { width:72px; height:72px; display:grid; place-items:center; grid-row:span 4; border-radius:8px; color:#fff; font-weight:800; letter-spacing:.06em; background:linear-gradient(135deg,#0f766e,#1d4ed8); }
+.knowledge-course-meta { display:flex; justify-content:space-between; gap:8px; align-items:flex-start; }
+.knowledge-course-meta strong { line-height:1.35; }
+.knowledge-course-subtitle, .knowledge-course-source { color:var(--muted); font-size:.84rem; }
+.knowledge-course-card .tag-row { grid-column:2; }
+.knowledge-course-card .doc-actions { grid-column:2; }
+@media (max-width:760px) { .knowledge-catalog-header { flex-direction:column; } .knowledge-course-grid { grid-template-columns:1fr; } }
+.startup-lifecycle { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:8px; list-style:none; padding:0; margin:16px 0 0; }
+.startup-lifecycle-step { display:flex; align-items:center; gap:8px; min-width:0; color:var(--muted); font-size:.82rem; }
+.startup-lifecycle-step.current { color:var(--ink); font-weight:700; }
+.startup-lifecycle-step.complete { color:#15803d; }
+.startup-lifecycle-marker { width:26px; height:26px; flex:0 0 26px; display:grid; place-items:center; border:1px solid var(--line); border-radius:50%; background:var(--surface); font-size:.75rem; }
+.startup-lifecycle-step.current .startup-lifecycle-marker { color:#fff; background:var(--orange); border-color:var(--orange); }
+.startup-lifecycle-step.complete .startup-lifecycle-marker { color:#fff; background:#15803d; border-color:#15803d; }
+.startup-lifecycle-note, .startup-ai-boundary { font-size:.82rem; margin-top:12px; }
+@media (max-width:760px) { .startup-lifecycle { grid-template-columns:1fr; gap:10px; } }

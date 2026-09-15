@@ -10,13 +10,17 @@ export function renderKnowledgeBase() {
   const readyCount = documents.filter((doc) => doc.indexed === "Ready").length;
   const startupLinkedCount = documents.filter((doc) => !["Platform", "Cohort"].includes(doc.startup)).length;
   return `
-    <section class="grid grid-3" style="margin-bottom: 16px;">
+    <section class="knowledge-catalog-header">
+      <div><p class="eyebrow">USI learning library</p><h2>Knowledge Base</h2><p class="muted-text">Browse curated playbooks, startup evidence, and program resources.</p></div>
+      <span class="pill">${documents.length} resources</span>
+    </section>
+    <section class="grid grid-3 knowledge-stats" style="margin-bottom: 16px;">
       <article class="card metric-card"><span>Total sources</span><strong>${documents.length}</strong><p>Tracked source metadata for USI Intelligence</p></article>
       <article class="card metric-card"><span>Ready metadata</span><strong>${readyCount}</strong><p>Can be cited in demo answers</p></article>
       <article class="card metric-card"><span>Startup-linked</span><strong>${startupLinkedCount}</strong><p>Roadmaps and pitch evidence</p></article>
     </section>
 
-    <div class="kb-layout">
+    <div class="kb-layout knowledge-catalog">
       <section>
         <div class="toolbar">
           <input class="input" id="doc-search" placeholder="Search documents, startup, type, or tag" />
@@ -33,7 +37,7 @@ export function renderKnowledgeBase() {
             ${[...new Set(documents.map((doc) => doc.startup))].map((startup) => `<option>${escapeHtml(startup)}</option>`).join("")}
           </select>
         </div>
-        <div class="document-list" id="document-list"></div>
+        <div class="document-list knowledge-course-grid" id="document-list"></div>
       </section>
 
       <aside class="card card-pad">
@@ -114,13 +118,14 @@ function renderDocuments() {
   });
 
   $("#document-list").innerHTML = docs.map((doc) => `
-    <article class="document-row">
-      <div class="doc-meta">
+    <article class="document-row knowledge-course-card">
+      <div class="knowledge-course-cover"><span>${escapeHtml(doc.type || "DOC").slice(0, 3).toUpperCase()}</span></div>
+      <div class="doc-meta knowledge-course-meta">
         <strong>${escapeHtml(doc.title)}</strong>
         <span class="status ${statusClass(doc.indexed)}">${escapeHtml(doc.indexed)}</span>
       </div>
-      <p class="muted-text" style="margin-top: 8px;">${escapeHtml(doc.type)} - linked to ${escapeHtml(doc.startup)}</p>
-      <p class="muted-text">Source: ${escapeHtml(doc.source)}</p>
+      <p class="knowledge-course-subtitle">${escapeHtml(doc.type)} · ${escapeHtml(doc.startup)}</p>
+      <p class="muted-text knowledge-course-source">Source: ${escapeHtml(doc.source)}</p>
       <p class="muted-text"><b>Evidence use:</b> ${escapeHtml(doc.evidenceUse)}</p>
       <p class="muted-text"><b>Extraction:</b> ${escapeHtml(doc.extractionQuality)}</p>
       <div class="tag-row">${tags(doc.tags)}</div>
