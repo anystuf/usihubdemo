@@ -33,10 +33,55 @@ export function getLifecycleSteps(stage) {
 }
 
 export function getStageMetrics(startup) {
-  const existing = startup.kpis || [];
-  const values = existing.map((item) => String(item.value || "").trim()).filter(Boolean);
-  const labels = STAGE_METRIC_LABELS[getLifecycleStage(startup.stage).key];
-  return labels.map((label, index) => ({ label, value: values[index] || "Not recorded" }));
+  const stage = getLifecycleStage(startup.stage);
+  const labels = STAGE_METRIC_LABELS[stage.key];
+  const explicit = new Map((startup.stageMetrics || []).map((item) => [item.label, item]));
+  const existing = new Map((startup.kpis || []).map((item) => [String(item.label || "").toLowerCase(), item]));
+  return labels.map((label) => {
+    const item = explicit.get(label);
+    const fallback = existing.get(label.toLowerCase());
+    const derived = deriveMetric(label, startup, existing);
+    return {
+      label,
+      value: item?.value || fallback?.value || derived.value,
+      source: item?.source || (fallback ? `Existing KPI: ${fallback.label}` : derived.source),
+      status: item?.status || (fallback?.value ? "Recorded" : derived.status)
+    };
+  });
+}
+
+function deriveMetric(label, startup, existing) {
+  const missing = (startup.missingData || []).map((item) => String(item).toLowerCase());
+  const need = (startup.mentorNeed || []).map((item) => String(item).toLowerCase());
+  const supports = (startup.recommendedSupport || []).map((item) => String(item).toLowerCase());
+  const traction = String(startup.traction || "");
+  const kpi = (terms) => [...existing.entries()].find(([key]) => terms.some((term) => key.includes(term)))?.[1];
+  const missingFor = (terms) => missing.find((item) => terms.some((term) => item.includes(term)));
+  const needFor = (terms) => need.find((item) => terms.some((term) => item.includes(term)));
+  const supportFor = (terms) => supports.find((item) => terms.some((term) => item.includes(term)));
+  const recorded = (value, source) => ({ value, source, status: "Recorded" });
+  const gap = (source) => ({ value: "Not recorded", source, status: "Data gap" });
+  if (label === "Problem clarity") return startup.summary ? recorded("Defined in startup summary", "Startup profile") : gap("No problem statement recorded");
+  if (label === "Customer evidence") return gap(missingFor(["customer", "buyer", "user"]) ? "Missing-data register" : "No interview evidence linked");
+  if (label === "Solution hypothesis") return startup.summary ? recorded("Described in startup summary", "Startup profile") : gap("No solution hypothesis recorded");
+  if (label === "Next experiment") return startup.nextAction ? recorded(startup.nextAction, "Recommended next action") : gap("No next experiment recorded");
+  if (label === "Prototype maturity") return startup.stage ? recorded(startup.stage, "Startup stage record") : gap("No stage recorded");
+  if (label === "User testing") return needFor(["user", "customer", "buyer"]) || supportFor(["interview", "test", "validation"]) ? recorded("Planned / required", "Support and missing-data records") : gap("No user-test result linked");
+  if (label === "Feedback loop") return traction.toLowerCase().includes("roadmap") ? recorded("Roadmap feedback available", "Traction/context") : gap("No feedback loop recorded");
+  if (label === "Validation blocker") return missing[0] ? recorded(missing[0], "Missing-data register") : gap("No validation blocker recorded");
+  if (label === "Repeat usage") return kpi(["repeat", "mau"])?.value ? recorded(kpi(["repeat", "mau"]).value, "Existing KPI") : gap("No repeat-use KPI");
+  if (label === "Retention signal") return gap(missingFor(["retention", "repeat", "churn"]) ? "Missing-data register" : "No retention data linked");
+  if (label === "Revenue traction") return kpi(["revenue", "sales", "customer", "growth target"])?.value ? recorded(kpi(["revenue", "sales", "customer", "growth target"]).value, "Existing KPI") : gap("No revenue KPI");
+  if (label === "Segment clarity") return missingFor(["segment", "buyer", "customer", "target"]) ? gap("Missing-data register") : gap("No segment evidence linked");
+  if (label === "Acquisition channel") return supportFor(["channel", "acquisition", "distribution", "partner"]) ? recorded(supportFor(["channel", "acquisition", "distribution", "partner"]), "Support plan") : gap("No channel evidence linked");
+  if (label === "Conversion signal") return gap(missingFor(["conversion", "sales"]) ? "Missing-data register" : "No conversion KPI");
+  if (label === "Sales motion") return needFor(["sales", "gtm", "market"]) ? recorded(needFor(["sales", "gtm", "market"]), "Mentor need") : gap("No sales-motion evidence linked");
+  if (label === "Unit economics") return missingFor(["unit economics", "margin", "cogs"]) ? gap("Missing-data register") : gap("No unit-economics KPI");
+  if (label === "Growth signal") return kpi(["growth", "customer", "mau", "sales"])?.value ? recorded(kpi(["growth", "customer", "mau", "sales"]).value, "Existing KPI") : gap("No growth KPI");
+  if (label === "Customer / revenue base") return kpi(["customer", "revenue", "sales"])?.value ? recorded(kpi(["customer", "revenue", "sales"]).value, "Existing KPI") : gap("No customer/revenue base");
+  if (label === "Onboarding capacity") return kpi(["onboarding", "support"])?.value ? recorded(kpi(["onboarding", "support"]).value, "Existing KPI") : gap("No onboarding capacity KPI");
+  if (label === "Expansion readiness") return startup.nextAction ? recorded("Defined by next action", "Recommended next action") : gap("No expansion evidence linked");
+  return gap("No source recorded");
 }
 
 export function getDefaultRecommendation(startup) {

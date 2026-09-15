@@ -14,6 +14,9 @@ export function renderKnowledgeBase() {
       <div><p class="eyebrow">USI learning library</p><h2>Knowledge Base</h2><p class="muted-text">Browse curated playbooks, startup evidence, and program resources.</p></div>
       <span class="pill">${documents.length} resources</span>
     </section>
+    <section class="knowledge-featured-grid" aria-label="Featured resources">
+      ${documents.slice(0, 3).map((doc) => `<article class="knowledge-featured-card ${docTypeClass(doc.type)}"><div><span class="knowledge-featured-kicker">${escapeHtml(doc.type || "Resource")}</span><h3>${escapeHtml(doc.title)}</h3><p>${escapeHtml(doc.evidenceUse)}</p></div><span class="knowledge-featured-arrow" aria-hidden="true">→</span></article>`).join("")}
+    </section>
     <section class="grid grid-3 knowledge-stats" style="margin-bottom: 16px;">
       <article class="card metric-card"><span>Total sources</span><strong>${documents.length}</strong><p>Tracked source metadata for USI Intelligence</p></article>
       <article class="card metric-card"><span>Ready metadata</span><strong>${readyCount}</strong><p>Can be cited in demo answers</p></article>
@@ -119,7 +122,7 @@ function renderDocuments() {
 
   $("#document-list").innerHTML = docs.map((doc) => `
     <article class="document-row knowledge-course-card">
-      <div class="knowledge-course-cover"><span>${escapeHtml(doc.type || "DOC").slice(0, 3).toUpperCase()}</span></div>
+      <div class="knowledge-course-cover ${docTypeClass(doc.type)}"><span>${escapeHtml(doc.type || "DOC").slice(0, 3).toUpperCase()}</span></div>
       <div class="doc-meta knowledge-course-meta">
         <strong>${escapeHtml(doc.title)}</strong>
         <span class="status ${statusClass(doc.indexed)}">${escapeHtml(doc.indexed)}</span>
@@ -141,6 +144,14 @@ function renderDocuments() {
   document.querySelectorAll(".doc-action-btn").forEach((btn) => {
     btn.addEventListener("click", handleDocumentAction);
   });
+}
+
+function docTypeClass(type = "") {
+  const value = String(type).toLowerCase();
+  if (value.includes("proposal") || value.includes("plan")) return "is-strategy";
+  if (value.includes("roadmap") || value.includes("pitch")) return "is-startup";
+  if (value.includes("cohort") || value.includes("csv")) return "is-data";
+  return "is-program";
 }
 
 function handleDocumentAction(event) {

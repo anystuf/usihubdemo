@@ -119,7 +119,7 @@ export function renderStartupDetailPage() {
         <h3>Stage-specific operating snapshot</h3>
         <div class="detail-grid" style="margin-top: 12px;">
           ${stageMetrics.map((kpi) => `
-            <div class="detail-stat"><span>${escapeHtml(kpi.label)}</span><strong>${escapeHtml(kpi.value)}</strong></div>
+            <div class="detail-stat startup-kpi-stat"><span>${escapeHtml(kpi.label)}</span><strong>${escapeHtml(kpi.value)}</strong><small class="startup-kpi-meta ${kpi.status === "Data gap" ? "is-gap" : ""}">${escapeHtml(kpi.status || "Recorded")} · ${escapeHtml(kpi.source || "Source not recorded")}</small></div>
           `).join("")}
         </div>
         <article class="insight-item" style="margin-top: 12px;">

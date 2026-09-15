@@ -12,6 +12,12 @@ const startupProfiles = {
       { label: "Regulatory readiness", value: "Low" },
       { label: "Business capacity", value: "Needs mentor" }
     ],
+    stageMetrics: [
+      { label: "Prototype maturity", value: "Technical roadmap available", source: "Growth roadmap", status: "Recorded" },
+      { label: "User testing", value: "Not recorded", source: "No validated user-test log", status: "Data gap" },
+      { label: "Feedback loop", value: "Permissioned pilot required", source: "Risk assessment", status: "Action needed" },
+      { label: "Validation blocker", value: "Pilot permission and partner", source: "Risk assessment", status: "Action needed" }
+    ],
     recommendedSupport: ["Create permission-ready pilot brief", "Match with regulated-tech mentor", "Find university or enterprise pilot partner"]
   },
   "venture-beta": {
@@ -22,6 +28,12 @@ const startupProfiles = {
       { label: "Product focus", value: "Unclear" },
       { label: "Buyer interviews", value: "Needed" },
       { label: "Margin model", value: "Missing" }
+    ],
+    stageMetrics: [
+      { label: "Repeat usage", value: "Not recorded", source: "No retention data", status: "Data gap" },
+      { label: "Retention signal", value: "Not recorded", source: "No retention data", status: "Data gap" },
+      { label: "Revenue traction", value: "Margin model missing", source: "Current KPI record", status: "Action needed" },
+      { label: "Segment clarity", value: "Needs narrowing", source: "Risk assessment", status: "Action needed" }
     ],
     recommendedSupport: ["Choose one hero product", "Run 10 buyer interviews", "Build margin and supply stability model"]
   },
@@ -34,6 +46,12 @@ const startupProfiles = {
       { label: "MAU", value: "Missing" },
       { label: "Repeat use", value: "Missing" }
     ],
+    stageMetrics: [
+      { label: "Prototype maturity", value: "One tournament workflow to test", source: "Recommended support", status: "Action needed" },
+      { label: "User testing", value: "MAU missing", source: "Current KPI record", status: "Data gap" },
+      { label: "Feedback loop", value: "Repeat use missing", source: "Current KPI record", status: "Data gap" },
+      { label: "Validation blocker", value: "Venue supply and LOIs", source: "Risk assessment", status: "Action needed" }
+    ],
     recommendedSupport: ["Secure venue LOIs", "Define activation metric", "Test one tournament workflow"]
   },
   "venture-epsilon": {
@@ -45,6 +63,12 @@ const startupProfiles = {
       { label: "Onboarding", value: "Needs productization" },
       { label: "Support capacity", value: "Monitor" }
     ],
+    stageMetrics: [
+      { label: "Acquisition channel", value: "Partner-led acquisition", source: "Recommended support", status: "Recorded" },
+      { label: "Conversion signal", value: "Not recorded", source: "No conversion data", status: "Data gap" },
+      { label: "Sales motion", value: "B2B SaaS growth", source: "Mentor need", status: "Recorded" },
+      { label: "Unit economics", value: "Not recorded", source: "No unit economics data", status: "Data gap" }
+    ],
     recommendedSupport: ["Build onboarding kit", "Create referral channel", "Segment sellers by order volume"]
   },
   "venture-zeta": {
@@ -55,6 +79,12 @@ const startupProfiles = {
       { label: "Prototype", value: "PoC" },
       { label: "Medical experts", value: "Needed" },
       { label: "Buyer segment", value: "Unclear" }
+    ],
+    stageMetrics: [
+      { label: "Prototype maturity", value: "PoC", source: "Current KPI record", status: "Recorded" },
+      { label: "User testing", value: "Medical trainers to interview", source: "Recommended support", status: "Action needed" },
+      { label: "Feedback loop", value: "Medical expert review needed", source: "Risk assessment", status: "Action needed" },
+      { label: "Validation blocker", value: "Buyer segment and medical claims", source: "Missing data", status: "Action needed" }
     ],
     recommendedSupport: ["Interview CPR trainers", "Clarify buyer segment", "Review IP and medical claims"]
   }
@@ -188,6 +218,7 @@ function enrichStartup(startup, linkedDocuments) {
     riskReason,
     mentorNeed,
     kpis,
+    stageMetrics: profile.stageMetrics || [],
     recommendedSupport,
     lastCheckIn,
     linkedDocuments: linkedDocuments.map((doc) => ({
