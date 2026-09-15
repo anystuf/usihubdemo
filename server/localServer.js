@@ -12,6 +12,10 @@ loadLocalEnv();
 const PORT = Number(process.env.PORT || 4173);
 const PUBLIC_DIR = path.resolve(__dirname, "../public");
 const GEMINI_MODELS = ["gemini-3.5-flash", "gemini-2.5-flash", "gemini-2.5-pro"];
+const CORS_ORIGINS = (process.env.CORS_ORIGIN || "http://localhost:4173,http://localhost:4174,http://localhost:4175")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
 
 const mimeTypes = {
   ".html": "text/html; charset=utf-8",
@@ -26,6 +30,18 @@ const mimeTypes = {
 
 const server = http.createServer(async (req, res) => {
   try {
+    applyCors(req, res);
+    if (req.method === "OPTIONS") {
+      res.writeHead(204);
+      res.end();
+      return;
+    }
+
+    if (req.method === "GET" && req.url === "/health") {
+      sendJson(res, 200, { ok: true, service: "usi-hub-ai", geminiConfigured: Boolean(process.env.GEMINI_API_KEY) });
+      return;
+    }
+
     if (req.method === "POST" && req.url === "/api/usi-brain") {
       await handleUsiBrain(req, res);
       return;
@@ -46,6 +62,16 @@ const server = http.createServer(async (req, res) => {
     sendJson(res, 500, { error: error.message || "Unexpected server error" });
   }
 });
+
+function applyCors(req, res) {
+  const requestOrigin = req.headers.origin;
+  if (requestOrigin && CORS_ORIGINS.includes(requestOrigin)) {
+    res.setHeader("Access-Control-Allow-Origin", requestOrigin);
+    res.setHeader("Vary", "Origin");
+  }
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+}
 
 server.listen(PORT, () => {
   console.log(`USI Hub local server running at http://localhost:${PORT}`);

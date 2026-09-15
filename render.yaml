@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: usi-hub-ai
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node server/localServer.js
+    healthCheckPath: /health
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: CORS_ORIGIN
+        value: https://anystuf.github.io

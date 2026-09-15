@@ -90,7 +90,8 @@ function buildDemoContext() {
 }
 
 async function callLocalProxy(prompt, context, conversation) {
-  const response = await fetch("/api/usi-brain", {
+  const proxyUrl = globalThis.USI_AI_PROXY_URL || "/api/usi-brain";
+  const response = await fetch(proxyUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
