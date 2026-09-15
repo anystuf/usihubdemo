@@ -254,16 +254,19 @@ function enrichTask(task, index) {
 
 function buildMetrics(startups, documents, tasks, aiProposals) {
   const atRisk = startups.filter((startup) => startup.risk === "High").length;
-  const pendingActions = startups.reduce((sum, startup) => sum + (startup.missingData?.length || 0), 0);
-  const indexedDocs = documents.filter((doc) => doc.indexed === "Ready").length;
   const openTasks = tasks.filter((task) => task.status !== "Done").length;
+  const overdueTasks = tasks.filter((task) => task.status !== "Done" && new Date(`${task.due}T23:59:59`) < new Date()).length;
+  const missingData = startups.reduce((sum, startup) => sum + (startup.missingData?.length || 0), 0);
+  const staleCheckIns = startups.filter((startup) => !startup.lastCheckIn || (Date.now() - new Date(`${startup.lastCheckIn}T00:00:00`).getTime()) >= 14 * 24 * 60 * 60 * 1000).length;
 
   return [
     { label: "Total startups", value: String(startups.length), note: "Active startup profiles in demo OS" },
-    { label: "At-risk startups", value: String(atRisk), note: "Require SGA/Leader review" },
-    { label: "Pending actions", value: String(pendingActions), note: "Missing data and follow-up requests" },
+    { label: "Startups needing attention", value: String(atRisk), note: "Require SGA/Leader review" },
     { label: "Open support tasks", value: String(openTasks), note: "Incubation worklist items not done" },
-    { label: "Documents indexed", value: String(indexedDocs), note: `${documents.length} documents tracked in Knowledge Base` },
+    { label: "Overdue actions", value: String(overdueTasks), note: "Open tasks past their due date" },
+    { label: "Startups overdue for check-in", value: String(staleCheckIns), note: "No update recorded in 14+ days" },
+    { label: "Missing information", value: String(missingData), note: "Data items to add" },
+    { label: "Profiles ready", value: `${documents.filter((doc) => doc.indexed === "Ready").length}/${documents.length}`, note: "Documents ready to reference" },
     { label: "AI proposals", value: String(aiProposals.filter((proposal) => proposal.approvalStatus === "pending").length), note: "Human approval required before updates" }
   ];
 }

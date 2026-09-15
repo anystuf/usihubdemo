@@ -2,7 +2,7 @@ import { callFunction } from "./firebaseService.js";
 import { generateBrainResponse } from "./brainService.js";
 import { getDemoData } from "./dataService.js";
 
-export async function askUsiBrain(prompt) {
+export async function askUsiBrain(prompt, conversation = []) {
   const context = buildDemoContext();
   const demoFirst = shouldUseDemoEvidenceEngine(prompt, context);
 
@@ -17,7 +17,7 @@ export async function askUsiBrain(prompt) {
   }
 
   try {
-    const response = await callLocalProxy(prompt, context);
+    const response = await callLocalProxy(prompt, context, conversation);
     const modelInfo = response.modelUsed || "Gemini 3.5 Flash";
     return normalizeBrainResponse(response, `${modelInfo} via local proxy`);
   } catch (error) {
@@ -25,7 +25,7 @@ export async function askUsiBrain(prompt) {
   }
 
   try {
-    const response = await callFunction("askUsiBrain", { prompt, context });
+    const response = await callFunction("askUsiBrain", { prompt, context, conversation });
     return normalizeBrainResponse(response, "Gemini 3.5 Flash via Firebase Function");
   } catch (error) {
     const fallback = await generateBrainResponse(prompt);
@@ -89,13 +89,13 @@ function buildDemoContext() {
   };
 }
 
-async function callLocalProxy(prompt, context) {
+async function callLocalProxy(prompt, context, conversation) {
   const response = await fetch("/api/usi-brain", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ prompt, context })
+    body: JSON.stringify({ prompt, context, conversation })
   });
 
   if (!response.ok) {
@@ -115,7 +115,8 @@ function normalizeBrainResponse(response, provider) {
     missingData: asList(response.missingData),
     nextActions: asList(response.nextActions || response.suggestedNextActions),
     proposedUpdate: response.proposedUpdate || null,
-    systemNote: response.systemNote || ""
+    systemNote: response.systemNote || "",
+    parseError: response.parseError === true
   };
 }
 

@@ -60,13 +60,13 @@ async function handleUsiBrain(req, res) {
       return;
     }
 
-    const { prompt, context } = await readJsonBody(req);
+    const { prompt, context, conversation } = await readJsonBody(req);
     if (!prompt || typeof prompt !== "string") {
       sendJson(res, 400, { error: "Prompt is required" });
       return;
     }
 
-    const { text: responseText, model } = await callGemini(prompt, context || {}, apiKey);
+    const { text: responseText, model } = await callGemini(prompt, context || {}, conversation, apiKey);
     const parsedResponse = parseStructuredResponse(responseText);
     sendJson(res, 200, { ...parsedResponse, modelUsed: model });
   } catch (error) {
@@ -105,7 +105,7 @@ async function handleSeedFirestore(res) {
   });
 }
 
-async function callGemini(prompt, context, apiKey) {
+async function callGemini(prompt, context, conversation, apiKey) {
   const systemInstruction = [
     "You are USI Intelligence, a prototype RAG assistant for USI Hub / UEH Innovation Platform.",
     "Answer for startup incubation management and founder support.",
@@ -149,6 +149,7 @@ async function callGemini(prompt, context, apiKey) {
           parts: [{ text: systemInstruction }]
         },
         contents: [
+          ...normalizeConversation(conversation),
           {
             role: "user",
             parts: [
@@ -204,9 +205,26 @@ async function callGemini(prompt, context, apiKey) {
   throw new Error(`All Gemini models failed (tried: ${GEMINI_MODELS.join(", ")})`);
 }
 
+function normalizeConversation(conversation) {
+  if (!Array.isArray(conversation)) return [];
+
+  return conversation
+    .filter((message) => (
+      message &&
+      (message.role === "user" || message.role === "model") &&
+      typeof message.text === "string" &&
+      message.text.trim()
+    ))
+    .slice(-10)
+    .map((message) => ({
+      role: message.role,
+      parts: [{ text: message.text.trim().slice(0, 4000) }]
+    }));
+}
+
 function parseStructuredResponse(text) {
   try {
-    const parsed = JSON.parse(text);
+    const parsed = JSON.parse(extractJson(text));
     return {
       answer: asString(parsed.answer),
       evidence: asArray(parsed.evidence),
@@ -214,25 +232,27 @@ function parseStructuredResponse(text) {
       confidence: asString(parsed.confidence || "Medium"),
       missingData: asArray(parsed.missingData),
       nextActions: asArray(parsed.nextActions),
-      proposedUpdate: normalizeProposedUpdate(parsed.proposedUpdate)
+      proposedUpdate: normalizeProposedUpdate(parsed.proposedUpdate),
+      parseError: false
     };
   } catch (error) {
     return {
-      answer: text || "Gemini returned an empty response.",
-      evidence: ["Raw Gemini response could not be parsed as structured JSON."],
-      sources: ["Gemini API response"],
+      answer: "The assistant could not format this response for review. Please try the question again.",
+      evidence: ["The model response did not match the required structured format."],
+      sources: [],
       confidence: "Low",
-      missingData: ["Structured JSON response"],
-      nextActions: ["Review the model response and retry with a more specific question."],
-      proposedUpdate: {
-        type: "AI response review",
-        startupName: "Program",
-        proposedChange: "Review unstructured Gemini output before using it.",
-        rationale: "Model response could not be parsed into the required schema.",
-        approvalStatus: "pending"
-      }
+      missingData: ["A structured AI response"],
+      nextActions: ["Try the question again with a more specific startup or task."],
+      proposedUpdate: null,
+      parseError: true
     };
   }
+}
+
+function extractJson(text) {
+  const value = String(text || "").trim();
+  const fenced = value.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
+  return fenced ? fenced[1].trim() : value;
 }
 
 function serveStatic(req, res) {
