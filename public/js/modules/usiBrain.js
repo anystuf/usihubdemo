@@ -72,13 +72,14 @@ export function bindUsiBrain() {
 
 async function askBrain(prompt) {
   isThinking = true;
+  const conversation = buildConversationHistory();
   messages.push({ role: "user", text: prompt });
   const loadingId = `loading-${Date.now()}`;
   messages.push({ role: "loading", id: loadingId, text: "USI Intelligence is checking sources" });
   renderMessages();
 
   try {
-    const response = await askUsiBrain(prompt);
+    const response = await askUsiBrain(prompt, conversation);
     const proposalId = `proposal-${Date.now()}-${Math.random().toString(36).slice(2)}`;
     messages = messages.filter((message) => message.id !== loadingId);
     messages.push({ role: "ai-card", data: response, proposalId });
@@ -89,6 +90,17 @@ async function askBrain(prompt) {
     isThinking = false;
     renderMessages();
   }
+}
+
+function buildConversationHistory() {
+  return messages
+    .filter((message) => message.role === "user" || message.role === "ai-card")
+    .map((message) => ({
+      role: message.role === "user" ? "user" : "model",
+      text: message.role === "user" ? message.text : message.data?.answer
+    }))
+    .filter((message) => typeof message.text === "string" && message.text.trim())
+    .slice(-10);
 }
 
 function renderMessages() {
@@ -165,6 +177,7 @@ function renderAiCard(response, proposalId) {
       </div>
 
       ${response.proposedUpdate ? renderProposedUpdate(response.proposedUpdate, proposalId) : ""}
+      ${response.parseError ? `<p class="brain-system-note">${escapeHtml("No proposal was created because the response was not structured for human review.")}</p>` : ""}
       ${response.systemNote ? `<p class="brain-system-note">${escapeHtml(response.systemNote)}</p>` : ""}
     </div>
   `;
