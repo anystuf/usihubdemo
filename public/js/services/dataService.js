@@ -191,6 +191,7 @@ function enrichPlatformData(data) {
   const startups = (data.startups || []).map((startup) => enrichStartup(startup, documentsByStartup[startup.name] || []));
   const projectTasks = (data.projectTasks || []).map((task, index) => enrichTask(task, index));
   const documents = (data.documents || []).map((doc) => enrichDocument(doc));
+  const contacts = (data.contacts || []).map(enrichContact);
   const aiProposals = data.aiProposals || buildDemoAiProposals(startups);
   const metrics = buildMetrics(startups, documents, projectTasks, aiProposals);
 
@@ -200,8 +201,19 @@ function enrichPlatformData(data) {
     startups,
     projectTasks,
     documents,
+    contacts,
     aiProposals,
     dashboard: buildDashboard(startups, documents, projectTasks)
+  };
+}
+
+function enrichContact(contact) {
+  return {
+    source: contact.source || "USI ecosystem directory",
+    owner: contact.owner || "USI program team",
+    lastVerified: contact.lastVerified || "2026-09-15",
+    nextAction: contact.nextAction || `Review fit for ${(contact.matchFor || []).join(", ") || "relevant startups"} and assign follow-up.`,
+    ...contact
   };
 }
 

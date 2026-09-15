@@ -9,13 +9,14 @@ import { bindCohort22026, renderCohort22026 } from "./modules/cohort2_2026.js";
 import { initAnalytics } from "./services/firebaseService.js";
 import { getDataSource, loadPlatformData } from "./services/dataService.js";
 import { getCurrentRole, setCurrentRole, ROLES, getRoleGreeting } from "./services/roleService.js";
+import { getLanguage, initLanguage, setLanguage, translate } from "./services/languageService.js";
 
 const routes = {
   "overview": { title: "Overview Dashboard", render: renderOverview, bind: bindOverview },
   "startup-os": { title: "Startup List", render: renderStartupOs, bind: bindStartupOs },
   "cohort-2-2026": { title: "Cohort 2 2026", render: renderCohort22026, bind: bindCohort22026 },
   "startup-detail": { title: "Startup Detail", render: renderStartupDetailPage, bind: bindStartupDetailPage },
-  "contacts": { title: "Contacts", render: renderContacts, bind: bindContacts },
+  "contacts": { title: "Khám phá hệ sinh thái", render: renderContacts, bind: bindContacts },
   "usi-intelligence": { title: "USI Intelligence", render: renderUsiBrain, bind: bindUsiBrain },
   "project-board": { title: "Incubation Worklist", render: renderProjectBoard, bind: bindProjectBoard },
   "task-detail": { title: "Task Detail", render: renderTaskDetailPage, bind: bindTaskDetailPage },
@@ -31,7 +32,7 @@ function renderRoute() {
   const routeKey = getRoute();
   const route = routes[routeKey];
 
-  $("#page-title").textContent = route.title;
+  $("#page-title").textContent = translate(route.title);
   try {
     $("#app-root").innerHTML = route.render();
   } catch (error) {
@@ -55,8 +56,54 @@ function renderRoute() {
 }
 
 window.addEventListener("hashchange", renderRoute);
+window.addEventListener("languageChanged", () => {
+  renderRoute();
+  applyLanguageChrome();
+  applyTheme();
+});
 $("#mobile-menu-button")?.addEventListener("click", () => $(".sidebar")?.classList.toggle("open"));
 $$(".nav-link").forEach((link) => link.addEventListener("click", () => $(".sidebar")?.classList.remove("open")));
+
+const themeKey = "usiHubTheme";
+function getTheme() {
+  try { return localStorage.getItem(themeKey) === "dark" ? "dark" : "light"; } catch { return "light"; }
+}
+function applyTheme(theme = getTheme()) {
+  document.documentElement.dataset.theme = theme;
+  const button = $("#theme-switch");
+  if (!button) return;
+  const dark = theme === "dark";
+  button.textContent = getLanguage() === "vi" ? (dark ? "Sáng" : "Tối") : (dark ? "Light" : "Dark");
+  button.setAttribute("aria-label", getLanguage() === "vi" ? (dark ? "Chuyển sang giao diện sáng" : "Chuyển sang giao diện tối") : (dark ? "Switch to light mode" : "Switch to dark mode"));
+  button.setAttribute("aria-pressed", String(dark));
+}
+function applyLanguageChrome() {
+  const vi = getLanguage() === "vi";
+  const labels = {
+    overview: "Overview",
+    "startup-os": "Startups",
+    "cohort-2-2026": "Cohort 2 2026",
+    "startup-detail": "Startup Detail",
+    contacts: "Khám phá hệ sinh thái",
+    "project-board": "Incubation Tasks",
+    "task-detail": "Task Detail",
+    "knowledge-base": "Knowledge Base",
+    "usi-intelligence": "USI Intelligence"
+  };
+  document.querySelector("#platform-label").textContent = translate("UEH Innovation Platform");
+  document.querySelector("#language-switch").textContent = vi ? "English" : "Tiếng Việt";
+  document.querySelector("#language-switch").setAttribute("aria-label", vi ? "Switch to English" : "Chuyển sang tiếng Việt");
+  document.querySelectorAll(".nav-link").forEach((link) => { link.textContent = translate(labels[link.dataset.route]); });
+}
+initLanguage();
+$("#language-switch")?.addEventListener("click", () => setLanguage(getLanguage() === "vi" ? "en" : "vi"));
+$("#theme-switch")?.addEventListener("click", () => {
+  const nextTheme = getTheme() === "dark" ? "light" : "dark";
+  try { localStorage.setItem(themeKey, nextTheme); } catch {}
+  applyTheme(nextTheme);
+});
+applyTheme();
+applyLanguageChrome();
 
 // Role selector binding
 $("#role-selector")?.addEventListener("change", (event) => {
