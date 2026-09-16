@@ -1066,7 +1066,8 @@
 .knowledge-featured-kicker { display:block; margin-bottom:10px; font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; opacity:.78; }
 .knowledge-featured-card h3 { margin:0 0 8px; font-size:1.02rem; line-height:1.3; }
 .knowledge-featured-card p { margin:0; max-width:34ch; color:rgba(255,255,255,.82); font-size:.8rem; line-height:1.45; }
-.knowledge-featured-arrow { font-size:1.6rem; opacity:.9; }
+.knowledge-featured-arrow { position:relative; z-index:2; display:grid; place-items:center; width:40px; height:40px; flex:0 0 40px; border:0; border-radius:999px; color:#fff; background:rgba(255,255,255,.14); font-size:1.6rem; line-height:1; opacity:.95; cursor:pointer; text-decoration:none; transition:background .16s ease, transform .16s ease; }
+.knowledge-featured-arrow:hover, .knowledge-featured-arrow:focus-visible { color:#fff; background:rgba(255,255,255,.28); transform:translateX(3px); outline:2px solid rgba(255,255,255,.72); outline-offset:2px; }
 .knowledge-course-cover.is-strategy { background:linear-gradient(135deg,#172554,#0f766e); }
 .knowledge-course-cover.is-startup { background:linear-gradient(135deg,#7c2d12,#ea580c); }
 .knowledge-course-cover.is-data { background:linear-gradient(135deg,#3b0764,#7c3aed); }

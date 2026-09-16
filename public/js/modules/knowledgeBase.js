@@ -17,7 +17,19 @@ export function renderKnowledgeBase() {
       <span class="pill">${documents.length} ${translate("resources")}</span>
     </section>
     <section class="knowledge-featured-grid" aria-label="Featured resources">
-      ${documents.slice(0, 3).map((doc) => `<article class="knowledge-featured-card ${docTypeClass(doc.type)}"><img class="knowledge-featured-art" src="${visualAssetRoot}${docTypeVisual(doc.type)}" alt="" /><div class="knowledge-featured-copy"><span class="knowledge-featured-kicker">${escapeHtml(translate(doc.type || "Resource"))}</span><h3>${escapeHtml(doc.title)}</h3><p>${escapeHtml(translate(doc.evidenceUse))}</p></div><span class="knowledge-featured-arrow" aria-hidden="true">→</span></article>`).join("")}
+      ${documents.slice(0, 3).map((doc) => `
+        <article class="knowledge-featured-card ${docTypeClass(doc.type)}">
+          <img class="knowledge-featured-art" src="${visualAssetRoot}${docTypeVisual(doc.type)}" alt="" />
+          <div class="knowledge-featured-copy">
+            <span class="knowledge-featured-kicker">${escapeHtml(translate(doc.type || "Resource"))}</span>
+            <h3>${escapeHtml(doc.title)}</h3>
+            <p>${escapeHtml(translate(doc.evidenceUse))}</p>
+          </div>
+          ${doc.url
+            ? `<a class="knowledge-featured-arrow" href="${escapeHtml(doc.url)}" target="_blank" rel="noreferrer" aria-label="Open ${escapeHtml(doc.title)}">→</a>`
+            : `<button class="knowledge-featured-arrow" type="button" data-featured-action="ask-brain" data-doc-title="${escapeHtml(doc.title)}" data-doc-startup="${escapeHtml(doc.startup)}" aria-label="Ask USI Intelligence about ${escapeHtml(doc.title)}">→</button>`}
+        </article>
+      `).join("")}
     </section>
     <section class="grid grid-3 knowledge-stats" style="margin-bottom: 16px;">
       <article class="card metric-card"><span>Total sources</span><strong>${documents.length}</strong><p>Tracked source metadata for USI Intelligence</p></article>
@@ -79,6 +91,9 @@ export function bindKnowledgeBase() {
     $(`#${id}`)?.addEventListener("input", renderDocuments);
   });
   $("#seed-firestore-button")?.addEventListener("click", seedFirestore);
+  document.querySelectorAll("[data-featured-action]").forEach((button) => {
+    button.addEventListener("click", handleFeaturedAction);
+  });
   renderDocuments();
 
   if (!actionListenerBound) {
@@ -86,6 +101,19 @@ export function bindKnowledgeBase() {
       if ($("#document-list")) renderDocuments();
     });
     actionListenerBound = true;
+  }
+
+  function handleFeaturedAction(event) {
+    const button = event.currentTarget;
+    const prompt = `Ask USI Intelligence about: ${button.dataset.docTitle}${button.dataset.docStartup ? ` (${button.dataset.docStartup})` : ""}`;
+    window.location.hash = "#usi-intelligence";
+    setTimeout(() => {
+      const input = document.querySelector("#brain-input");
+      if (!input) return;
+      input.value = prompt;
+      input.focus();
+      document.querySelector("#chat-form")?.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+    }, 100);
   }
 }
 
