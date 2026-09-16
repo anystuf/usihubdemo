@@ -341,7 +341,10 @@
   right: 0;
   bottom: 72px;
   width: min(380px, calc(100vw - 32px));
-  height: 520px;
+  height: min(520px, calc(100vh - 96px));
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 14px;
@@ -365,7 +368,8 @@
 }
 
 .floating-ai-messages {
-  height: 382px;
+  flex: 1 1 auto;
+  min-height: 0;
   overflow: auto;
   padding: 14px;
   background: #eef6fb;
@@ -392,6 +396,7 @@
 
 .floating-ai-form {
   display: flex;
+  flex: 0 0 auto;
   gap: 8px;
   padding: 12px;
   border-top: 1px solid var(--line);

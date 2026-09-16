@@ -293,11 +293,12 @@
   .floating-ai-panel {
     right: -6px;
     width: calc(100vw - 28px);
-    height: 78vh;
+    height: min(78vh, calc(100vh - 84px));
+    min-height: 280px;
   }
 
   .floating-ai-messages {
-    height: calc(78vh - 138px);
+    min-height: 0;
   }
 
   .brain-response-head {
