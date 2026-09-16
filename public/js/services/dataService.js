@@ -177,13 +177,25 @@ function mergeWithFallback(remote) {
   return {
     ...demoData,
     startups: remote.startups.length ? remote.startups : demoData.startups,
-    documents: remote.documents.length ? remote.documents : demoData.documents,
+    documents: mergeRecords(remote.documents, demoData.documents, (item) => item.title),
     projectTasks: remote.projectTasks.length ? remote.projectTasks : demoData.projectTasks,
     questions: remote.questions.length ? remote.questions : demoData.questions,
     aiInsights: remote.aiInsights.length ? remote.aiInsights : demoData.aiInsights,
     sourceSummary: remote.sourceSummary.length ? remote.sourceSummary : demoData.sourceSummary,
-    contacts: remote.contacts.length ? remote.contacts : demoData.contacts
+    contacts: mergeRecords(remote.contacts, demoData.contacts, (item) => item.id || item.name)
   };
+}
+
+function mergeRecords(remoteRecords, demoRecords, keyOf) {
+  const merged = new Map();
+  for (const record of demoRecords || []) {
+    merged.set(keyOf(record), record);
+  }
+  for (const record of remoteRecords || []) {
+    const key = keyOf(record);
+    merged.set(key, { ...merged.get(key), ...record });
+  }
+  return [...merged.values()];
 }
 
 function enrichPlatformData(data) {
