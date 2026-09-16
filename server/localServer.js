@@ -191,12 +191,8 @@ async function callGemini(prompt, context, conversation, apiKey) {
         generationConfig: {
           temperature: 0.35,
           maxOutputTokens: 1400,
-          responseFormat: {
-            text: {
-              mimeType: "application/json",
-              schema: brainResponseSchema
-            }
-          }
+          responseMimeType: "application/json",
+          responseSchema: brainResponseSchema
         }
       };
 

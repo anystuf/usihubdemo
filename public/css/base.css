@@ -117,3 +117,211 @@ ol {
   white-space: nowrap;
   border: 0;
 }
+
+html[data-theme="dark"] {
+  --navy-950: #050b18;
+  --navy-900: #e8f0fb;
+  --navy-800: #c9dcf3;
+  --orange-100: #3a2419;
+  --telegram-blue-100: #122d45;
+  --surface-blue: #142338;
+  --ink-900: #edf3fb;
+  --ink-700: #c4d0df;
+  --ink-500: #91a1b6;
+  --ink-300: #64748b;
+  --line: #29384d;
+  --surface: #111b2b;
+  --surface-chat: #13263a;
+  --white: #ffffff;
+  --green-100: #12352d;
+  --amber-100: #3b2d14;
+  --red-100: #3c1d27;
+  --blue-100: #172f55;
+  --shadow: 0 18px 46px rgba(0, 0, 0, 0.28);
+  --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.22);
+}
+
+html[data-theme="dark"] body {
+  background: linear-gradient(180deg, #0e1b2d, #0b1321 280px), var(--surface);
+}
+
+html[data-theme="dark"] input,
+html[data-theme="dark"] select,
+html[data-theme="dark"] textarea,
+html[data-theme="dark"] .card,
+html[data-theme="dark"] .overview-chart,
+html[data-theme="dark"] .overview-metric,
+html[data-theme="dark"] .overview-priority,
+html[data-theme="dark"] .overview-insight,
+html[data-theme="dark"] .overview-task,
+html[data-theme="dark"] .overview-disclosure-item,
+html[data-theme="dark"] .detail-stat,
+html[data-theme="dark"] .insight-item,
+html[data-theme="dark"] .document-row,
+html[data-theme="dark"] .knowledge-featured-card,
+html[data-theme="dark"] .uii-startup-card,
+html[data-theme="dark"] .ecosystem-service,
+html[data-theme="dark"] .ecosystem-signals {
+  background: #182538;
+  color: var(--ink-900);
+  border-color: var(--line);
+}
+
+html[data-theme="dark"] .topbar,
+html[data-theme="dark"] .utility-modal,
+html[data-theme="dark"] .modal-backdrop,
+html[data-theme="dark"] .select,
+html[data-theme="dark"] .input,
+html[data-theme="dark"] .textarea {
+  color: var(--ink-900);
+}
+
+html[data-theme="dark"] .topbar {
+  background: rgba(14, 27, 45, 0.9);
+  border-color: var(--line);
+}
+
+html[data-theme="dark"] .topbar-control,
+html[data-theme="dark"] .role-selector {
+  background: #182538;
+  color: var(--ink-900);
+  border-color: var(--line);
+}
+
+html[data-theme="dark"] .mobile-menu-button {
+  background: #182538;
+  color: var(--ink-900);
+  border-color: var(--line);
+}
+
+html[data-theme="dark"] .topbar-control.primary,
+html[data-theme="dark"] .button.orange {
+  color: #ffffff;
+}
+
+html[data-theme="dark"] .button.secondary,
+html[data-theme="dark"] .pill {
+  background: #22344c;
+  color: var(--ink-900);
+  border-color: var(--line);
+}
+
+html[data-theme="dark"] .sidebar {
+  color: #ffffff;
+  background:
+    linear-gradient(180deg, rgba(240, 107, 31, 0.1), transparent 190px),
+    linear-gradient(180deg, #102448, #050b18);
+}
+
+html[data-theme="dark"] .sidebar .nav-link,
+html[data-theme="dark"] .sidebar .brand small {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+html[data-theme="dark"] .sidebar .nav-link.active,
+html[data-theme="dark"] .sidebar .nav-link:hover {
+  color: #ffffff;
+}
+
+html[data-theme="dark"] .overview-chart,
+html[data-theme="dark"] .overview-health-head,
+html[data-theme="dark"] .table-head,
+html[data-theme="dark"] .detail-stat,
+html[data-theme="dark"] .uii-startup-meta div {
+  background: #1d2d43;
+}
+
+html[data-theme="dark"] .knowledge-featured-card,
+html[data-theme="dark"] .knowledge-course-card,
+html[data-theme="dark"] .document-row,
+html[data-theme="dark"] .overview-health-row {
+  color: var(--ink-900);
+  background: #182538;
+}
+
+html[data-theme="dark"] .overview-metric strong,
+html[data-theme="dark"] .overview-section-head h3,
+html[data-theme="dark"] .overview-chart h4,
+html[data-theme="dark"] .overview-priority strong,
+html[data-theme="dark"] .overview-insight strong,
+html[data-theme="dark"] .overview-task strong,
+html[data-theme="dark"] .detail-stat strong,
+html[data-theme="dark"] .startup-name strong,
+html[data-theme="dark"] .uii-startup-heading h3,
+html[data-theme="dark"] .uii-startup-title {
+  color: #eef5ff;
+}
+
+html[data-theme="dark"] .overview-donut::after,
+html[data-theme="dark"] .detail-stat,
+html[data-theme="dark"] .uii-startup-meta div,
+html[data-theme="dark"] .startup-logo-image {
+  background: var(--surface-blue);
+}
+
+html[data-theme="dark"] .overview-health-head,
+html[data-theme="dark"] .table-head {
+  background: #1d2b40;
+}
+
+html[data-theme="dark"] .table-row,
+html[data-theme="dark"] .task-card,
+html[data-theme="dark"] .startup-card,
+html[data-theme="dark"] .source-card,
+html[data-theme="dark"] .qa-card {
+  background: #182538;
+  color: var(--ink-900);
+  border-color: var(--line);
+}
+
+html[data-theme="dark"] .startup-card.active {
+  background: linear-gradient(180deg, #22344c, #2d2a27);
+}
+
+html[data-theme="dark"] .chat-shell {
+  background:
+    linear-gradient(rgba(19, 38, 58, 0.92), rgba(19, 38, 58, 0.92)),
+    var(--surface-chat);
+}
+
+html[data-theme="dark"] .message,
+html[data-theme="dark"] .brain-response,
+html[data-theme="dark"] .brain-details,
+html[data-theme="dark"] .ai-proposal-card {
+  background: #182538;
+  color: var(--ink-900);
+  border-color: var(--line);
+}
+
+html[data-theme="dark"] .message.user {
+  background: linear-gradient(135deg, #24527f, #1b3e64);
+  color: #ffffff;
+}
+
+html[data-theme="dark"] .brain-next-actions span,
+html[data-theme="dark"] .suggestion-list button {
+  background: #22344c;
+  color: var(--ink-900);
+  border-color: var(--line);
+}
+
+html[data-theme="dark"] .chat-composer {
+  background: #111b2b;
+  border-color: var(--line);
+}
+
+html[data-theme="dark"] .floating-ai-panel {
+  background: #182538;
+  color: var(--ink-900);
+}
+
+html[data-theme="dark"] .floating-ai-messages {
+  background: #13263a;
+}
+
+html[data-theme="dark"] .floating-message {
+  background: #22344c;
+  color: var(--ink-900);
+}
+
+html[data-theme="dark"] ::placeholder { color: var(--ink-500); }

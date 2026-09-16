@@ -191,7 +191,6 @@ function enrichPlatformData(data) {
   const startups = (data.startups || []).map((startup) => enrichStartup(startup, documentsByStartup[startup.name] || []));
   const projectTasks = (data.projectTasks || []).map((task, index) => enrichTask(task, index));
   const documents = (data.documents || []).map((doc) => enrichDocument(doc));
-  const contacts = (data.contacts || []).map(enrichContact);
   const aiProposals = data.aiProposals || buildDemoAiProposals(startups);
   const metrics = buildMetrics(startups, documents, projectTasks, aiProposals);
 
@@ -201,19 +200,8 @@ function enrichPlatformData(data) {
     startups,
     projectTasks,
     documents,
-    contacts,
     aiProposals,
     dashboard: buildDashboard(startups, documents, projectTasks)
-  };
-}
-
-function enrichContact(contact) {
-  return {
-    source: contact.source || "USI ecosystem directory",
-    owner: contact.owner || "USI program team",
-    lastVerified: contact.lastVerified || "2026-09-15",
-    nextAction: contact.nextAction || `Review fit for ${(contact.matchFor || []).join(", ") || "relevant startups"} and assign follow-up.`,
-    ...contact
   };
 }
 
@@ -266,15 +254,22 @@ function enrichTask(task, index) {
 
 function buildMetrics(startups, documents, tasks, aiProposals) {
   const atRisk = startups.filter((startup) => startup.risk === "High").length;
-  const openTasks = tasks.filter((task) => task.status !== "Done").length;
-  const overdueTasks = tasks.filter((task) => task.status !== "Done" && new Date(`${task.due}T23:59:59`) < new Date()).length;
+  const openTasks = tasks.filter((task) => task.status !== "Done");
+  const overdueTasks = openTasks.filter((task) => {
+    const dueDate = new Date(`${task.due}T23:59:59`);
+    return !Number.isNaN(dueDate.getTime()) && dueDate < new Date();
+  }).length;
   const missingData = startups.reduce((sum, startup) => sum + (startup.missingData?.length || 0), 0);
-  const staleCheckIns = startups.filter((startup) => !startup.lastCheckIn || (Date.now() - new Date(`${startup.lastCheckIn}T00:00:00`).getTime()) >= 14 * 24 * 60 * 60 * 1000).length;
+  const staleCheckIns = startups.filter((startup) => {
+    if (!startup.lastCheckIn) return true;
+    const checkInDate = new Date(`${startup.lastCheckIn}T00:00:00`);
+    return Number.isNaN(checkInDate.getTime()) || (Date.now() - checkInDate.getTime()) >= 14 * 24 * 60 * 60 * 1000;
+  }).length;
 
   return [
     { label: "Total startups", value: String(startups.length), note: "Active startup profiles in demo OS" },
     { label: "Startups needing attention", value: String(atRisk), note: "Require SGA/Leader review" },
-    { label: "Open support tasks", value: String(openTasks), note: "Incubation worklist items not done" },
+    { label: "Open support tasks", value: String(openTasks.length), note: "Incubation worklist items not done" },
     { label: "Overdue actions", value: String(overdueTasks), note: "Open tasks past their due date" },
     { label: "Startups overdue for check-in", value: String(staleCheckIns), note: "No update recorded in 14+ days" },
     { label: "Missing information", value: String(missingData), note: "Data items to add" },
@@ -328,6 +323,9 @@ function buildEvidenceSummary(startup, documents) {
 }
 
 function inferRiskReason(startup) {
+  if (startup.risk === "Unassessed") {
+    return "Public UII profile; assessment is required before risk decisions.";
+  }
   if (startup.risk === "High") {
     return `${startup.name} is high risk because validation evidence is incomplete: ${(startup.missingData || []).slice(0, 3).join(", ")}.`;
   }

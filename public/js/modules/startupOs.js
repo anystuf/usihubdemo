@@ -1,6 +1,7 @@
 import { getDemoData } from "../services/dataService.js";
 import { $, emptyState, escapeHtml, statusClass, tags } from "../utils/dom.js";
 import { getDefaultRecommendation, getLifecycleStage, getLifecycleSteps, getStageMetrics } from "../utils/startupLifecycle.js";
+import { translate } from "../services/languageService.js";
 
 const selectedKey = "usiHubSelectedStartupId";
 const uiiLogoUrl = new URL("../../assets/UII_Logo.jpg", import.meta.url).href;
@@ -11,10 +12,10 @@ export function renderStartupOs() {
     <section class="card card-pad">
       <div class="section-header" style="margin-top: 0;">
         <div>
-          <p class="eyebrow">Startup directory</p>
-          <h2>Startup list</h2>
+          <p class="eyebrow">${translate("Startup operations")}</p>
+          <h2>${translate("Startup list & operating profiles")}</h2>
         </div>
-        <p>Search, filter, and sort startups before opening a detailed operating profile.</p>
+        <p>${translate("Search, filter, and sort operating records after reviewing the public UII directory.")}</p>
       </div>
       <div class="toolbar">
         <input class="input" id="startup-search" placeholder="Search by name, sector, cohort, support need" />
@@ -67,21 +68,21 @@ export function renderStartupDetailPage() {
     <section class="card card-pad">
       <div class="detail-title">
         <div class="startup-detail-identity">
-          <img src="${uiiLogoUrl}" alt="" class="startup-detail-logo" />
+          <img src="${escapeHtml(startup.image || uiiLogoUrl)}" alt="${escapeHtml(startup.name)} logo" class="startup-detail-logo" />
           <div>
           <p class="eyebrow">Startup profile</p>
           <h2>${escapeHtml(startup.name)}</h2>
           </div>
         </div>
-        <span class="status ${statusClass(startup.risk)}">${escapeHtml(startup.risk)} risk</span>
+        <span class="status ${statusClass(startup.risk)}">${escapeHtml(translate(startup.risk))} ${translate("risk")}</span>
       </div>
-      <p class="muted-text" style="margin-top: 10px;">${escapeHtml(startup.summary)}</p>
+      <p class="muted-text" style="margin-top: 10px;">${escapeHtml(translate(startup.summary))}</p>
 
       <div class="detail-grid">
         <div class="detail-stat"><span>Cohort</span><strong>${escapeHtml(startup.cohort)}</strong></div>
-        <div class="detail-stat"><span>Stage</span><strong>${escapeHtml(startup.stage)}</strong></div>
+        <div class="detail-stat"><span>Stage</span><strong>${escapeHtml(translate(startup.stage))}</strong></div>
         <div class="detail-stat"><span>Sector</span><strong>${escapeHtml(startup.sector)}</strong></div>
-        <div class="detail-stat"><span>Health</span><strong>${startup.health}/100</strong></div>
+          <div class="detail-stat"><span>Health</span><strong>${startup.health === null ? translate("Not assessed") : `${translate(startup.health)}/100`}</strong></div>
         <div class="detail-stat"><span>Last check-in</span><strong>${escapeHtml(startup.lastCheckIn)}</strong></div>
         <div class="detail-stat"><span>Sources</span><strong>${escapeHtml(String(startup.sources.length))}</strong></div>
       </div>
@@ -89,13 +90,13 @@ export function renderStartupDetailPage() {
 
     <section class="card card-pad startup-lifecycle-card" style="margin-top: 16px;">
       <div class="section-header" style="margin-top: 0;">
-        <div><p class="eyebrow">Lifecycle progress</p><h3>Current stage: ${escapeHtml(lifecycle.label)}</h3></div>
+        <div><p class="eyebrow">Lifecycle progress</p><h3>${translate("Current stage")}: ${escapeHtml(translate(lifecycle.label))}</h3></div>
         <span class="pill">Evidence-led view</span>
       </div>
       <ol class="startup-lifecycle" aria-label="Startup lifecycle">
         ${lifecycleSteps.map((step, index) => `<li class="startup-lifecycle-step ${step.state}"><span class="startup-lifecycle-marker">${step.state === "complete" ? "✓" : index + 1}</span><span class="startup-lifecycle-label">${escapeHtml(step.label)}</span><small>${step.state === "complete" ? "Completed" : step.state === "current" ? "Current stage" : "Next gate"}</small></li>`).join("")}
       </ol>
-      <p class="muted-text startup-lifecycle-note">Stage is taken from the current startup record. “Not recorded” metrics are data gaps, not estimates.</p>
+      <p class="muted-text startup-lifecycle-note">${translate("Stage is taken from the current startup record. “Not recorded” metrics are data gaps, not estimates.")}</p>
     </section>
 
     <div class="grid grid-2" style="margin-top: 16px;">
@@ -109,7 +110,7 @@ export function renderStartupDetailPage() {
           </article>
           <article class="insight-item">
             <strong>Missing data</strong>
-            <div class="tag-row">${tags(startup.missingData || [])}</div>
+              <div class="tag-row">${tags((startup.missingData || []).map((item) => translate(item)))}</div>
           </article>
           <article class="insight-item">
             <strong>Support needs</strong>
@@ -123,7 +124,7 @@ export function renderStartupDetailPage() {
         <h3>Stage-specific operating snapshot</h3>
         <div class="detail-grid" style="margin-top: 12px;">
           ${stageMetrics.map((kpi) => `
-            <div class="detail-stat startup-kpi-stat"><span>${escapeHtml(kpi.label)}</span><strong>${escapeHtml(kpi.value)}</strong><small class="startup-kpi-meta ${kpi.status === "Data gap" ? "is-gap" : ""}">${escapeHtml(kpi.status || "Recorded")} · ${escapeHtml(kpi.source || "Source not recorded")}</small></div>
+            <div class="detail-stat startup-kpi-stat"><span>${escapeHtml(translate(kpi.label))}</span><strong>${escapeHtml(translate(kpi.value))}</strong><small class="startup-kpi-meta ${kpi.status === "Data gap" ? "is-gap" : ""}">${escapeHtml(translate(kpi.status || "Recorded"))} · ${escapeHtml(translate(kpi.source || "Source not recorded"))}</small></div>
           `).join("")}
         </div>
         <article class="insight-item" style="margin-top: 12px;">
@@ -147,7 +148,7 @@ export function renderStartupDetailPage() {
         <p class="eyebrow">On-going supports</p>
         <h3>Current incubation actions</h3>
         <ul class="muted-text" style="margin-top: 10px;">
-          ${(startup.recommendedSupport || []).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          ${(startup.recommendedSupport || []).map((item) => `<li>${escapeHtml(translateSupport(item))}</li>`).join("")}
         </ul>
       </section>
     </div>
@@ -196,11 +197,11 @@ function renderStartupTable() {
     </div>
     ${startups.map((startup) => `
       <div class="table-row">
-        <span class="startup-table-identity"><span class="startup-logo" aria-hidden="true">${escapeHtml(startupInitials(startup.name))}</span><span><strong>${escapeHtml(startup.name)}</strong><small>${escapeHtml((startup.mentorNeed || []).slice(0, 2).join(", "))}</small></span></span>
+        <span class="startup-table-identity">${startup.image ? `<img class="startup-logo startup-logo-image" src="${escapeHtml(startup.image)}" alt="" />` : `<span class="startup-logo" aria-hidden="true">${escapeHtml(startupInitials(startup.name))}</span>`}<span><strong>${escapeHtml(startup.name)}</strong><small>${escapeHtml((startup.mentorNeed || startup.founderNeed?.split(",") || []).slice(0, 2).join(", "))}</small></span></span>
         <span>${escapeHtml(startup.sector)}<small>${escapeHtml(startup.cohort)}</small></span>
         <span>${escapeHtml(startup.stage)}</span>
         <span><span class="status ${statusClass(startup.risk)}">${escapeHtml(startup.risk)}</span></span>
-        <span><strong>${startup.health}/100</strong></span>
+        <span><strong>${startup.health === null ? "Not assessed" : `${startup.health}/100`}</strong></span>
         <span><button class="button secondary" type="button" data-select-startup="${escapeHtml(startup.id)}">Open</button></span>
       </div>
     `).join("")}
@@ -219,7 +220,7 @@ function getFilteredStartups() {
   const cohort = $("#cohort-filter")?.value || "";
   const sector = $("#sector-filter")?.value || "";
   const sort = $("#startup-sort")?.value || "risk";
-  const riskScore = { High: 0, Medium: 1, Low: 2 };
+  const riskScore = { High: 0, Medium: 1, Low: 2, Unassessed: 3 };
 
   return data.startups
     .filter((startup) => {
@@ -244,4 +245,15 @@ function getSelectedStartup() {
 
 function getMatchedContacts(startup) {
   return (getDemoData().contacts || []).filter((contact) => (contact.matchFor || []).includes(startup.name));
+}
+
+function translateSupport(value) {
+  const text = String(value || "");
+  const prefix = "Request evidence for: ";
+  if (!text.startsWith(prefix)) return translate(text);
+  return `${translate("Request evidence for:")} ${text.slice(prefix.length).split(", ").map((item) => {
+    const punctuation = item.endsWith(".") ? "." : "";
+    const label = punctuation ? item.slice(0, -1) : item;
+    return `${translate(label)}${punctuation}`;
+  }).join(", ")}`;
 }

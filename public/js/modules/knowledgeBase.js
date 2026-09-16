@@ -1,6 +1,7 @@
 import { getDemoData } from "../services/dataService.js";
 import { PLATFORM_ACTION_EVENT, getDocumentsWithLocal } from "../services/platformActionService.js";
 import { $, escapeHtml, statusClass, tags } from "../utils/dom.js";
+import { translate } from "../services/languageService.js";
 
 let actionListenerBound = false;
 const visualAssetRoot = new URL("../../assets/visuals/", import.meta.url).href;
@@ -13,10 +14,10 @@ export function renderKnowledgeBase() {
   return `
     <section class="knowledge-catalog-header">
       <div><p class="eyebrow">USI learning library</p><h2>Knowledge Base</h2><p class="muted-text">Browse curated playbooks, startup evidence, and program resources.</p></div>
-      <span class="pill">${documents.length} resources</span>
+      <span class="pill">${documents.length} ${translate("resources")}</span>
     </section>
     <section class="knowledge-featured-grid" aria-label="Featured resources">
-      ${documents.slice(0, 3).map((doc) => `<article class="knowledge-featured-card ${docTypeClass(doc.type)}"><img class="knowledge-featured-art" src="${visualAssetRoot}${docTypeVisual(doc.type)}" alt="" /><div class="knowledge-featured-copy"><span class="knowledge-featured-kicker">${escapeHtml(doc.type || "Resource")}</span><h3>${escapeHtml(doc.title)}</h3><p>${escapeHtml(doc.evidenceUse)}</p></div><span class="knowledge-featured-arrow" aria-hidden="true">→</span></article>`).join("")}
+      ${documents.slice(0, 3).map((doc) => `<article class="knowledge-featured-card ${docTypeClass(doc.type)}"><img class="knowledge-featured-art" src="${visualAssetRoot}${docTypeVisual(doc.type)}" alt="" /><div class="knowledge-featured-copy"><span class="knowledge-featured-kicker">${escapeHtml(translate(doc.type || "Resource"))}</span><h3>${escapeHtml(doc.title)}</h3><p>${escapeHtml(translate(doc.evidenceUse))}</p></div><span class="knowledge-featured-arrow" aria-hidden="true">→</span></article>`).join("")}
     </section>
     <section class="grid grid-3 knowledge-stats" style="margin-bottom: 16px;">
       <article class="card metric-card"><span>Total sources</span><strong>${documents.length}</strong><p>Tracked source metadata for USI Intelligence</p></article>
@@ -128,10 +129,10 @@ function renderDocuments() {
         <strong>${escapeHtml(doc.title)}</strong>
         <span class="status ${statusClass(doc.indexed)}">${escapeHtml(doc.indexed)}</span>
       </div>
-      <p class="knowledge-course-subtitle">${escapeHtml(doc.type)} · ${escapeHtml(doc.startup)}</p>
+      <p class="knowledge-course-subtitle">${escapeHtml(translate(doc.type))} · ${escapeHtml(translate(doc.startup))}</p>
       <p class="muted-text knowledge-course-source">Source: ${escapeHtml(doc.source)}</p>
-      <p class="muted-text"><b>Evidence use:</b> ${escapeHtml(doc.evidenceUse)}</p>
-      <p class="muted-text"><b>Extraction:</b> ${escapeHtml(doc.extractionQuality)}</p>
+      <p class="muted-text"><b>${translate("Evidence use:")}</b> ${escapeHtml(translate(doc.evidenceUse))}</p>
+      <p class="muted-text"><b>${translate("Extraction:")}</b> ${escapeHtml(translate(doc.extractionQuality))}</p>
       <div class="tag-row">${tags(doc.tags)}</div>
 
       <div class="doc-actions" style="margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap;">
