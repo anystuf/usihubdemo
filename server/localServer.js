@@ -260,13 +260,14 @@ function parseStructuredResponse(text) {
       parseError: false
     };
   } catch (error) {
+    const plainText = String(text || "").trim();
     return {
-      answer: "The assistant could not format this response for review. Please try the question again.",
-      evidence: ["The model response did not match the required structured format."],
-      sources: [],
-      confidence: "Low",
+      answer: plainText || "The assistant returned an empty response. Please try the question again.",
+      evidence: ["Gemini returned a text response, but not the requested structured JSON format."],
+      sources: ["Gemini response"],
+      confidence: "Medium",
       missingData: ["A structured AI response"],
-      nextActions: ["Try the question again with a more specific startup or task."],
+      nextActions: ["Review the answer as advisory text; no platform update was created."],
       proposedUpdate: null,
       parseError: true
     };
