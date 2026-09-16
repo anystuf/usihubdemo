@@ -1,6 +1,7 @@
 import { askUsiBrain } from "../services/usiBrainApiService.js";
 import { applyPlatformAction } from "../services/platformActionService.js";
 import { $, escapeHtml } from "../utils/dom.js";
+import { translate } from "../services/languageService.js";
 
 const suggestedPrompts = [
   "Which startup is at risk?",
@@ -252,15 +253,15 @@ export function renderFloatingIntelligence() {
       <section class="floating-ai-panel" id="floating-ai-panel" hidden>
         <div class="floating-ai-head">
           <div>
-            <strong>USI Intelligence</strong>
-            <p>Internal incubation assistant</p>
+            <strong>${translate("USI Intelligence")}</strong>
+            <p>${translate("Internal incubation assistant")}</p>
           </div>
-          <button class="button secondary" id="floating-ai-close" type="button">Close</button>
+          <button class="button secondary" id="floating-ai-close" type="button">${translate("Close")}</button>
         </div>
         <div class="floating-ai-messages" id="floating-ai-messages"></div>
         <form class="floating-ai-form" id="floating-ai-form">
-          <input class="input" id="floating-ai-input" placeholder="Ask about this platform..." autocomplete="off" />
-          <button class="button orange" type="submit">Send</button>
+          <input class="input" id="floating-ai-input" placeholder="${translate("Ask about this platform...")}" autocomplete="off" />
+          <button class="button orange" type="submit">${translate("Send")}</button>
         </form>
       </section>
     </aside>
@@ -302,7 +303,7 @@ export function bindFloatingIntelligence() {
 async function askFloating(prompt) {
   floatingThinking = true;
   floatingMessages.push({ role: "user", text: prompt });
-  floatingMessages.push({ role: "loading", text: "Checking sources..." });
+  floatingMessages.push({ role: "loading", text: translate("Checking sources...") });
   renderFloatingMessages();
 
   try {
@@ -310,11 +311,11 @@ async function askFloating(prompt) {
     floatingMessages = floatingMessages.filter((message) => message.role !== "loading");
     floatingMessages.push({
       role: "ai",
-      text: `${response.answer}\n\nNext: ${(response.nextActions || []).slice(0, 2).join(" | ")}`
+      text: `${response.answer}\n\n${translate("Next:")} ${(response.nextActions || []).slice(0, 2).join(" | ")}`
     });
   } catch (error) {
     floatingMessages = floatingMessages.filter((message) => message.role !== "loading");
-    floatingMessages.push({ role: "ai", text: `Could not answer: ${error.message}` });
+    floatingMessages.push({ role: "ai", text: `${translate("Could not answer:")} ${error.message}` });
   } finally {
     floatingThinking = false;
     renderFloatingMessages();
@@ -326,7 +327,7 @@ function renderFloatingMessages() {
   if (!root) return;
   root.innerHTML = floatingMessages.map((message) => `
     <div class="floating-message ${message.role === "user" ? "user" : ""}">
-      ${escapeHtml(message.text).replace(/\n/g, "<br/>")}
+      ${escapeHtml(translate(message.text)).replace(/\n/g, "<br/>")}
     </div>
   `).join("");
   root.scrollTop = root.scrollHeight;
