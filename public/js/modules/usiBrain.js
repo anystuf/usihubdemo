@@ -159,7 +159,6 @@ function renderAiCard(response, proposalId) {
         <span class="brain-avatar">USI</span>
         <div>
           <strong>USI Intelligence</strong>
-          <p>${escapeHtml(response.provider || "Evidence-based assistant")}</p>
         </div>
         <span class="confidence-pill">${escapeHtml(response.confidence || "Unknown")} confidence</span>
       </div>
