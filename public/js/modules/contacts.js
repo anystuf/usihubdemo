@@ -94,9 +94,12 @@ function renderContactsList() {
   root.innerHTML = contacts.map((contact) => `
     <article class="card card-pad">
       <div class="startup-card-header">
-        <div>
+        <div class="contact-heading">
+          ${contact.image ? `<img class="contact-avatar" src="${escapeHtml(contact.image)}" alt="" loading="lazy" />` : ""}
+          <div>
           <p class="eyebrow">${escapeHtml(contact.type)}</p>
           <h3>${escapeHtml(contact.name)}</h3>
+          </div>
         </div>
         <span class="pill">${escapeHtml(contact.availability)}</span>
       </div>
@@ -137,7 +140,7 @@ function renderSignals(data) {
       action: "Xem match phù hợp trong danh sách chuyên gia."
     }] : [])
   ];
-  return signals.map((signal) => `<article class="overview-insight"><strong>${escapeHtml(signal.title)}</strong><p>${escapeHtml(signal.detail)}</p><small>${escapeHtml(signal.action)}</small></article>`).join("") || `<p class="muted-text">Chưa có tín hiệu mới cần xử lý.</p>`;
+  return signals.map((signal) => `<article class="overview-insight ecosystem-signal-card"><div><strong>${escapeHtml(signal.title)}</strong><p>${escapeHtml(signal.detail)}</p><small>${escapeHtml(signal.action)}</small></div><button class="signal-arrow" type="button" aria-label="Mở tín hiệu" data-intelligence-prompt="${escapeHtml(`${signal.title}: ${signal.detail}. ${signal.action}`)}">→</button></article>`).join("") || `<p class="muted-text">Chưa có tín hiệu mới cần xử lý.</p>`;
 }
 
 function renderMatching(data) {

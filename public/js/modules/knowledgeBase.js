@@ -130,7 +130,7 @@ function renderDocuments() {
         <span class="status ${statusClass(doc.indexed)}">${escapeHtml(doc.indexed)}</span>
       </div>
       <p class="knowledge-course-subtitle">${escapeHtml(translate(doc.type))} · ${escapeHtml(translate(doc.startup))}</p>
-      <p class="muted-text knowledge-course-source">Source: ${escapeHtml(doc.source)}</p>
+      <p class="muted-text knowledge-course-source">Source: ${doc.url ? `<a class="text-link" href="${escapeHtml(doc.url)}" target="_blank" rel="noreferrer">${escapeHtml(doc.source)} ↗</a>` : escapeHtml(doc.source)}</p>
       <p class="muted-text"><b>${translate("Evidence use:")}</b> ${escapeHtml(translate(doc.evidenceUse))}</p>
       <p class="muted-text"><b>${translate("Extraction:")}</b> ${escapeHtml(translate(doc.extractionQuality))}</p>
       <div class="tag-row">${tags(doc.tags)}</div>
