@@ -352,6 +352,10 @@
   box-shadow: var(--shadow-lg);
 }
 
+.floating-ai-panel[hidden] {
+  display: none !important;
+}
+
 .floating-ai-head {
   display: flex;
   align-items: center;
