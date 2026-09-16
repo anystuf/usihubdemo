@@ -65,7 +65,9 @@ const server = http.createServer(async (req, res) => {
 
 function applyCors(req, res) {
   const requestOrigin = req.headers.origin;
-  if (requestOrigin && CORS_ORIGINS.includes(requestOrigin)) {
+  const requestHost = req.headers.host ? `https://${req.headers.host}` : "";
+  const isSameOrigin = requestOrigin && requestOrigin === requestHost;
+  if (requestOrigin && (CORS_ORIGINS.includes(requestOrigin) || isSameOrigin)) {
     res.setHeader("Access-Control-Allow-Origin", requestOrigin);
     res.setHeader("Vary", "Origin");
   }
