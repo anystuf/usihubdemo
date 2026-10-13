@@ -12,8 +12,10 @@ import { getDataSource, loadPlatformData } from "./services/dataService.js";
 import { getCurrentRole, setCurrentRole, ROLES, getRoleGreeting } from "./services/roleService.js";
 import { getLanguage, initLanguage, translate } from "./services/languageService.js";
 import { renderMvpWorkspace, bindMvpWorkspace } from "./modules/mvpWorkspace.js";
+import { renderStartupGrowth, bindStartupGrowth } from "./modules/startupGrowth.js";
 
 const routes = {
+  "startup-growth": { title: "Startup Growth", render: renderStartupGrowth, bind: bindStartupGrowth },
   "mvp-operations": { title: "MVP Operations", render: renderMvpWorkspace, bind: bindMvpWorkspace },
   "overview": { title: "Overview Dashboard", render: renderOverview, bind: bindOverview },
   "ecosystem": { title: "Ecosystem Hub", render: renderEcosystemHub, bind: bindEcosystemHub },
@@ -28,6 +30,7 @@ const routes = {
 };
 
 const routeLabels = {
+  "startup-growth": "Startup Growth",
   "mvp-operations": "MVP Operations",
   overview: "Overview",
   ecosystem: "Ecosystem Hub",

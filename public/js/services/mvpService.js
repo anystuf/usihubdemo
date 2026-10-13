@@ -1,6 +1,6 @@
 // Browser-local MVP workspace. This is not an authorization or shared database layer.
 export const MVP_KEY = 'usiHubMvpV1';
-export const kinds = ['profiles', 'applications', 'reviews', 'milestones', 'sessions', 'metrics', 'people', 'resources', 'sops', 'slots', 'requests', 'tasks'];
+export const kinds = ['profiles', 'applications', 'reviews', 'milestones', 'sessions', 'metrics', 'people', 'resources', 'sops', 'slots', 'requests', 'tasks', 'outcomes'];
 export const stages = ['Ideation', 'Prototyping / MVP', 'PMF', 'Product–Channel Fit', 'Growth'];
 export function emptyWorkspace() {
   return { version: 1, ...Object.fromEntries(kinds.map(key => [key, []])), audit: [] };
@@ -9,6 +9,8 @@ export function readWorkspace(storage = globalThis.localStorage) {
   const raw = storage.getItem(MVP_KEY);
   if (!raw) return emptyWorkspace();
   const state = JSON.parse(raw);
+  // Additive compatibility: existing v1 records are retained unchanged.
+  if (state.version === 1 && state.outcomes === undefined) state.outcomes = [];
   if (state.version !== 1 || ![...kinds, 'audit'].every(key => Array.isArray(state[key]))) {
     throw new Error('Workspace data is invalid. Export or recover the stored data before continuing.');
   }
@@ -84,6 +86,42 @@ export function saveRecord(kind, input, actor, startupIds, storage = globalThis.
 function commit(state, actor, action, id, storage, before = null, after = null) {
   state.audit.unshift({ id: crypto.randomUUID(), at: new Date().toISOString(), actor, action, recordId: id, before, after });
   storage.setItem(MVP_KEY, JSON.stringify(state));
+}
+
+export function createGrowthSession(input, actor, startupIds, storage = globalThis.localStorage) {
+  const state = readWorkspace(storage);
+  required(input, ['id', 'startupId', 'title', 'date', 'owner', 'issue', 'supportNeed', 'source']);
+  const existing = state.sessions.find(s => s.id === input.id);
+  if (existing) return existing;
+  const now = new Date().toISOString();
+  const session = { ...input, createdAt: now, updatedAt: now, createdBy: actor, status: 'Recorded', notes: input.notes || '', milestoneId: input.milestoneId || '' };
+  // Existing session validator requires notes; structured issue/need provide the context.
+  validateRecord('sessions', { ...session, notes: session.notes || `${session.issue}\n${session.supportNeed}` }, state, startupIds);
+  if (input.createTask) {
+    required(input, ['action', 'assignee', 'due']); date(input.due);
+    const taskId = `growth-task-${session.id}`;
+    state.tasks.unshift({ id: taskId, title: input.action.trim(), startupId: session.startupId, milestoneId: session.milestoneId, sourceSessionId: session.id, sourceId: session.id, assignee: input.assignee.trim(), due: input.due, notes: input.notes || '', status: 'Next', priority: 'Medium', progress: 0, workstream: 'Growth', createdAt: now, updatedAt: now, createdBy: actor });
+    session.taskId = taskId;
+  }
+  state.sessions.unshift(session);
+  // One storage write commits the session, task and audit together in demo mode.
+  commit(state, actor, 'create:growth-session', session.id, storage, null, session);
+  return session;
+}
+
+export function recordGrowthOutcome(input, actor, startupIds, tasks, storage = globalThis.localStorage) {
+  const state = readWorkspace(storage);
+  required(input, ['id', 'sessionId', 'date', 'type', 'observation']); date(input.date);
+  const session = state.sessions.find(s => s.id === input.sessionId);
+  if (!session || !startupIds.includes(session.startupId)) throw new Error('Choose a session from an existing startup.');
+  if (!['Observed result', 'Partial result', 'Not yet achieved'].includes(input.type)) throw new Error('Choose an outcome type.');
+  if (input.taskId && !tasks.some(t => t.id === input.taskId && t.startupId === session.startupId && (t.sourceSessionId === session.id || t.sourceId === session.id))) throw new Error('Task must belong to this startup and session.');
+  const previous = state.outcomes.find(o => o.id === input.id);
+  if (previous) return previous;
+  const outcome = { ...input, startupId: session.startupId, createdAt: new Date().toISOString(), recordedBy: actor };
+  state.outcomes.unshift(outcome);
+  commit(state, actor, 'record:growth-outcome', outcome.id, storage, null, outcome);
+  return outcome;
 }
 export function workflowAction(kind, id, action, details, actor, startupIds, storage = globalThis.localStorage) {
   const state = readWorkspace(storage);

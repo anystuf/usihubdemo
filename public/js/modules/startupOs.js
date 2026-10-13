@@ -79,6 +79,7 @@ export function renderStartupDetailPage() {
         <span class="status ${statusClass(startup.risk)}">${escapeHtml(translate(startup.risk))} ${translate("risk")}</span>
       </div>
       <p class="muted-text" style="margin-top: 10px;">${escapeHtml(translate(startup.summary))}</p>
+      <button class="button secondary" data-growth-startup="${escapeHtml(startup.id)}">${getLanguage() === 'vi' ? 'Mở không gian phát triển' : 'Open Growth Workspace'} ↗</button>
 
       <div class="detail-grid">
         <div class="detail-stat"><span>Cohort</span><strong>${escapeHtml(startup.cohort)}</strong></div>
@@ -184,6 +185,7 @@ function renderOperatingHistory(startup) {
 }
 
 export function bindStartupDetailPage() {
+  document.querySelectorAll('[data-growth-startup]').forEach(button => button.addEventListener('click', () => { sessionStorage.setItem('usiGrowthStartup', button.dataset.growthStartup); window.location.hash = 'startup-growth'; }));
   document.querySelectorAll("[data-select-startup]").forEach((button) => {
     button.addEventListener("click", () => {
       localStorage.setItem(selectedKey, button.dataset.selectStartup);

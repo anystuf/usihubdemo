@@ -12,6 +12,7 @@ export function renderMvpWorkspace() {
   return `<section class="mvp-workspace">
     <header class="card card-pad"><div class="section-header"><div><p class="eyebrow">MVP · ${esc(d.feature)}</p><h2>${text('Incubation operations', 'Vận hành ươm tạo')}</h2></div><button class="button secondary" id="mvp-export">${text('Export workspace', 'Xuất dữ liệu')}</button></div>
     <p class="muted-text">${text('Browser-local pilot. Use sample data. Shared accounts and server permissions are not connected.', 'Bản thử nghiệm lưu trên trình duyệt. Dùng dữ liệu mẫu. Chưa có tài khoản và phân quyền máy chủ.')}</p></header>
+    <a class="button secondary" href="#startup-growth">${text('Open Startup Growth Workspace', 'Mở không gian phát triển startup')} ↗</a>
     <nav class="mvp-tabs" aria-label="MVP modules">${Object.entries(definitions).map(([key, item]) => `<button type="button" class="button ${key === activeTab ? 'orange' : 'secondary'}" data-mvp-tab="${key}" aria-current="${key === activeTab ? 'page' : 'false'}">${esc(text(item.en, item.vi))}</button>`).join('')}<a class="button secondary" href="#project-board">${text('Support worklist', 'Công việc hỗ trợ')} ↗</a></nav>
     <p id="mvp-feedback" role="status">${esc(message)}</p>
     <section class="card card-pad"><div class="section-header"><h3>${esc(text(d.en, d.vi))}</h3>${d.phase ? `<span class="pill">Phase ${d.phase}</span>` : ''}</div>

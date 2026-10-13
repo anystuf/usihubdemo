@@ -1,6 +1,7 @@
 // Exact UI translations preserve IDs, values, data attributes and user input.
 // WeakMap retains source strings so changing language never compounds translations.
 const translations = {
+  "Startup Growth": "Phát triển startup",
   "MVP Operations": "Vận hành MVP",
   "Overview": "Tổng quan", "Overview Dashboard": "Bảng điều hành tổng quan",
   "UEH Innovation Platform": "Nền tảng đổi mới sáng tạo UEH",

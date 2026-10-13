@@ -13,8 +13,10 @@ const statuses = ["Planned", "Next", "In progress", "Blocked", "Done", "Cancelle
 
 let tasks = [];
 let actionListenerBound = false;
+let growthScope = '';
 
-export function renderProjectBoard() {
+export function renderProjectBoard(options = {}) {
+  growthScope = options.startupId || '';
   tasks = loadTasks();
   const startups = ["", ...new Set(tasks.map((task) => task.startup || "Cohort"))];
   const startupOptions = getDemoData().startups.map((startup) => startup.name);
@@ -28,6 +30,7 @@ export function renderProjectBoard() {
           <h2>Startup support tasks</h2>
         </div>
         <div class="board-toolbar">
+          <a class="button secondary" href="#startup-growth">Startup Growth ↗</a>
           <span class="pill" id="board-save-state">Saved locally</span>
           <button class="button secondary" id="reset-board" type="button">Reset demo</button>
         </div>
@@ -44,12 +47,13 @@ export function renderProjectBoard() {
           <option value="">All statuses</option>
           ${statuses.map((status) => `<option>${escapeHtml(status)}</option>`).join("")}
         </select>
+        <input class="input" id="task-owner-filter" aria-label="Filter by owner" placeholder="Filter by owner" />
       </div>
 
       <form class="chat-composer" id="task-form" style="border-top: 0; padding: 14px 0 0;">
         <select class="select" id="task-new-startup" aria-label="Startup for new task">
           <option value="Cohort">Cohort / program</option>
-          ${startupOptions.map((startup) => `<option>${escapeHtml(startup)}</option>`).join("")}
+          ${startupOptions.map((startup) => `<option${getDemoData().startups.find(s => s.id === growthScope)?.name === startup ? ' selected' : ''}>${escapeHtml(startup)}</option>`).join("")}
         </select>
         <input class="input" id="task-title" required aria-label="Task title" placeholder="Add incubation task, e.g. Investor intro for Venture Epsilon" />
         <input class="input" id="task-new-owner" required aria-label="Task owner" placeholder="Owner" />
@@ -81,6 +85,7 @@ export function bindProjectBoard() {
       id: `task-${Date.now()}`,
       title,
       startup: $("#task-new-startup")?.value || "Cohort",
+      startupId: getDemoData().startups.find(s => s.name === $("#task-new-startup")?.value)?.id || '',
       assignee: $("#task-new-owner").value.trim(),
       due: $("#task-new-due").value,
       status: "Next",
@@ -97,7 +102,7 @@ export function bindProjectBoard() {
     renderTaskTable();
   });
 
-  ["task-search", "task-startup", "task-status"].forEach((id) => {
+  ["task-search", "task-startup", "task-status", "task-owner-filter"].forEach((id) => {
     $(`#${id}`)?.addEventListener("input", renderTaskTable);
   });
 
@@ -130,7 +135,7 @@ export function renderTaskDetailPage() {
         <span class="status ${statusClass(task.status)}">${escapeHtml(task.status)}</span>
       </div>
       <p class="muted-text" style="margin-top: 10px;">${escapeHtml(translate(task.notes || "No notes yet."))}</p>
-      ${task.sourceId ? `<p class="muted-text">Source: ${escapeHtml(task.sourceId)} · <a href="#mvp-operations">MVP Operations ↗</a></p>` : ''}
+      ${task.sourceId ? `<p class="muted-text">Source: ${escapeHtml(task.sourceId)} · <a href="${task.sourceSessionId ? '#startup-growth' : '#mvp-operations'}">${task.sourceSessionId ? 'Startup Growth' : 'MVP Operations'} ↗</a></p>` : ''}
       <div class="detail-grid">
         <div class="detail-stat"><span>Startup</span><strong>${escapeHtml(task.startup || "Cohort")}</strong></div>
         <div class="detail-stat"><span>Owner</span><strong>${escapeHtml(task.assignee || "SGA")}</strong></div>
@@ -168,6 +173,7 @@ export function renderTaskDetailPage() {
         <textarea class="input" id="detail-notes" rows="4">${escapeHtml(translate(task.notes || ""))}</textarea>
       </label>
       <div class="task-meta" style="margin-top: 12px;">
+        <p id="task-detail-error" role="alert"></p>
         <button class="button secondary" type="button" id="back-to-task-list">Back to worklist</button>
         <button class="button secondary" type="button" data-intelligence-prompt="Review the task '${escapeHtml(task.title)}' for ${escapeHtml(task.startup || "Cohort")} and suggest the next action.">Ask USI Intelligence</button>
         <button class="button orange" type="button" id="save-task-detail">Save changes</button>
@@ -186,6 +192,11 @@ export function bindTaskDetailPage() {
   $("#save-task-detail")?.addEventListener("click", () => {
     const task = getSelectedTask();
     if (!task) return;
+    const nextStatus = $("#detail-status")?.value;
+    if (['Blocked', 'Done'].includes(nextStatus) && !$("#detail-notes")?.value.trim()) {
+      $("#task-detail-error").textContent = 'Add a note for Blocked or Done. Task completion does not record an outcome.';
+      return;
+    }
     task.assignee = $("#detail-assignee")?.value.trim() || task.assignee;
     task.due = $("#detail-due")?.value || task.due;
     task.status = $("#detail-status")?.value || task.status;
@@ -203,15 +214,16 @@ function renderTaskTable() {
   if (!metricsRoot || !tableRoot) return;
 
   const filtered = getFilteredTasks();
-  const done = tasks.filter((task) => ["Done", "Cancelled"].includes(task.status)).length;
-  const progress = Math.round(tasks.reduce((sum, task) => sum + Number(task.progress || 0), 0) / Math.max(tasks.length, 1));
-  const highPriority = tasks.filter((task) => task.priority === "High" && !["Done", "Cancelled"].includes(task.status)).length;
+  const scoped = tasks.filter(task => !growthScope || task.startupId === growthScope);
+  const done = scoped.filter((task) => ["Done", "Cancelled"].includes(task.status)).length;
+  const progress = Math.round(scoped.reduce((sum, task) => sum + Number(task.progress || 0), 0) / Math.max(scoped.length, 1));
+  const highPriority = scoped.filter((task) => task.priority === "High" && !["Done", "Cancelled"].includes(task.status)).length;
 
   metricsRoot.innerHTML = [
     ["Overall progress", `${progress}%`, "Average task completion"],
-    ["Open tasks", String(tasks.length - done), "Tasks not done"],
+    ["Open tasks", String(scoped.length - done), "Tasks not done"],
     ["High priority", String(highPriority), "Needs owner attention"],
-    ["Startups covered", String(new Set(tasks.map((task) => task.startup)).size), "Support coverage"]
+    ["Startups covered", String(new Set(scoped.map((task) => task.startup)).size), "Support coverage"]
   ].map(([label, value, note]) => `
     <article class="card metric-card">
       <span>${escapeHtml(label)}</span>
@@ -253,9 +265,12 @@ function getFilteredTasks() {
   const search = ($("#task-search")?.value || "").toLowerCase();
   const startup = $("#task-startup")?.value || "";
   const status = $("#task-status")?.value || "";
+  const owner = ($("#task-owner-filter")?.value || "").trim().toLowerCase();
   return tasks.filter((task) => {
     const haystack = [task.title, task.startup, task.assignee, task.workstream, task.notes, task.priority].join(" ").toLowerCase();
     return (!search || haystack.includes(search))
+      && (!growthScope || task.startupId === growthScope)
+      && (!owner || String(task.assignee || '').toLowerCase().includes(owner))
       && (!startup || task.startup === startup)
       && (!status || task.status === status);
   });
@@ -276,6 +291,8 @@ function loadTasks() {
 }
 
 function saveTasks() {
+  const now = new Date().toISOString();
+  tasks = tasks.map(task => ({ ...task, updatedAt: now }));
   saveProjectTasks(tasks);
 }
 
