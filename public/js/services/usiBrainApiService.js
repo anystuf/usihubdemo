@@ -16,12 +16,14 @@ export async function askUsiBrain(prompt, conversation = []) {
     }, "Local evidence engine");
   }
 
+  let proxyFailure = "connection failed";
   try {
     const response = await callLocalProxy(prompt, context, conversation);
     const modelInfo = response.modelUsed || "Gemini 3.5 Flash";
     return normalizeBrainResponse(response, `${modelInfo} via local proxy`);
   } catch (error) {
-    // Continue to Firebase Function if the local proxy is not running.
+    proxyFailure = error.name === "TimeoutError" ? "request timed out" : error.message;
+    // Firebase is a secondary backend; retain the primary failure for the user.
   }
 
   try {
@@ -31,7 +33,7 @@ export async function askUsiBrain(prompt, conversation = []) {
     const fallback = await generateBrainResponse(prompt);
     return normalizeBrainResponse({
       ...fallback,
-      systemNote: "Firebase Function is not available yet, so this answer used local demo fallback data."
+      systemNote: `AI service unavailable (${proxyFailure}). This answer uses local demo data; it is not a live Gemini response.`
     }, "Local demo fallback");
   }
 }
@@ -92,6 +94,7 @@ function buildDemoContext() {
 async function callLocalProxy(prompt, context, conversation) {
   const response = await fetch("/api/usi-brain", {
     method: "POST",
+    signal: AbortSignal.timeout(45000),
     headers: {
       "Content-Type": "application/json"
     },
@@ -99,7 +102,7 @@ async function callLocalProxy(prompt, context, conversation) {
   });
 
   if (!response.ok) {
-    throw new Error(`Local proxy unavailable: ${response.status}`);
+    throw new Error(`AI service HTTP ${response.status}`);
   }
 
   return response.json();
