@@ -136,6 +136,7 @@ function renderDocuments() {
       <div class="tag-row">${tags(doc.tags)}</div>
 
       <div class="doc-actions" style="margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap;">
+        ${doc.url ? `<a class="button secondary" href="${escapeHtml(doc.url)}" target="_blank" rel="noopener noreferrer">Open source ↗</a>` : ''}
         <button class="button secondary doc-action-btn" data-action="ask-brain" data-doc-title="${escapeHtml(doc.title)}" data-doc-startup="${escapeHtml(doc.startup)}" title="Ask USI Intelligence a question about this document">Ask USI Intelligence</button>
         <button class="button secondary doc-action-btn" data-action="summarize" data-doc-title="${escapeHtml(doc.title)}" title="Generate a summary">Summarize</button>
         <button class="button secondary doc-action-btn" data-action="risk-signals" data-doc-title="${escapeHtml(doc.title)}" data-doc-startup="${escapeHtml(doc.startup)}" title="Extract risk signals">Risk Signals</button>

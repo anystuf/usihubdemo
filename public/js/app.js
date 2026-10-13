@@ -11,8 +11,10 @@ import { initAnalytics } from "./services/firebaseService.js";
 import { getDataSource, loadPlatformData } from "./services/dataService.js";
 import { getCurrentRole, setCurrentRole, ROLES, getRoleGreeting } from "./services/roleService.js";
 import { getLanguage, initLanguage, translate } from "./services/languageService.js";
+import { renderMvpWorkspace, bindMvpWorkspace } from "./modules/mvpWorkspace.js";
 
 const routes = {
+  "mvp-operations": { title: "MVP Operations", render: renderMvpWorkspace, bind: bindMvpWorkspace },
   "overview": { title: "Overview Dashboard", render: renderOverview, bind: bindOverview },
   "ecosystem": { title: "Ecosystem Hub", render: renderEcosystemHub, bind: bindEcosystemHub },
   "startup-os": { title: "Startup List", render: renderStartupOs, bind: bindStartupOs },
@@ -26,6 +28,7 @@ const routes = {
 };
 
 const routeLabels = {
+  "mvp-operations": "MVP Operations",
   overview: "Overview",
   ecosystem: "Ecosystem Hub",
   "startup-os": "Startup List",

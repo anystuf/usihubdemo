@@ -1,0 +1,30 @@
+.mvp-workspace { display: grid; gap: 16px; }
+.mvp-workspace .card { border-radius: 10px; }
+.mvp-tabs, .mvp-actions, .mvp-filters { display: flex; gap: 10px; flex-wrap: wrap; align-items: end; }
+.mvp-tabs .button, .mvp-actions .button { border-radius: 6px; }
+.mvp-tabs { align-items: stretch; }
+.mvp-tabs .button { font-size: 13px; padding: 10px 14px; }
+.mvp-filters { margin: 16px 0; }
+.mvp-filters label { flex: 1; min-width: 180px; display: grid; gap: 6px; }
+.mvp-records { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 14px; }
+.mvp-record { border: 1px solid var(--line, #dce3ed); border-radius: 8px; padding: 18px; min-width: 0; overflow-wrap: anywhere; }
+.mvp-record header { display: flex; justify-content: space-between; gap: 12px; align-items: start; }
+.mvp-record h4 { margin: 0; }
+.mvp-record dl { display: grid; gap: 10px; margin: 16px 0; }
+.mvp-record dt { font-size: 12px; color: var(--ink-500); }
+.mvp-record dd { margin: 3px 0 0; font-size: 14px; white-space: pre-wrap; }
+.mvp-record pre { overflow: auto; max-height: 260px; white-space: pre-wrap; }
+.mvp-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 16px 0; }
+.mvp-form-grid label { display: grid; gap: 7px; font-size: 14px; }
+.mvp-form-grid .mvp-wide { grid-column: 1 / -1; }
+.mvp-editor { scroll-margin-top: 125px; }
+.mvp-empty { padding: 40px 12px; text-align: center; color: var(--ink-500); }
+.mvp-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 20px 0; }
+.mvp-stats article { padding: 18px; border: 1px solid var(--line, #dce3ed); border-radius: 8px; display: grid; gap: 10px; }
+.mvp-stats strong { font-size: 28px; }
+.mvp-table-wrap { overflow-x: auto; margin: 16px 0 28px; }
+.mvp-table-wrap table { border-collapse: collapse; width: 100%; text-align: left; }
+.mvp-table-wrap th, .mvp-table-wrap td { padding: 12px; border-bottom: 1px solid var(--line, #dce3ed); font-size: 14px; }
+#mvp-feedback:empty, #mvp-form-error:empty { display: none; }
+#mvp-form-error { color: #c02626; }
+@media (max-width: 700px) { .mvp-form-grid { grid-template-columns: 1fr; } .mvp-stats { grid-template-columns: repeat(2, 1fr); } .mvp-tabs { flex-wrap: nowrap; overflow-x: auto; } .mvp-tabs .button { flex: 0 0 auto; } }
