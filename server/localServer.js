@@ -11,7 +11,8 @@ loadLocalEnv();
 
 const PORT = Number(process.env.PORT || 4173);
 const PUBLIC_DIR = path.resolve(__dirname, "../public");
-const GEMINI_MODELS = ["gemini-3.5-flash", "gemini-2.5-flash", "gemini-2.5-pro"];
+const GEMINI_MODELS = (process.env.GEMINI_MODELS || "gemini-3.5-flash,gemini-3.5-flash-lite,gemini-3.1-flash-lite")
+  .split(",").map(model => model.trim()).filter(Boolean);
 
 const mimeTypes = {
   ".html": "text/html; charset=utf-8",
@@ -72,7 +73,7 @@ async function handleUsiBrain(req, res) {
   } catch (error) {
     console.error("Error in handleUsiBrain:", error.message);
     console.error("Full error:", error);
-    sendJson(res, 500, { error: error.message || "Failed to call Gemini API" });
+    sendJson(res, error.httpStatus || 500, { error: error.message || "Failed to call Gemini API", attempts: error.attempts || [] });
   }
 }
 
@@ -142,7 +143,10 @@ async function callGemini(prompt, context, conversation, apiKey) {
   };
 
   // Try each model in sequence
+  const attempts = [];
+  const deadline = Date.now() + 35000;
   for (const model of GEMINI_MODELS) {
+    if (Date.now() >= deadline) break;
     try {
       const body = {
         system_instruction: {
@@ -170,17 +174,24 @@ async function callGemini(prompt, context, conversation, apiKey) {
         }
       };
 
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
+      const response = await fetchGeminiWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "x-goog-api-key": apiKey
         },
         body: JSON.stringify(body)
-      });
+      }, deadline);
 
       if (!response.ok) {
         const text = await response.text();
+        const reason = /reported as leaked/i.test(text) ? "API_KEY_BLOCKED"
+          : response.status === 429 ? "QUOTA_OR_RATE_LIMIT"
+          : response.status === 403 ? "PERMISSION_DENIED"
+          : response.status === 404 ? "MODEL_UNAVAILABLE"
+          : response.status === 400 ? "INVALID_REQUEST"
+          : "PROVIDER_ERROR";
+        attempts.push({ model, status: response.status, reason });
         console.log(`Model ${model} failed (${response.status}), trying next...`);
         continue;
       }
@@ -191,14 +202,33 @@ async function callGemini(prompt, context, conversation, apiKey) {
         console.log(`Successfully used model: ${model}`);
         return { text: result, model };
       }
+      attempts.push({ model, status: 200, reason: json?.candidates?.[0]?.finishReason || json?.promptFeedback?.blockReason || "EMPTY_RESPONSE" });
     } catch (error) {
+      attempts.push({ model, status: 0, reason: "CONNECTION_ERROR" });
       console.log(`Model ${model} error: ${error.message}, trying next...`);
       continue;
     }
   }
 
   // If all models fail, throw error
-  throw new Error(`All Gemini models failed (tried: ${GEMINI_MODELS.join(", ")})`);
+  const error = new Error("Gemini could not generate a response.");
+  error.attempts = attempts;
+  error.httpStatus = attempts.some(attempt => attempt.status === 429) ? 429 : 502;
+  throw error;
+}
+
+async function fetchGeminiWithRetry(url, options, deadline) {
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const remaining = deadline - Date.now();
+    if (remaining <= 0) throw new Error("AI request deadline exceeded");
+    const response = await fetch(url, { ...options, signal: AbortSignal.timeout(Math.min(12000, remaining)) });
+    if (attempt === 0 && [429, 503].includes(response.status) && deadline - Date.now() > 1500) {
+      await response.body?.cancel();
+      await new Promise(resolve => setTimeout(resolve, 500 + Math.floor(Math.random() * 250)));
+      continue;
+    }
+    return response;
+  }
 }
 
 function normalizeConversation(conversation) {
