@@ -100,7 +100,7 @@ async function handleUsiBrain(req, res) {
   } catch (error) {
     console.error("Error in handleUsiBrain:", error.message);
     console.error("Full error:", error);
-    sendJson(res, 500, { error: error.message || "Failed to call Gemini API" });
+    sendJson(res, error.httpStatus || 500, { error: error.message || "Failed to call Gemini API", attempts: error.attempts || [] });
   }
 }
 
@@ -170,6 +170,7 @@ async function callGemini(prompt, context, conversation, apiKey) {
   };
 
   // Try each model in sequence
+  const attempts = [];
   for (const model of GEMINI_MODELS) {
     try {
       const body = {
@@ -209,6 +210,13 @@ async function callGemini(prompt, context, conversation, apiKey) {
 
       if (!response.ok) {
         const text = await response.text();
+        const reason = /reported as leaked/i.test(text) ? "API_KEY_BLOCKED"
+          : response.status === 429 ? "QUOTA_OR_RATE_LIMIT"
+          : response.status === 403 ? "PERMISSION_DENIED"
+          : response.status === 404 ? "MODEL_UNAVAILABLE"
+          : response.status === 400 ? "INVALID_REQUEST"
+          : "PROVIDER_ERROR";
+        attempts.push({ model, status: response.status, reason });
         console.log(`Model ${model} failed (${response.status}), trying next...`);
         continue;
       }
@@ -219,14 +227,19 @@ async function callGemini(prompt, context, conversation, apiKey) {
         console.log(`Successfully used model: ${model}`);
         return { text: result, model };
       }
+      attempts.push({ model, status: 200, reason: json?.candidates?.[0]?.finishReason || json?.promptFeedback?.blockReason || "EMPTY_RESPONSE" });
     } catch (error) {
+      attempts.push({ model, status: 0, reason: "CONNECTION_ERROR" });
       console.log(`Model ${model} error: ${error.message}, trying next...`);
       continue;
     }
   }
 
   // If all models fail, throw error
-  throw new Error(`All Gemini models failed (tried: ${GEMINI_MODELS.join(", ")})`);
+  const error = new Error("Gemini could not generate a response.");
+  error.attempts = attempts;
+  error.httpStatus = attempts.some(attempt => attempt.status === 429) ? 429 : 502;
+  throw error;
 }
 
 function normalizeConversation(conversation) {
