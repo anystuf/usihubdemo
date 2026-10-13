@@ -1,4 +1,5 @@
 import { demoData } from "../../assets/demo-data/demo-data.js";
+import { overlayWorkspace } from "./mvpService.js";
 import { collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 import { getFirebaseServices } from "./firebaseService.js";
 
@@ -114,7 +115,8 @@ const orderFields = {
 };
 
 export function getDemoData() {
-  return activeData;
+  const data = overlayWorkspace(activeData);
+  return { ...data, metrics: buildMetrics(data.startups, data.documents, data.projectTasks, data.aiProposals), dashboard: buildDashboard(data.startups, data.documents, data.projectTasks) };
 }
 
 export function getDataSource() {
@@ -135,11 +137,11 @@ export async function loadPlatformData() {
 }
 
 export function getStartupById(id) {
-  return activeData.startups.find((startup) => startup.id === id) || activeData.startups[0];
+  return getDemoData().startups.find((startup) => startup.id === id) || getDemoData().startups[0];
 }
 
 export function getAtRiskStartups() {
-  return activeData.startups.filter((startup) => startup.risk === "High");
+  return getDemoData().startups.filter((startup) => startup.risk === "High");
 }
 
 async function fetchFirestoreData() {
@@ -266,7 +268,7 @@ function enrichTask(task, index) {
 
 function buildMetrics(startups, documents, tasks, aiProposals) {
   const atRisk = startups.filter((startup) => startup.risk === "High").length;
-  const openTasks = tasks.filter((task) => task.status !== "Done");
+  const openTasks = tasks.filter((task) => !["Done", "Cancelled"].includes(task.status));
   const overdueTasks = openTasks.filter((task) => {
     const dueDate = new Date(`${task.due}T23:59:59`);
     return !Number.isNaN(dueDate.getTime()) && dueDate < new Date();

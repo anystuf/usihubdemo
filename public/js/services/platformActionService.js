@@ -11,7 +11,7 @@ const storageKeys = {
 
 export function getProjectTasksWithLocal(baseTasks = []) {
   const saved = readList(storageKeys.projectTasks);
-  return saved.length ? saved : baseTasks;
+  return saved.length ? [...saved, ...baseTasks.filter(task => !saved.some(item => item.id === task.id))] : baseTasks;
 }
 
 export function saveProjectTasks(tasks) {

@@ -9,7 +9,7 @@ import { $, escapeHtml, statusClass } from "../utils/dom.js";
 import { translate } from "../services/languageService.js";
 
 const taskKey = "usiHubSelectedTaskId";
-const statuses = ["Planned", "Next", "In progress", "Done"];
+const statuses = ["Planned", "Next", "In progress", "Blocked", "Done", "Cancelled"];
 
 let tasks = [];
 let actionListenerBound = false;
@@ -51,7 +51,9 @@ export function renderProjectBoard() {
           <option value="Cohort">Cohort / program</option>
           ${startupOptions.map((startup) => `<option>${escapeHtml(startup)}</option>`).join("")}
         </select>
-        <input class="input" id="task-title" placeholder="Add incubation task, e.g. Investor intro for Venture Epsilon" />
+        <input class="input" id="task-title" required aria-label="Task title" placeholder="Add incubation task, e.g. Investor intro for Venture Epsilon" />
+        <input class="input" id="task-new-owner" required aria-label="Task owner" placeholder="Owner" />
+        <input class="input" id="task-new-due" required aria-label="Due date" type="date" />
         <button class="button orange" type="submit">Add task</button>
       </form>
     </section>
@@ -74,13 +76,13 @@ export function bindProjectBoard() {
     event.preventDefault();
     const input = $("#task-title");
     const title = input.value.trim();
-    if (!title) return;
+    if (!title || !$("#task-new-owner").value.trim() || !$("#task-new-due").value) return;
     tasks.unshift({
       id: `task-${Date.now()}`,
       title,
       startup: $("#task-new-startup")?.value || "Cohort",
-      assignee: "SGA",
-      due: "2026-06-30",
+      assignee: $("#task-new-owner").value.trim(),
+      due: $("#task-new-due").value,
       status: "Next",
       progress: 10,
       priority: "Medium",
@@ -88,6 +90,8 @@ export function bindProjectBoard() {
       notes: "Added during demo."
     });
     input.value = "";
+    $("#task-new-owner").value = "";
+    $("#task-new-due").value = "";
     saveTasks();
     setSaveState("Task added locally");
     renderTaskTable();
@@ -126,6 +130,7 @@ export function renderTaskDetailPage() {
         <span class="status ${statusClass(task.status)}">${escapeHtml(task.status)}</span>
       </div>
       <p class="muted-text" style="margin-top: 10px;">${escapeHtml(translate(task.notes || "No notes yet."))}</p>
+      ${task.sourceId ? `<p class="muted-text">Source: ${escapeHtml(task.sourceId)} · <a href="#mvp-operations">MVP Operations ↗</a></p>` : ''}
       <div class="detail-grid">
         <div class="detail-stat"><span>Startup</span><strong>${escapeHtml(task.startup || "Cohort")}</strong></div>
         <div class="detail-stat"><span>Owner</span><strong>${escapeHtml(task.assignee || "SGA")}</strong></div>
@@ -198,9 +203,9 @@ function renderTaskTable() {
   if (!metricsRoot || !tableRoot) return;
 
   const filtered = getFilteredTasks();
-  const done = tasks.filter((task) => task.status === "Done").length;
+  const done = tasks.filter((task) => ["Done", "Cancelled"].includes(task.status)).length;
   const progress = Math.round(tasks.reduce((sum, task) => sum + Number(task.progress || 0), 0) / Math.max(tasks.length, 1));
-  const highPriority = tasks.filter((task) => task.priority === "High" && task.status !== "Done").length;
+  const highPriority = tasks.filter((task) => task.priority === "High" && !["Done", "Cancelled"].includes(task.status)).length;
 
   metricsRoot.innerHTML = [
     ["Overall progress", `${progress}%`, "Average task completion"],

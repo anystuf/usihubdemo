@@ -2,6 +2,8 @@ import { getDemoData } from "../services/dataService.js";
 import { $, emptyState, escapeHtml, statusClass, tags } from "../utils/dom.js";
 import { getDefaultRecommendation, getLifecycleStage, getLifecycleSteps, getStageMetrics } from "../utils/startupLifecycle.js";
 import { translate } from "../services/languageService.js";
+import { readWorkspace } from "../services/mvpService.js";
+import { getLanguage } from "../services/languageService.js";
 
 const selectedKey = "usiHubSelectedStartupId";
 const uiiLogoUrl = new URL("../../assets/UII_Logo.jpg", import.meta.url).href;
@@ -164,7 +166,21 @@ export function renderStartupDetailPage() {
         `).join("") || `<p class="muted-text">No linked document metadata yet.</p>`}
       </div>
     </section>
+    ${renderOperatingHistory(startup)}
   `;
+}
+
+function renderOperatingHistory(startup) {
+  const state = readWorkspace();
+  const vi = getLanguage() === 'vi';
+  const metrics = state.metrics.filter(m => m.startupId === startup.id).sort((a, b) => b.period.localeCompare(a.period));
+  const milestones = state.milestones.filter(m => m.startupId === startup.id);
+  const sessions = state.sessions.filter(s => s.startupId === startup.id).sort((a, b) => b.date.localeCompare(a.date));
+  const tasks = getDemoData().projectTasks.filter(t => t.startupId === startup.id || t.startup === startup.name);
+  return `<section class="card card-pad mvp-workspace" style="margin-top:16px"><div class="section-header"><h3>${vi ? 'Lịch sử vận hành' : 'Operating history'}</h3><a class="button secondary" href="#mvp-operations">${vi ? 'Cập nhật trong Vận hành MVP' : 'Update in MVP Operations'} ↗</a></div>
+    <div class="mvp-records"><article class="mvp-record"><h4>${vi ? 'Mốc và phiên hỗ trợ' : 'Milestones & sessions'}</h4>${milestones.map(m => `<p><strong>${escapeHtml(m.title)}</strong> · ${escapeHtml(m.status)} · ${escapeHtml(m.due)}</p><p>${escapeHtml(m.outcome || m.criteria)}</p>`).join('')}${sessions.map(s => `<details><summary>${escapeHtml(s.date)} · ${escapeHtml(s.title)}</summary><p>${escapeHtml(s.notes)}</p><p>${escapeHtml(s.source)}</p></details>`).join('')}${!milestones.length && !sessions.length ? `<p class="muted-text">${vi ? 'Chưa ghi nhận mốc hoặc phiên hỗ trợ.' : 'No milestones or sessions recorded.'}</p>` : ''}</article>
+    <article class="mvp-record"><h4>${vi ? 'Chỉ số theo kỳ' : 'Metrics by period'}</h4>${metrics.map(m => `<p><strong>${escapeHtml(m.title)}</strong> · ${escapeHtml(m.period)}</p><p>${m.dataStatus === 'Recorded' ? `${escapeHtml(m.value)} ${escapeHtml(m.unit)}` : escapeHtml(m.dataStatus)} · ${escapeHtml(m.source)}</p>`).join('') || `<p class="muted-text">${vi ? 'Chưa ghi nhận chỉ số theo kỳ.' : 'No metrics recorded by period.'}</p>`}</article>
+    <article class="mvp-record"><h4>${vi ? 'Công việc liên quan' : 'Linked tasks'}</h4>${tasks.map(t => `<p><strong>${escapeHtml(t.title)}</strong> · ${escapeHtml(t.status)} · ${escapeHtml(t.assignee)}</p>`).join('') || `<p class="muted-text">${vi ? 'Chưa có công việc.' : 'No tasks yet.'}</p>`}<a href="#project-board">${vi ? 'Mở danh sách công việc' : 'Open worklist'} ↗</a></article></div></section>`;
 }
 
 export function bindStartupDetailPage() {
